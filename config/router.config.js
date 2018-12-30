@@ -41,6 +41,19 @@ export default [
           },
         ],
       },
+      // process
+      {
+        path: '/process',
+        icon: 'process',
+        name: 'process',
+        routes: [
+          {
+            path: '/process/process-design',
+            name: 'processdesign',
+            component: './Process/ProcessDesign',
+          },
+        ],
+      },
       // forms
       {
         path: '/form',

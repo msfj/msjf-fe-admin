@@ -35,4 +35,6 @@ export default {
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
+  'menu.process': '流程管理',
+  'menu.process.processdesign': '流程设计',
 };
