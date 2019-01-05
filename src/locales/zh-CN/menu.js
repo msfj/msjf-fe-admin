@@ -37,4 +37,6 @@ export default {
   'menu.account.logout': '退出登录',
   'menu.process': '流程管理',
   'menu.process.processdesign': '流程设计',
+  'menu.process.processlist': '流程列表',
+  'menu.process.processquery': '流程查询',
 };

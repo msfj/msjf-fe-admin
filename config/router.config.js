@@ -52,6 +52,16 @@ export default [
             name: 'processdesign',
             component: './Process/ProcessDesign',
           },
+          {
+            path: '/process/process-list',
+            name: 'processlist',
+            component: './Process/ProcessList',
+          },
+          {
+            path: '/process/process-query',
+            name: 'processquery',
+            component: './Process/ProcessQuery',
+          },
         ],
       },
       // forms
