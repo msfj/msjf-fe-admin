@@ -198,6 +198,26 @@ export default [
           },
         ],
       },
+
+      //account1
+      {
+        path: '/account1',
+        icon: 'user',
+        name: 'account1',
+        routes: [
+          {
+            path: '/account1/center',
+            name: 'center',
+            component: './Account1/Center/Center',
+          },
+          {
+            path: '/account1/list',
+            name: 'list',
+            component: './Account1/List/TableList',
+          },
+        ],
+      },
+
       {
         name: 'account',
         icon: 'user',
