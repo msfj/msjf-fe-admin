@@ -124,3 +124,12 @@ export async function queryNotices() {
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
+
+// process
+export async function queryModalList() {
+  return request(`/api/process/modal`);
+}
+
+export async function queryProcess(params) {
+  return request(`/api/process/list?${stringify(params)}`);
+}
