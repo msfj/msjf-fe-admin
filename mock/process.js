@@ -5,19 +5,27 @@ import mockjs from 'mockjs';
 let tableListDataSource = [];
 for (let i = 0; i < 46; i += 1) {
   tableListDataSource.push({
-    key: i,
+    key: i + 1,
     processInstanceId: Math.floor(Math.random() * 1000),
     flowType: '0',
     flowName: '企业设立',
     actName: `金服人员审核 ${i}`,
     title: '主题',
-    desc: '这是一段描述',
+    desc: `请对企业设立${i}审核`,
     startTime: '20181223190000',
     endTime: '20181226190000',
     assigneeName: 'admin',
     approve: Math.floor(Math.random() * 10) % 3,
     auditinfo: '意见',
     phone: '17190308842',
+    files: {
+      url: '/',
+      fileName: '企业设立流程附件',
+    },
+    bexno: Math.floor(Math.random() * 1000),
+    processname: '企业设立',
+    funcname: `金服人员审核 ${i}`,
+    checkflagname: '是',
   });
 }
 

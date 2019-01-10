@@ -53,6 +53,28 @@ export default [
             component: './Process/ProcessDesign',
           },
           {
+            path: '/process/process-init-list',
+            name: 'processinitlist',
+            component: './Process/ProcessInitList',
+          },
+          {
+            path: '/process/process-init',
+            name: 'processinit',
+            component: './Process/ProcessInit',
+            hideInMenu: true,
+          },
+          {
+            path: '/process/process-task',
+            name: 'processtask',
+            component: './Process/ProcessTask',
+          },
+          {
+            path: '/process/process-audit',
+            name: 'processaudit',
+            component: './Process/ProcessAudit',
+            hideInMenu: true,
+          },
+          {
             path: '/process/process-list',
             name: 'processlist',
             component: './Process/ProcessList',
@@ -61,6 +83,12 @@ export default [
             path: '/process/process-query',
             name: 'processquery',
             component: './Process/ProcessQuery',
+          },
+          {
+            path: '/process/process-detail',
+            name: 'processdetail',
+            component: './Process/ProcessDetail',
+            hideInMenu: true,
           },
         ],
       },

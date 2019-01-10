@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import moment from 'moment';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker, Badge } from 'antd';
 import StandardTable from '@/components/StandardTable';
@@ -90,9 +91,14 @@ class TableList extends PureComponent {
       dataIndex: 'processInstanceId',
       render: val => (
         <Fragment>
-          <a href="" data-id={val}>
+          <Link
+            to={{
+              pathname: 'process-detail',
+              query: val,
+            }}
+          >
             详情
-          </a>
+          </Link>
         </Fragment>
       ),
     },
