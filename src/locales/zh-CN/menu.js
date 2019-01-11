@@ -36,8 +36,8 @@ export default {
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
   'menu.account1': '用户管理',
-  'menu.account1.list': '业务用户设置',
-  'menu.account1.center': '用户设置',
+  'menu.account1.bUserSet': '业务用户设置',
+  'menu.account1.userSet': '用户设置',
   'menu.process': '流程管理',
   'menu.process.processdesign': '流程设计',
   'menu.process.processinitlist': '流程发起',
@@ -46,5 +46,6 @@ export default {
   'menu.process.processaudit': '流程审核',
   'menu.process.processlist': '流程列表',
   'menu.process.processquery': '流程查询',
+  'menu.account1.Permission': '权限设置',
   'menu.process.processdetail': '流程详情',
 };

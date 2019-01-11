@@ -264,14 +264,19 @@ export default [
         name: 'account1',
         routes: [
           {
-            path: '/account1/center',
-            name: 'center',
-            component: './Account1/Center/Center',
+            path: '/account1/userSet',
+            name: 'userSet',
+            component: './Account1/userSet/userSet',
           },
           {
-            path: '/account1/list',
-            name: 'list',
-            component: './Account1/List/TableList',
+            path: '/account1/bUserSet',
+            name: 'bUserSet',
+            component: './Account1/bUserSet/bUserSet',
+          },
+          {
+            path: '/account1/permission',
+            name: 'Permission',
+            component: './Account1/Permission/permission',
           },
         ],
       },
