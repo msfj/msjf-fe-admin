@@ -5,13 +5,12 @@ import {
   Col,
   Card,
   Form,
-  Input,
   Select,
   Icon,
   Button,
   Dropdown,
   Menu,
-  InputNumber,
+  Input,
   DatePicker,
   Modal,
   message,
@@ -22,8 +21,9 @@ import {
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
+import { FormattedMessage } from 'umi/locale';
 
-import styles from './TableList.less';
+import styles from './bUserSet.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -103,12 +103,12 @@ const CreateForm = Form.create()(props => {
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登陆账号">
           {form.getFieldDecorator('account', {
             rules: [{ required: true, message: '请输入账号' }],
-          })(<Input placeholder="请输入" />)}
+          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名称">
           {form.getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名' }],
-          })(<Input placeholder="请输入" />)}
+          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="证件类型">
           {form.getFieldDecorator('certificateType', {
@@ -123,17 +123,17 @@ const CreateForm = Form.create()(props => {
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="证件号码">
           {form.getFieldDecorator('number', {
             rules: [{ required: true, message: '请输入证件号码' }],
-          })(<Input placeholder="请输入" />)}
+          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手机号码">
           {form.getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入手机号' }],
-          })(<Input placeholder="请输入" />)}
+          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="邮箱">
           {form.getFieldDecorator('email', {
             rules: [{ required: true, message: '请输入邮箱' }],
-          })(<Input placeholder="请输入" />)}
+          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
         </Form.Item>
       </Form>
     </Modal>
@@ -365,7 +365,7 @@ class TableList extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
-    expandForm: false,
+    // expandForm: false,
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
@@ -647,17 +647,34 @@ class TableList extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="规则名称">
-              {getFieldDecorator('name')(<Input placeholder="请输入" />)}
+          <Col md={4} sm={12}>
+            <FormItem label="用户名称">
+              {getFieldDecorator('userName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
+          <Col md={4} sm={12}>
+            <FormItem label="证件号码">
+              {getFieldDecorator('number')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={4} sm={12}>
+            <FormItem label="用户类型">
+              {getFieldDecorator('userType')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  <Option value="自然人">自然人</Option>
+                  <Option value="企业">企业</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={4} sm={12}>
+            <FormItem label="用户状态">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
+                  <Option value="正常">正常</Option>
+                  <Option value="异常">异常</Option>
+                  <Option value="冻结">冻结</Option>
+                  <Option value="11">11</Option>
                 </Select>
               )}
             </FormItem>
@@ -670,9 +687,6 @@ class TableList extends PureComponent {
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
-              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down" />
-              </a>
             </span>
           </Col>
         </Row>
@@ -680,7 +694,7 @@ class TableList extends PureComponent {
     );
   }
 
-  renderAdvancedForm() {
+  /* renderAdvancedForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
@@ -727,11 +741,11 @@ class TableList extends PureComponent {
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="使用状态">
+            <FormItem label="用户类型">
               {getFieldDecorator('status4')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
+                  <Option value="0">自然人</Option>
+                  <Option value="1">企业</Option>
                 </Select>
               )}
             </FormItem>
@@ -752,16 +766,18 @@ class TableList extends PureComponent {
         </div>
       </Form>
     );
-  }
+  } */
 
   renderForm() {
-    const { expandForm } = this.state;
-    return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+    // const { expandForm } = this.state;
+    // return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+    return this.renderSimpleForm();
   }
 
   render() {
     const {
-      rule: { data },
+      // rule: { data },
+      data,
       loading,
     } = this.props;
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues, show } = this.state;
@@ -784,7 +800,7 @@ class TableList extends PureComponent {
       handleUpdate: this.handleUpdate,
     };
     return (
-      <PageHeaderWrapper title="业务用户设置">
+      <PageHeaderWrapper title={<FormattedMessage id="app.account1.bUserSet.title" />}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
