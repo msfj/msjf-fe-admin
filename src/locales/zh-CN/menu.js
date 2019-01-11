@@ -40,7 +40,12 @@ export default {
   'menu.account1.userSet': '用户设置',
   'menu.process': '流程管理',
   'menu.process.processdesign': '流程设计',
+  'menu.process.processinitlist': '流程发起',
+  'menu.process.processinit': '流程发起1',
+  'menu.process.processtask': '代办任务查询',
+  'menu.process.processaudit': '流程审核',
   'menu.process.processlist': '流程列表',
   'menu.process.processquery': '流程查询',
   'menu.account1.Permission': '权限设置',
+  'menu.process.processdetail': '流程详情',
 };

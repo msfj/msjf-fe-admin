@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import { Card, Row, Col, List, Icon, Button } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './ProcessDesign.less';
 
-const data = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
 const { Meta } = Card;
+
+@connect(({ process, loading }) => ({
+  process,
+  loading: loading.models.process,
+}))
 class ProcessDesign extends Component {
   state = {
-    loading: true,
     activeKey: 0,
   };
 
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loading: false });
-    }, 1000);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'process/fetchModalList',
+    });
   }
 
   haddleProcessChange = key => {
@@ -31,7 +30,11 @@ class ProcessDesign extends Component {
   };
 
   render() {
-    const { loading, activeKey } = this.state;
+    const { activeKey } = this.state;
+    const {
+      process: { modalList },
+      loading,
+    } = this.props;
     return (
       <PageHeaderWrapper>
         <GridContent>
@@ -45,14 +48,15 @@ class ProcessDesign extends Component {
               >
                 <List
                   bordered
-                  dataSource={data}
+                  dataSource={modalList}
                   renderItem={item => (
                     <List.Item
+                      key={item.id}
                       onClick={() => this.haddleProcessChange(item.id)}
                       className={activeKey === item.id ? 'active' : ''}
                     >
                       <Icon type="setting" theme="twoTone" spin className={styles.icon} />
-                      <span>模型1</span>
+                      <span>{item.name}</span>
                     </List.Item>
                   )}
                 />

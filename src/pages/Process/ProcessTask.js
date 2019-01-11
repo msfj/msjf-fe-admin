@@ -2,11 +2,11 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
-import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker, Badge } from 'antd';
+import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-import styles from './ProcessList.less';
+import styles from './ProcessTask.less';
 
 const { RangePicker } = DatePicker;
 
@@ -16,8 +16,6 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['error', 'success', 'default'];
-const status = ['不同意', '同意', '已退回'];
 
 /* eslint react/no-multi-comp:0 */
 @connect(({ process, loading }) => ({
@@ -46,45 +44,14 @@ class TableList extends PureComponent {
       dataIndex: 'desc',
     },
     {
-      title: '发起时间',
-      dataIndex: 'startTime',
-      sorter: true,
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      sorter: true,
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-    },
-    {
-      title: '审核人',
+      title: '发起人',
       dataIndex: 'assigneeName',
     },
     {
-      title: '审核结果',
-      dataIndex: 'approve',
-      filters: [
-        {
-          text: status[0],
-          value: 0,
-        },
-        {
-          text: status[1],
-          value: 1,
-        },
-        {
-          text: status[2],
-          value: 2,
-        },
-      ],
-      render(val) {
-        return <Badge status={statusMap[val]} text={status[val]} />;
-      },
-    },
-    {
-      title: '审核意见',
-      dataIndex: 'auditinfo',
+      title: '最近审核时间',
+      dataIndex: 'startTime',
+      sorter: true,
+      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
       title: '操作',
@@ -93,11 +60,11 @@ class TableList extends PureComponent {
         <Fragment>
           <Link
             to={{
-              pathname: 'process-detail',
+              pathname: 'process-audit',
               query: val,
             }}
           >
-            详情
+            审核
           </Link>
         </Fragment>
       ),
@@ -218,18 +185,13 @@ class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="任务类型">
-              {getFieldDecorator('flowType')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">企业设立</Option>
-                  <Option value="1">企业变更申请</Option>
-                </Select>
-              )}
+            <FormItem label="最近审核日期">
+              {getFieldDecorator('startTime')(<RangePicker />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="任务名称">
-              {getFieldDecorator('actName')(<Input placeholder="请输入" />)}
+            <FormItem label="发起人">
+              {getFieldDecorator('assigneeName')(<Input style={{ width: '100%' }} />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -258,7 +220,22 @@ class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="任务类型">
+            <FormItem label="最近审核日期">
+              {getFieldDecorator('startTime')(<RangePicker />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="发起人">
+              {getFieldDecorator('assigneeName')(<Input style={{ width: '100%' }} />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="发起人手机号">
+              {getFieldDecorator('phone')(<Input style={{ width: '100%' }} />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="流程类型">
               {getFieldDecorator('flowType')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
                   <Option value="0">企业设立</Option>
@@ -276,14 +253,6 @@ class TableList extends PureComponent {
             <FormItem label="任务描述">
               {getFieldDecorator('desc')(<Input placeholder="请输入" />)}
             </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="发起人手机号">
-              {getFieldDecorator('phone')(<Input style={{ width: '100%' }} />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="发起日期">{getFieldDecorator('startTime')(<RangePicker />)}</FormItem>
           </Col>
         </Row>
         <div style={{ overflow: 'hidden' }}>
