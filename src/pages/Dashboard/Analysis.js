@@ -1,29 +1,48 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component, Suspense, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Icon, Menu, Dropdown } from 'antd';
-
+import { Link } from 'dva/router';
+import { Table } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { getTimeDistance } from '@/utils/utils';
-
+import moment from 'moment';
 import styles from './Analysis.less';
 import PageLoading from '@/components/PageLoading';
 
 const IntroduceRow = React.lazy(() => import('./IntroduceRow'));
-const SalesCard = React.lazy(() => import('./SalesCard'));
-const TopSearch = React.lazy(() => import('./TopSearch'));
-const ProportionSales = React.lazy(() => import('./ProportionSales'));
-const OfflineData = React.lazy(() => import('./OfflineData'));
 
 @connect(({ chart, loading }) => ({
   chart,
   loading: loading.effects['chart/fetch'],
 }))
 class Analysis extends Component {
-  state = {
-    salesType: 'all',
-    currentTabKey: '',
-    rangePickerValue: getTimeDistance('year'),
-  };
+  columns = [
+    {
+      title: '任务描述',
+      dataIndex: 'desc',
+    },
+    {
+      title: '最近审核时间',
+      dataIndex: 'startTime',
+      sorter: true,
+      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+    },
+    {
+      title: '操作',
+      dataIndex: 'processInstanceId',
+      render: val => (
+        <Fragment>
+          <Link
+            to={{
+              pathname: '/process/process-audit',
+              query: val,
+            }}
+          >
+            审核
+          </Link>
+        </Fragment>
+      ),
+    },
+  ];
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -42,18 +61,6 @@ class Analysis extends Component {
     cancelAnimationFrame(this.reqRef);
     clearTimeout(this.timeoutId);
   }
-
-  handleChangeSalesType = e => {
-    this.setState({
-      salesType: e.target.value,
-    });
-  };
-
-  handleTabChange = key => {
-    this.setState({
-      currentTabKey: key,
-    });
-  };
 
   handleRangePickerChange = rangePickerValue => {
     const { dispatch } = this.props;
@@ -93,48 +100,27 @@ class Analysis extends Component {
   };
 
   render() {
-    const { rangePickerValue, salesType, currentTabKey } = this.state;
     const { chart, loading } = this.props;
-    const {
-      visitData,
-      visitData2,
-      salesData,
-      searchData,
-      offlineData,
-      offlineChartData,
-      salesTypeData,
-      salesTypeDataOnline,
-      salesTypeDataOffline,
-    } = chart;
-    let salesPieData;
-    if (salesType === 'all') {
-      salesPieData = salesTypeData;
-    } else {
-      salesPieData = salesType === 'online' ? salesTypeDataOnline : salesTypeDataOffline;
-    }
-    const menu = (
-      <Menu>
-        <Menu.Item>操作一</Menu.Item>
-        <Menu.Item>操作二</Menu.Item>
-      </Menu>
-    );
-
-    const dropdownGroup = (
-      <span className={styles.iconGroup}>
-        <Dropdown overlay={menu} placement="bottomRight">
-          <Icon type="ellipsis" />
-        </Dropdown>
-      </span>
-    );
-
-    const activeKey = currentTabKey || (offlineData[0] && offlineData[0].name);
+    const { visitData } = chart;
 
     return (
       <GridContent>
         <Suspense fallback={<PageLoading />}>
           <IntroduceRow loading={loading} visitData={visitData} />
         </Suspense>
-        <Suspense fallback={null}>
+        <h4>待办任务统计</h4>
+        <Table
+          dataSource={[
+            {
+              desc: '请对企业设立1审核',
+              startTime: '2019-01-01 10:00:00',
+              processInstanceId: Math.floor(Math.random() * 1000),
+            },
+          ]}
+          columns={this.columns}
+          style={{ background: '#fff' }}
+        />
+        {/* <Suspense fallback={null}>
           <SalesCard
             rangePickerValue={rangePickerValue}
             salesData={salesData}
@@ -176,7 +162,7 @@ class Analysis extends Component {
             offlineChartData={offlineChartData}
             handleTabChange={this.handleTabChange}
           />
-        </Suspense>
+        </Suspense> */}
       </GridContent>
     );
   }

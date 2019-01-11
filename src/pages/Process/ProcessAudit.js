@@ -132,7 +132,7 @@ class ProcessAudit extends PureComponent {
               />
             </TabPane>
             <TabPane tab="审核信息" key="2">
-              <Table data={data} columns={this.columns} style={{ height: '300px' }} />
+              <Table dataSource={data.list} columns={this.columns} style={{ height: '300px' }} />
             </TabPane>
             <TabPane tab="流程信息" key="3">
               <iframe
