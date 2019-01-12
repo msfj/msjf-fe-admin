@@ -28,7 +28,9 @@ const FooterView = () => (
       ]}
       copyright={
         <Fragment>
-          Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+          宁波市人民政府金融工作办公室 宁波证监局 监制
+          <br />
+          梅山（宁波）金服科技有限公司版权所有
         </Fragment>
       }
     />
