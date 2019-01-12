@@ -361,7 +361,7 @@ class UpdateForm extends PureComponent {
   loading: loading.models.rule,
 }))
 @Form.create()
-class TableList extends PureComponent {
+class bUserSet extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -842,4 +842,4 @@ class TableList extends PureComponent {
   }
 }
 
-export default TableList;
+export default bUserSet;

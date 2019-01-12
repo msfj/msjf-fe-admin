@@ -16,6 +16,7 @@ import {
   Menu,
   Dropdown,
   message,
+  Tree,
 } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { FormattedMessage } from 'umi/locale';
@@ -24,6 +25,64 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 const { Search } = Input;
 const FormItem = Form.Item;
+const { TreeNode } = Tree;
+
+const x = 3;
+const y = 2;
+const z = 1;
+const gData = [];
+
+const generateData = (_level, _preKey, _tns) => {
+  const preKey = _preKey || '0';
+  const tns = _tns || gData;
+
+  const children = [];
+  for (let i = 0; i < x; i += 1) {
+    const key = `${preKey}-${i}`;
+    tns.push({ title: key, key });
+    if (i < y) {
+      children.push(key);
+    }
+  }
+  if (_level < 0) {
+    return tns;
+  }
+  const level = _level - 1;
+  children.forEach((key, index) => {
+    tns[index].children = [];
+    return generateData(level, key, tns[index].children);
+  });
+  return 1;
+};
+generateData(z);
+
+const dataList = [];
+const generateList = data => {
+  for (let i = 0; i < data.length; i += 1) {
+    const node = data[i];
+    const { key } = node;
+    dataList.push({ key, title: key });
+    if (node.children) {
+      generateList(node.children, node.key);
+    }
+  }
+};
+generateList(gData);
+
+const getParentKey = (key, tree) => {
+  let parentKey;
+  for (let i = 0; i < tree.length; i += 1) {
+    const node = tree[i];
+    if (node.children) {
+      if (node.children.some(item => item.key === key)) {
+        parentKey = node.key;
+      } else if (getParentKey(key, node.children)) {
+        parentKey = getParentKey(key, node.children);
+      }
+    }
+  }
+  return parentKey;
+};
 
 const columns = [
   {
@@ -58,7 +117,7 @@ const columns = [
     dataIndex: 'email',
   },
 ];
-const data = [];
+const Data = [];
 
 const handleMenuClick = e => {
   message.info('Click on menu item.');
@@ -66,9 +125,8 @@ const handleMenuClick = e => {
 };
 const menu = (
   <Menu onClick={handleMenuClick} selectedKeys={[]}>
-    <Menu.Item key="1">1</Menu.Item>
-    <Menu.Item key="2">2</Menu.Item>
-    <Menu.Item key="3">3</Menu.Item>
+    <Menu.Item key="1">删除</Menu.Item>
+    <Menu.Item key="2">修改</Menu.Item>
   </Menu>
 );
 
@@ -168,11 +226,14 @@ const departInfo = Form.create()(props => {
   projectLoading: loading.effects['project/fetchNotice'],
 })) */
 @Form.create()
-class Center extends PureComponent {
+class userSet extends PureComponent {
   state = {
     visible: false,
     loading: false,
     sel: '组织架构',
+    expandedKeys: [],
+    searchValue: '',
+    autoExpandParent: true,
   };
 
   componentDidMount() {
@@ -258,6 +319,32 @@ class Center extends PureComponent {
     this.formRef = formRef;
   };
 
+  onExpand = expandedKeys => {
+    this.setState({
+      expandedKeys,
+      autoExpandParent: false,
+    });
+  };
+
+  onChange = e => {
+    const {
+      target: { value },
+    } = e;
+    const expandedKeys = dataList
+      .map(item => {
+        if (item.title.indexOf(value) > -1) {
+          return getParentKey(item.key, gData);
+        }
+        return null;
+      })
+      .filter((item, i, self) => item && self.indexOf(item) === i);
+    this.setState({
+      expandedKeys,
+      searchValue: value,
+      autoExpandParent: true,
+    });
+  };
+
   searchform() {
     /* const {
       form: { getFieldDecorator },
@@ -288,6 +375,46 @@ class Center extends PureComponent {
           </Col>
         </Row>
       </Form>
+    );
+  }
+
+  createTree() {
+    const { searchValue, expandedKeys, autoExpandParent } = this.state;
+    const loop = data =>
+      data.map(item => {
+        const index = item.title.indexOf(searchValue);
+        const beforeStr = item.title.substr(0, index);
+        const afterStr = item.title.substr(index + searchValue.length);
+        const title =
+          index > -1 ? (
+            <span>
+              {beforeStr}
+              <span style={{ color: '#f50' }}>{searchValue}</span>
+              {afterStr}
+            </span>
+          ) : (
+            <span>{item.title}</span>
+          );
+        if (item.children) {
+          return (
+            <TreeNode key={item.key} title={title}>
+              {loop(item.children)}
+            </TreeNode>
+          );
+        }
+        return <TreeNode key={item.key} title={title} />;
+      });
+    return (
+      <div>
+        <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={this.onChange} />
+        <Tree
+          onExpand={this.onExpand}
+          expandedKeys={expandedKeys}
+          autoExpandParent={autoExpandParent}
+        >
+          {loop(gData)}
+        </Tree>
+      </div>
     );
   }
 
@@ -349,23 +476,14 @@ class Center extends PureComponent {
       <PageHeaderWrapper title={<FormattedMessage id="app.account1.userSet.title" />}>
         <GridContent className={styles.userCenter}>
           <Row gutter={24}>
-            <Col lg={7} md={24}>
+            <Col lg={7} md={24} className={styles.cardhead}>
               <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
-                <Search
-                  placeholder="搜索部门"
-                  onSearch={value => console.log(value)}
-                  style={{ width: '100%' }}
-                />
-                <br />
-                <br />
-                <Radio.Group value={sel} onChange={this.handleChange} size="large">
-                  <Radio.Button value="组织架构">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组织架构&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </Radio.Button>
-                  <Radio.Button value="角色管理">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;角色管理&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </Radio.Button>
-                </Radio.Group>
+                <div className={styles.radio}>
+                  <Radio.Group value={sel} onChange={this.handleChange} size="large">
+                    <Radio.Button value="组织架构">组织架构</Radio.Button>
+                    <Radio.Button value="角色管理">角色管理</Radio.Button>
+                  </Radio.Group>
+                </div>
                 <br />
                 <Card
                   title="部门"
@@ -390,6 +508,7 @@ class Center extends PureComponent {
                   }
                   style={{ marginBottom: 24 }}
                 />
+                <div>{this.createTree()}</div>
               </Card>
             </Col>
             <Col lg={17} md={24}>
@@ -406,7 +525,7 @@ class Center extends PureComponent {
                     onCreate={this.handleCreate}
                   />
                 </div>
-                <Table columns={columns} dataSource={data} />
+                <Table columns={columns} dataSource={Data} />
               </Card>
             </Col>
           </Row>
@@ -415,5 +534,4 @@ class Center extends PureComponent {
     );
   }
 }
-
-export default Center;
+export default userSet;

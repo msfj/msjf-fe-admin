@@ -52,7 +52,7 @@ const options = [
     ],
   },
 ];
-class ProcessDesign extends Component {
+class permission extends Component {
   state = {
     loading: true,
     // activeKey: 0,
@@ -117,4 +117,4 @@ class ProcessDesign extends Component {
   }
 }
 
-export default ProcessDesign;
+export default permission;
