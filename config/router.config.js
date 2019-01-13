@@ -42,10 +42,32 @@ export default [
           },
         ],
       },
+      //account1
+      {
+        path: '/account1',
+        icon: 'user',
+        name: 'account1',
+        routes: [
+          {
+            path: '/account1/user-set',
+            name: 'userset',
+            component: './Account1/UserSet',
+          },
+          {
+            path: '/account1/bussiness-user-set',
+            name: 'bussinessuserset',
+            component: './Account1/BussinessUserSet',
+          },
+          {
+            path: '/account1/permission-set',
+            name: 'permissionset',
+            component: './Account1/PermissionSet',
+          },
+        ],
+      },
       // process
       {
         path: '/process',
-        icon: 'process',
         name: 'process',
         icon: 'setting',
         routes: [
@@ -256,31 +278,6 @@ export default [
           },
         ],
       },
-
-      //account1
-      {
-        path: '/account1',
-        icon: 'user',
-        name: 'account1',
-        routes: [
-          {
-            path: '/account1/userSet',
-            name: 'userSet',
-            component: './Account1/userSet/userSet',
-          },
-          {
-            path: '/account1/bUserSet',
-            name: 'bUserSet',
-            component: './Account1/bUserSet/bUserSet',
-          },
-          {
-            path: '/account1/permission',
-            name: 'Permission',
-            component: './Account1/Permission/permission',
-          },
-        ],
-      },
-
       {
         name: 'account',
         icon: 'user',

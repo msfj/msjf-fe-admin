@@ -3,7 +3,7 @@ import { Card, Row, Button, Radio, List, Col, Input, Icon, Checkbox, Tree, Tabs 
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { FormattedMessage } from 'umi/locale';
-import styles from './permission.less';
+import styles from './PermissionSet.less';
 
 // const { Meta } = Card;
 const { Search } = Input;
@@ -80,7 +80,7 @@ const dataJob = [
   'Man charged over missing wedding girl.',
   'Los Angeles battles huge wildfires.',
 ];
-class permission extends Component {
+class Permission extends Component {
   state = {
     loading: false,
     // activeKey: 0,
@@ -175,7 +175,7 @@ class permission extends Component {
   render() {
     const { loading } = this.state;
     return (
-      <PageHeaderWrapper title={<FormattedMessage id="app.account1.permssion.title" />}>
+      <PageHeaderWrapper title={<FormattedMessage id="app.account1.permssionset.title" />}>
         <GridContent>
           <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
             <Tabs defaultActiveKey="1">
@@ -281,4 +281,4 @@ class permission extends Component {
   }
 }
 
-export default permission;
+export default Permission;

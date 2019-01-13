@@ -1,12 +1,14 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment, Suspense } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-
+import PageLoading from '@/components/PageLoading';
 import styles from './ProcessTask.less';
+
+const ProcessTaskClassify = React.lazy(() => import('./ProcessTaskClassify'));
 
 const { RangePicker } = DatePicker;
 
@@ -17,6 +19,20 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 
+const rows = {
+  gutter: {
+    md: 8,
+    lg: 24,
+    xl: 48,
+  },
+};
+
+const cols = {
+  xxl: 6,
+  xl: 8,
+  md: 12,
+  sm: 24,
+};
 /* eslint react/no-multi-comp:0 */
 @connect(({ process, loading }) => ({
   process,
@@ -28,6 +44,7 @@ class TableList extends PureComponent {
     expandForm: false,
     selectedRows: [],
     formValues: {},
+    showList: false,
   };
 
   columns = [
@@ -147,9 +164,9 @@ class TableList extends PureComponent {
     }
   };
 
-  handleSelectRows = rows => {
+  handleSelectRows = row_ => {
     this.setState({
-      selectedRows: rows,
+      selectedRows: row_,
     });
   };
 
@@ -177,24 +194,26 @@ class TableList extends PureComponent {
     });
   };
 
+  haddleClick = () => {
+    this.setState({
+      showList: true,
+    });
+  };
+
   renderSimpleForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="最近审核日期">
-              {getFieldDecorator('startTime')(<RangePicker />)}
-            </FormItem>
+        <Row {...rows}>
+          <Col {...cols}>
+            <FormItem label="发起人">{getFieldDecorator('assigneeName')(<Input />)}</FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="发起人">
-              {getFieldDecorator('assigneeName')(<Input style={{ width: '100%' }} />)}
-            </FormItem>
+          <Col {...cols}>
+            <FormItem label="发起人手机号">{getFieldDecorator('phone')(<Input />)}</FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
@@ -218,40 +237,36 @@ class TableList extends PureComponent {
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="最近审核日期">
-              {getFieldDecorator('startTime')(<RangePicker />)}
-            </FormItem>
+        <Row {...rows}>
+          <Col {...cols}>
+            <FormItem label="发起人">{getFieldDecorator('assigneeName')(<Input />)}</FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="发起人">
-              {getFieldDecorator('assigneeName')(<Input style={{ width: '100%' }} />)}
-            </FormItem>
+          <Col {...cols}>
+            <FormItem label="发起人手机号">{getFieldDecorator('phone')(<Input />)}</FormItem>
           </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="发起人手机号">
-              {getFieldDecorator('phone')(<Input style={{ width: '100%' }} />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="流程类型">
               {getFieldDecorator('flowType')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
+                <Select placeholder="请选择">
                   <Option value="0">企业设立</Option>
                   <Option value="1">企业变更申请</Option>
                 </Select>
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="任务名称">
               {getFieldDecorator('actName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="任务描述">
               {getFieldDecorator('desc')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="最近审核日期">
+              {getFieldDecorator('startTime')(<RangePicker />)}
             </FormItem>
           </Col>
         </Row>
@@ -282,22 +297,28 @@ class TableList extends PureComponent {
       process: { data },
       loading,
     } = this.props;
-    const { selectedRows } = this.state;
+    const { selectedRows, showList } = this.state;
     return (
       <PageHeaderWrapper>
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <StandardTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              columns={this.columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
-          </div>
-        </Card>
+        {!showList ? (
+          <Suspense fallback={<PageLoading />}>
+            <ProcessTaskClassify haddleClick={this.haddleClick} />
+          </Suspense>
+        ) : (
+          <Card bordered={false}>
+            <div className={styles.tableList}>
+              <div className={styles.tableListForm}>{this.renderForm()}</div>
+              <StandardTable
+                selectedRows={selectedRows}
+                loading={loading}
+                data={data}
+                columns={this.columns}
+                onSelectRow={this.handleSelectRows}
+                onChange={this.handleStandardTableChange}
+              />
+            </div>
+          </Card>
+        )}
       </PageHeaderWrapper>
     );
   }
