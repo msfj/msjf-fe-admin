@@ -327,6 +327,7 @@ class userSet extends PureComponent {
   };
 
   onChange = e => {
+    console.log(e);
     const {
       target: { value },
     } = e;
@@ -508,7 +509,9 @@ class userSet extends PureComponent {
                   }
                   style={{ marginBottom: 24 }}
                 />
-                <div>{this.createTree()}</div>
+                <div style={{ display: sel === '组织架构' ? 'block' : 'none' }}>
+                  {this.createTree()}
+                </div>
               </Card>
             </Col>
             <Col lg={17} md={24}>
