@@ -19,6 +19,21 @@ const getValue = obj =>
 const statusMap = ['error', 'success', 'default'];
 const status = ['不同意', '同意', '已退回'];
 
+const rows = {
+  gutter: {
+    md: 8,
+    lg: 24,
+    xl: 48,
+  },
+};
+
+const cols = {
+  xxl: 6,
+  xl: 8,
+  md: 12,
+  sm: 24,
+};
+
 /* eslint react/no-multi-comp:0 */
 @connect(({ process, loading }) => ({
   process,
@@ -180,9 +195,9 @@ class TableList extends PureComponent {
     }
   };
 
-  handleSelectRows = rows => {
+  handleSelectRows = rows_ => {
     this.setState({
-      selectedRows: rows,
+      selectedRows: rows_,
     });
   };
 
@@ -216,8 +231,8 @@ class TableList extends PureComponent {
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+        <Row {...rows}>
+          <Col {...cols}>
             <FormItem label="任务类型">
               {getFieldDecorator('flowType')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -227,12 +242,12 @@ class TableList extends PureComponent {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="任务名称">
               {getFieldDecorator('actName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
@@ -256,8 +271,8 @@ class TableList extends PureComponent {
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+        <Row {...rows}>
+          <Col {...cols}>
             <FormItem label="任务类型">
               {getFieldDecorator('flowType')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -267,22 +282,22 @@ class TableList extends PureComponent {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="任务名称">
               {getFieldDecorator('actName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="任务描述">
               {getFieldDecorator('desc')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="发起人手机号">
               {getFieldDecorator('phone')(<Input style={{ width: '100%' }} />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="发起日期">{getFieldDecorator('startTime')(<RangePicker />)}</FormItem>
           </Col>
         </Row>

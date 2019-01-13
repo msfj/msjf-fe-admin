@@ -52,7 +52,7 @@ const options = [
     ],
   },
 ];
-class permission extends Component {
+class Permission extends Component {
   state = {
     loading: true,
     // activeKey: 0,
@@ -82,7 +82,7 @@ class permission extends Component {
   render() {
     const { loading, sel, onChange } = this.state;
     return (
-      <PageHeaderWrapper title={<FormattedMessage id="app.account1.permssion.title" />}>
+      <PageHeaderWrapper title={<FormattedMessage id="app.account1.permssionset.title" />}>
         <GridContent>
           <Card
             title="权限分类"
@@ -117,4 +117,4 @@ class permission extends Component {
   }
 }
 
-export default permission;
+export default Permission;

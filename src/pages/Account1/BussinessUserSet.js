@@ -23,7 +23,7 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { FormattedMessage } from 'umi/locale';
 
-import styles from './bUserSet.less';
+import styles from './BussinessUserSet.less';
 
 const FormItem = Form.Item;
 const { Step } = Steps;
@@ -36,6 +36,20 @@ const getValue = obj =>
     .join(',');
 const statusMap = ['default', 'processing', 'success', 'error'];
 const status = ['正常', '异常', '冻结', '@@'];
+const rows = {
+  gutter: {
+    md: 8,
+    lg: 24,
+    xl: 48,
+  },
+};
+
+const cols = {
+  xxl: 6,
+  xl: 8,
+  md: 12,
+  sm: 24,
+};
 
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible, show, judge } = props;
@@ -55,22 +69,23 @@ const CreateForm = Form.create()(props => {
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
+      width={600}
     >
-      <Form layout="vertical">
-        <Form.Item label="用户类型" labelCol={{ span: 5 }} wrapperCol={{ span: 15 }}>
+      <Form>
+        <Form.Item label="用户类型" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
           {form.getFieldDecorator('userType', {
             rules: [{ required: true }],
             initialValue: '自然人',
           })(
-            <Select style={{ width: 100 }} onChange={judge}>
+            <Select onChange={judge}>
               <Option value="自然人">自然人</Option>
               <Option value="企业">企业</Option>
             </Select>
           )}
         </Form.Item>
         <Form.Item
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 13 }}
           label="企业类型"
           style={{ display: show ? 'block' : 'none' }}
         >
@@ -78,15 +93,15 @@ const CreateForm = Form.create()(props => {
             rules: [{ required: true }],
             initialValue: '-请选择-',
           })(
-            <Select style={{ width: 100 }}>
+            <Select>
               <Option value="自然人">自然人</Option>
               <Option value="企业">企业</Option>
             </Select>
           )}
         </Form.Item>
         <Form.Item
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 13 }}
           label="企业分类"
           style={{ display: show ? 'block' : 'none' }}
         >
@@ -94,46 +109,46 @@ const CreateForm = Form.create()(props => {
             rules: [{ required: true }],
             initialValue: '-请选择-',
           })(
-            <Select style={{ width: 100 }}>
+            <Select>
               <Option value="自然人">自然人</Option>
               <Option value="企业">企业</Option>
             </Select>
           )}
         </Form.Item>
-        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登陆账号">
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登陆账号">
           {form.getFieldDecorator('account', {
             rules: [{ required: true, message: '请输入账号' }],
-          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
+          })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="用户名称">
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="用户名称">
           {form.getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名' }],
-          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
+          })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="证件类型">
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件类型">
           {form.getFieldDecorator('certificateType', {
             initialValue: '身份证',
             rules: [{ required: true }],
           })(
-            <Select style={{ width: 100 }}>
+            <Select>
               <Option value="身份证">身份证</Option>
             </Select>
           )}
         </Form.Item>
-        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="证件号码">
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件号码">
           {form.getFieldDecorator('number', {
             rules: [{ required: true, message: '请输入证件号码' }],
-          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
+          })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手机号码">
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="手机号码">
           {form.getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入手机号' }],
-          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
+          })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="邮箱">
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="邮箱">
           {form.getFieldDecorator('email', {
             rules: [{ required: true, message: '请输入邮箱' }],
-          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
+          })(<Input placeholder="请输入" />)}
         </Form.Item>
       </Form>
     </Modal>
@@ -361,7 +376,7 @@ class UpdateForm extends PureComponent {
   loading: loading.models.rule,
 }))
 @Form.create()
-class bUserSet extends PureComponent {
+class BUserSet extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -553,9 +568,9 @@ class bUserSet extends PureComponent {
     }
   };
 
-  handleSelectRows = rows => {
+  handleSelectRows = rows_ => {
     this.setState({
-      selectedRows: rows,
+      selectedRows: rows_,
     });
   };
 
@@ -646,31 +661,31 @@ class bUserSet extends PureComponent {
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={4} sm={12}>
+        <Row {...rows}>
+          <Col {...cols}>
             <FormItem label="用户名称">
               {getFieldDecorator('userName')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={4} sm={12}>
+          <Col {...cols}>
             <FormItem label="证件号码">
               {getFieldDecorator('number')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={4} sm={12}>
+          <Col {...cols}>
             <FormItem label="用户类型">
               {getFieldDecorator('userType')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
+                <Select placeholder="请选择">
                   <Option value="自然人">自然人</Option>
                   <Option value="企业">企业</Option>
                 </Select>
               )}
             </FormItem>
           </Col>
-          <Col md={4} sm={12}>
+          <Col {...cols}>
             <FormItem label="用户状态">
               {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
+                <Select placeholder="请选择">
                   <Option value="正常">正常</Option>
                   <Option value="异常">异常</Option>
                   <Option value="冻结">冻结</Option>
@@ -679,7 +694,9 @@ class bUserSet extends PureComponent {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+        </Row>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ float: 'right' }}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
@@ -688,8 +705,8 @@ class bUserSet extends PureComponent {
                 重置
               </Button>
             </span>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Form>
     );
   }
@@ -701,12 +718,12 @@ class bUserSet extends PureComponent {
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="规则名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="使用状态">
               {getFieldDecorator('status')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -716,21 +733,21 @@ class bUserSet extends PureComponent {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="调用次数">
               {getFieldDecorator('number')(<InputNumber style={{ width: '100%' }} />)}
             </FormItem>
           </Col>
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="更新日期">
               {getFieldDecorator('date')(
                 <DatePicker style={{ width: '100%' }} placeholder="请输入更新日期" />
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="使用状态">
               {getFieldDecorator('status3')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -740,7 +757,7 @@ class bUserSet extends PureComponent {
               )}
             </FormItem>
           </Col>
-          <Col md={8} sm={24}>
+          <Col {...cols}>
             <FormItem label="用户类型">
               {getFieldDecorator('status4')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
@@ -800,7 +817,7 @@ class bUserSet extends PureComponent {
       handleUpdate: this.handleUpdate,
     };
     return (
-      <PageHeaderWrapper title={<FormattedMessage id="app.account1.bUserSet.title" />}>
+      <PageHeaderWrapper title={<FormattedMessage id="app.account1.bussinessuserset.title" />}>
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -842,4 +859,4 @@ class bUserSet extends PureComponent {
   }
 }
 
-export default bUserSet;
+export default BUserSet;
