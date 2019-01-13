@@ -82,7 +82,7 @@ const dataJob = [
 ];
 class permission extends Component {
   state = {
-    loading: true,
+    loading: false,
     // activeKey: 0,
     expandedKeys: [],
     searchValue: '',
@@ -90,9 +90,9 @@ class permission extends Component {
   };
 
   componentDidMount() {
-    setTimeout(() => {
+    /* setTimeout(() => {
       this.setState({ loading: false });
-    }, 1000);
+    }, 1000); */
   }
 
   /* haddleProcessChange = key => {
@@ -160,7 +160,6 @@ class permission extends Component {
       });
     return (
       <div>
-        <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={this.onChange} />
         <Tree
           onExpand={this.onExpand}
           expandedKeys={expandedKeys}
@@ -185,7 +184,7 @@ class permission extends Component {
                   <Col lg={6} md={24}>
                     <Search
                       style={{ marginBottom: 8 }}
-                      placeholder="Search"
+                      placeholder="输入角色名称"
                       onSearch={this.handleSearch}
                     />
                     <RadioGroup name="roleName">
@@ -205,6 +204,11 @@ class permission extends Component {
                     </RadioGroup>
                   </Col>
                   <Col lg={6} md={24}>
+                    <Search
+                      style={{ marginBottom: 8 }}
+                      placeholder="输入菜单名称"
+                      onChange={this.onChange}
+                    />
                     <div>{this.createTree(true)}</div>
                   </Col>
                   <Col lg={6} md={24}>
@@ -212,15 +216,20 @@ class permission extends Component {
                   </Col>
                 </Row>
               </TabPane>
-              <TabPane tab="用户角色权限" key="2">
+              <TabPane tab="用户角色权限" key="2" style={{ paddingBottom: 30 }}>
                 <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
                   <Col lg={6} md={24} xs={24}>
+                    <Search
+                      style={{ marginBottom: 8 }}
+                      placeholder="输入机构名称"
+                      onChange={this.onChange}
+                    />
                     <div>{this.createTree()}</div>
                   </Col>
                   <Col lg={6} md={24} xs={24}>
                     <Search
                       style={{ marginBottom: 8 }}
-                      placeholder="Search"
+                      placeholder="输入员工名称"
                       onSearch={this.handleSearch}
                     />
                     <RadioGroup name="jobName">
@@ -242,7 +251,7 @@ class permission extends Component {
                   <Col lg={6} md={24} xs={24}>
                     <Search
                       style={{ marginBottom: 8 }}
-                      placeholder="Search"
+                      placeholder="输入角色名称"
                       onSearch={this.handleSearch}
                     />
                     <List
