@@ -3,14 +3,13 @@ import TreeTitle from '@/components/TreeTitle';
 // import { connect } from 'dva';
 // import Link from 'umi/link';
 // import router from 'umi/router';
-import { Card, Row, Col, Input, Button, Form, Modal, Table, Tree, Tabs } from 'antd';
+import { Card, Row, Col, Input, Button, Form, Modal, Table, Tree, Tabs, Icon, message } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './UserSet.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 const { Search } = Input;
 const FormItem = Form.Item;
-const { DirectoryTree } = Tree;
 const { TreeNode } = Tree;
 
 const { TabPane } = Tabs;
@@ -62,51 +61,153 @@ const columns = [
     dataIndex: 'email',
   },
 ];
+
+const treeData = [
+  {
+    title: '根节点',
+    key: '-1',
+    children: [
+      {
+        title: '0-0-0',
+        key: '0-0-0',
+        children: [
+          { title: '0-0-0-0', key: '0-0-0-0' },
+          { title: '0-0-0-1', key: '0-0-0-1' },
+          { title: '0-0-0-2', key: '0-0-0-2' },
+        ],
+      },
+      {
+        title: '0-0-1',
+        key: '0-0-1',
+        children: [
+          { title: '0-0-1-0', key: '0-0-1-0' },
+          { title: '0-0-1-1', key: '0-0-1-1' },
+          { title: '0-0-1-2', key: '0-0-1-2' },
+        ],
+      },
+      {
+        title: '0-0-2',
+        key: '0-0-2',
+      },
+    ],
+  },
+];
+
 const Data = [];
+
+const formItemLayout = {
+  labelCol: { span: 7 },
+  wrapperCol: { span: 13 },
+};
+
+const BranchModal = Form.create()(props => {
+  const {
+    visible,
+    onCancel,
+    form,
+    form: { getFieldDecorator },
+  } = props;
+
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      message.info(`操作成功；入参为${JSON.stringify(fieldsValue)}`);
+      onCancel();
+    });
+  };
+
+  return (
+    <Modal visible={visible} title="新增部门" okText="保存" onCancel={onCancel} onOk={okHandle}>
+      <Form>
+        <Form.Item label="员工姓名" {...formItemLayout}>
+          {getFieldDecorator('workerName', {
+            rules: [{ required: true, message: '请输入姓名' }],
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item label="员工账号" {...formItemLayout}>
+          {getFieldDecorator('workerAccount', {
+            rules: [{ required: true, message: '请输入账号' }],
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item label="所属部门" {...formItemLayout}>
+          {getFieldDecorator('department', {
+            rules: [{ required: true, message: '请输入部门' }],
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item label="证件号码" {...formItemLayout}>
+          {getFieldDecorator('idNum', {
+            rules: [{ required: true, message: '请输入证件号码' }],
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item label="手机号码" {...formItemLayout}>
+          {getFieldDecorator('phone', {
+            rules: [{ required: true, message: '请输入手机' }],
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item label="邮箱地址" {...formItemLayout}>
+          {getFieldDecorator('email', {
+            rules: [{ required: true, message: '请输入邮箱' }],
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+});
 
 const StaffModal = Form.create()(props => {
   const {
     visible,
     onCancel,
-    onCreate,
+    form,
     form: { getFieldDecorator },
   } = props;
+
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      message.info(`操作成功；入参为${JSON.stringify(fieldsValue)}`);
+      onCancel();
+    });
+  };
+
   return (
     <Modal
       visible={visible}
       title="新增员工"
       okText="保存"
       onCancel={onCancel}
-      onOk={onCreate}
+      onOk={okHandle}
       width={600}
     >
       <Form>
-        <Form.Item label="员工姓名" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="员工姓名" {...formItemLayout}>
           {getFieldDecorator('workerName', {
             rules: [{ required: true, message: '请输入姓名' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="员工账号" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="员工账号" {...formItemLayout}>
           {getFieldDecorator('workerAccount', {
             rules: [{ required: true, message: '请输入账号' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="所属部门" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="所属部门" {...formItemLayout}>
           {getFieldDecorator('department', {
             rules: [{ required: true, message: '请输入部门' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="证件号码" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="证件号码" {...formItemLayout}>
           {getFieldDecorator('idNum', {
             rules: [{ required: true, message: '请输入证件号码' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="手机号码" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="手机号码" {...formItemLayout}>
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入手机' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="邮箱地址" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="邮箱地址" {...formItemLayout}>
           {getFieldDecorator('email', {
             rules: [{ required: true, message: '请输入邮箱' }],
           })(<Input placeholder="请输入" />)}
@@ -120,93 +221,57 @@ const RoleModal = Form.create()(props => {
   const {
     visible,
     onCancel,
-    onCreate,
+    form,
     form: { getFieldDecorator },
   } = props;
+
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      message.info(`操作成功；入参为${JSON.stringify(fieldsValue)}`);
+      onCancel();
+    });
+  };
   return (
     <Modal
       visible={visible}
       title="新增员工"
       okText="保存"
       onCancel={onCancel}
-      onOk={onCreate}
+      onOk={okHandle}
       width={600}
     >
       <Form>
-        <Form.Item label="员工姓名" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="员工姓名" {...formItemLayout}>
           {getFieldDecorator('workerName', {
             rules: [{ required: true, message: '请输入姓名' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="员工账号" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="员工账号" {...formItemLayout}>
           {getFieldDecorator('workerAccount', {
             rules: [{ required: true, message: '请输入账号' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="所属部门" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="所属部门" {...formItemLayout}>
           {getFieldDecorator('department', {
             rules: [{ required: true, message: '请输入部门' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="证件号码" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="证件号码" {...formItemLayout}>
           {getFieldDecorator('idNum', {
             rules: [{ required: true, message: '请输入证件号码' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="手机号码" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="手机号码" {...formItemLayout}>
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入手机' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item label="邮箱地址" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+        <Form.Item label="邮箱地址" {...formItemLayout}>
           {getFieldDecorator('email', {
             rules: [{ required: true, message: '请输入邮箱' }],
           })(<Input placeholder="请输入" />)}
-        </Form.Item>
-      </Form>
-    </Modal>
-  );
-});
-
-const BranchModal = Form.create()(props => {
-  const {
-    visible,
-    onCancel,
-    onCreate,
-    form: { getFieldDecorator },
-  } = props;
-  return (
-    <Modal visible={visible} title="新增部门" okText="保存" onCancel={onCancel} onOk={onCreate}>
-      <Form layout="vertical">
-        <Form.Item label="员工姓名">
-          {getFieldDecorator('workerName', {
-            rules: [{ required: true, message: '请输入姓名' }],
-          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item label="员工账号">
-          {getFieldDecorator('workerAccount', {
-            rules: [{ required: true, message: '请输入账号' }],
-          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item label="所属部门">
-          {getFieldDecorator('department', {
-            rules: [{ required: true, message: '请输入部门' }],
-          })(<Input style={{ width: 150 }} placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item label="证件号码">
-          {getFieldDecorator('idNum', {
-            rules: [{ required: true, message: '请输入证件号码' }],
-          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item label="手机号码">
-          {getFieldDecorator('phone', {
-            rules: [{ required: true, message: '请输入手机' }],
-          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item label="邮箱地址">
-          {getFieldDecorator('email', {
-            rules: [{ required: true, message: '请输入邮箱' }],
-          })(<Input style={{ width: 200 }} placeholder="请输入" />)}
         </Form.Item>
       </Form>
     </Modal>
@@ -216,13 +281,46 @@ const BranchModal = Form.create()(props => {
 @Form.create()
 class UserSet extends PureComponent {
   state = {
-    branchModalVisible: false,
-    staffModalVisible: false,
-    roleModalVisible: false,
+    visible: {
+      branch: false,
+      staff: false,
+      role: false,
+    },
     loading: false,
   };
 
   componentDidMount() {}
+
+  renderOperateBtn = key => (
+    <span>
+      {key !== '-1' && (
+        <Icon onClick={() => this.toggleModal('branch')} className={styles.icon} type="plus" />
+      )}
+      <Icon onClick={() => this.toggleModal('branch')} className={styles.icon} type="form" />
+      <Icon className={styles.icon} type="delete" />
+    </span>
+  );
+
+  renderTreeNodes = data =>
+    data.map(item => {
+      if (item.children) {
+        return (
+          <TreeNode
+            title={<TreeTitle title={item.title} operateBtn={this.renderOperateBtn(item.key)} />}
+            key={item.key}
+            dataRef={item}
+          >
+            {this.renderTreeNodes(item.children)}
+          </TreeNode>
+        );
+      }
+      return (
+        <TreeNode
+          {...item}
+          title={<TreeTitle title={item.title} operateBtn={this.renderOperateBtn(item.key)} />}
+        />
+      );
+    });
 
   handleChange = () => {
     // this.setState({ sel: e.target.value });
@@ -238,33 +336,25 @@ class UserSet extends PureComponent {
     });
   };
 
-  showBranchModal = () => {
-    this.setState({ branchModalVisible: true });
+  handleFormReset = () => {
+    const { form } = this.props;
+    form.resetFields();
   };
 
-  delTree = () => {
-    console.log('删除');
-  };
-
-  handleCancel = () => {
-    this.setState({ branchModalVisible: false });
-  };
-
-  handleCreate = () => {
-    const { form } = this.formRef.props.form;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      console.log('Received values of form: ', values);
-      form.resetFields();
-      this.setState({ branchModalVisible: false });
+  toggleModal = key => {
+    const { visible } = this.state;
+    this.setState({
+      visible: {
+        ...visible,
+        [key]: !visible[key],
+      },
     });
-  };
-
-  saveFormRef = formRef => {
-    this.formRef = formRef;
+    console.log({
+      visible: {
+        ...visible,
+        [key]: !visible[key],
+      },
+    });
   };
 
   onChange = () => {};
@@ -291,6 +381,9 @@ class UserSet extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                重置
+              </Button>
             </span>
           </Col>
         </Row>
@@ -299,7 +392,10 @@ class UserSet extends PureComponent {
   }
 
   render() {
-    const { loading, branchModalVisible, staffModalVisible, roleModalVisible } = this.state;
+    const {
+      loading,
+      visible: { branch, staff, role },
+    } = this.state;
 
     return (
       <PageHeaderWrapper>
@@ -313,29 +409,7 @@ class UserSet extends PureComponent {
                   onChange={this.onChange}
                 />
                 <div className={styles.tree}>
-                  <DirectoryTree defaultExpandAll>
-                    <TreeNode
-                      key="0"
-                      title={
-                        <TreeTitle
-                          title="parent -1"
-                          isRoot
-                          haddleAdd={this.showBranchModal}
-                          haddleEdit={this.showBranchModal}
-                          haddleDel={this.delTree}
-                        />
-                      }
-                    >
-                      <TreeNode title={<TreeTitle title="parent 0" />} key="0-0">
-                        <TreeNode title={<TreeTitle title="leaf 0-0-0" />} key="0-0-0" isLeaf />
-                        <TreeNode title="leaf 0-1" key="0-0-1" isLeaf />
-                      </TreeNode>
-                      <TreeNode title="parent 1" key="0-1">
-                        <TreeNode title="leaf 1-0" key="0-1-0" isLeaf />
-                        <TreeNode title="leaf 1-1" key="0-1-1" isLeaf />
-                      </TreeNode>
-                    </TreeNode>
-                  </DirectoryTree>
+                  <Tree defaultExpandAll>{this.renderTreeNodes(treeData)}</Tree>
                 </div>
               </Card>
             </Col>
@@ -345,7 +419,7 @@ class UserSet extends PureComponent {
                   <TabPane tab="部门管理" key="1">
                     <div className={styles.tableListForm}>{this.searchform()}</div>
                     <div>
-                      <Button icon="plus" type="primary" onClick={this.showModal}>
+                      <Button icon="plus" type="primary" onClick={() => this.toggleModal('staff')}>
                         新增员工
                       </Button>
                     </div>
@@ -354,7 +428,7 @@ class UserSet extends PureComponent {
                   <TabPane tab="角色管理" key="2">
                     <div className={styles.tableListForm}>{this.searchform()}</div>
                     <div>
-                      <Button icon="plus" type="primary" onClick={this.showModal}>
+                      <Button icon="plus" type="primary" onClick={() => this.toggleModal('role')}>
                         新增角色
                       </Button>
                     </div>
@@ -365,24 +439,9 @@ class UserSet extends PureComponent {
             </Col>
           </Row>
         </GridContent>
-        <BranchModal
-          wrappedComponentRef={this.saveFormRef}
-          visible={branchModalVisible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-        <StaffModal
-          wrappedComponentRef={this.saveFormRef}
-          visible={staffModalVisible}
-          // onCancel={this.handleCancel}
-          // onCreate={this.handleCreate}
-        />
-        <RoleModal
-          wrappedComponentRef={this.saveFormRef}
-          visible={roleModalVisible}
-          // onCancel={this.handleCancel}
-          // onCreate={this.handleCreate}
-        />
+        <BranchModal visible={branch} onCancel={() => this.toggleModal('branch')} />
+        <StaffModal visible={staff} onCancel={() => this.toggleModal('staff')} />
+        <RoleModal visible={role} onCancel={() => this.toggleModal('role')} />
       </PageHeaderWrapper>
     );
   }

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Icon } from 'antd';
 import styles from './index.less';
 
-export default class FontTitle extends Component {
+export default class TreeTitle extends Component {
   state = {
     isHook: false,
   };
@@ -19,12 +18,8 @@ export default class FontTitle extends Component {
     });
   };
 
-  operateAction = (type, e) => {
-    e.stopPropagation();
-  };
-
   render() {
-    const { title, isRoot } = this.props;
+    const { title, operateBtn } = this.props;
     const { isHook } = this.state;
     return (
       <span
@@ -34,33 +29,7 @@ export default class FontTitle extends Component {
         onFocus={() => 0}
       >
         <span className={styles.text}>{title}</span>
-        {isHook && (
-          <span>
-            {!isRoot && (
-              <Icon
-                onClick={e => {
-                  this.operateAction('plus', e);
-                }}
-                className={styles.icon}
-                type="plus"
-              />
-            )}
-            <Icon
-              onClick={e => {
-                this.operateAction('form', e);
-              }}
-              className={styles.icon}
-              type="form"
-            />
-            <Icon
-              onClick={e => {
-                this.operateAction('delete', e);
-              }}
-              className={styles.icon}
-              type="delete"
-            />
-          </span>
-        )}
+        {isHook && operateBtn}
       </span>
     );
   }
