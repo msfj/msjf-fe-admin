@@ -23,6 +23,7 @@ export default [
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',
+        hideInMenu: true,
         routes: [
           {
             path: '/dashboard/analysis',
@@ -41,11 +42,86 @@ export default [
           },
         ],
       },
+      //account1
+      {
+        path: '/account1',
+        icon: 'user',
+        name: 'account1',
+        routes: [
+          {
+            path: '/account1/user-set',
+            name: 'userset',
+            component: './Account1/UserSet',
+          },
+          {
+            path: '/account1/bussiness-user-set',
+            name: 'bussinessuserset',
+            component: './Account1/BussinessUserSet',
+          },
+          {
+            path: '/account1/permission-set',
+            name: 'permissionset',
+            component: './Account1/PermissionSet',
+          },
+        ],
+      },
+      // process
+      {
+        path: '/process',
+        name: 'process',
+        icon: 'setting',
+        routes: [
+          {
+            path: '/process/process-design',
+            name: 'processdesign',
+            component: './Process/ProcessDesign',
+          },
+          {
+            path: '/process/process-init-list',
+            name: 'processinitlist',
+            component: './Process/ProcessInitList',
+          },
+          {
+            path: '/process/process-init',
+            name: 'processinit',
+            component: './Process/ProcessInit',
+            hideInMenu: true,
+          },
+          {
+            path: '/process/process-task',
+            name: 'processtask',
+            component: './Process/ProcessTask',
+          },
+          {
+            path: '/process/process-audit',
+            name: 'processaudit',
+            component: './Process/ProcessAudit',
+            hideInMenu: true,
+          },
+          {
+            path: '/process/process-list',
+            name: 'processlist',
+            component: './Process/ProcessList',
+          },
+          {
+            path: '/process/process-query',
+            name: 'processquery',
+            component: './Process/ProcessQuery',
+          },
+          {
+            path: '/process/process-detail',
+            name: 'processdetail',
+            component: './Process/ProcessDetail',
+            hideInMenu: true,
+          },
+        ],
+      },
       // forms
       {
         path: '/form',
         icon: 'form',
         name: 'form',
+        hideInMenu: true,
         routes: [
           {
             path: '/form/basic-form',
@@ -92,6 +168,7 @@ export default [
         path: '/list',
         icon: 'table',
         name: 'list',
+        hideInMenu: true,
         routes: [
           {
             path: '/list/table-list',
@@ -140,6 +217,7 @@ export default [
         path: '/profile',
         name: 'profile',
         icon: 'profile',
+        hideInMenu: true,
         routes: [
           // profile
           {
@@ -159,6 +237,7 @@ export default [
         name: 'result',
         icon: 'check-circle-o',
         path: '/result',
+        hideInMenu: true,
         routes: [
           // result
           {
@@ -173,6 +252,7 @@ export default [
         name: 'exception',
         icon: 'warning',
         path: '/exception',
+        hideInMenu: true,
         routes: [
           // exception
           {
@@ -202,6 +282,7 @@ export default [
         name: 'account',
         icon: 'user',
         path: '/account',
+        hideInMenu: true,
         routes: [
           {
             path: '/account/center',

@@ -13,12 +13,12 @@ const topColResponsiveProps = {
   style: { marginBottom: 24 },
 };
 
-const IntroduceRow = memo(({ loading }) => (
+const ProcessTaskClassify = memo(({ loading, haddleClick }) => (
   <Row gutter={24}>
     <Col {...topColResponsiveProps}>
       <ChartCard
         bordered={false}
-        title="区内注册企业总数"
+        title="企业设立"
         action={
           <Tooltip
             title={<FormattedMessage id="app.analysis.introduce" defaultMessage="Introduce" />}
@@ -27,8 +27,9 @@ const IntroduceRow = memo(({ loading }) => (
           </Tooltip>
         }
         loading={loading}
-        total={numeral(886).format('0,0')}
+        total={numeral(26).format('0,0')}
         contentHeight={46}
+        onClick={haddleClick}
       />
     </Col>
 
@@ -36,7 +37,7 @@ const IntroduceRow = memo(({ loading }) => (
       <ChartCard
         bordered={false}
         loading={loading}
-        title="企业总数"
+        title="企业变更"
         action={
           <Tooltip
             title={<FormattedMessage id="app.analysis.introduce" defaultMessage="Introduce" />}
@@ -44,15 +45,16 @@ const IntroduceRow = memo(({ loading }) => (
             <Icon type="info-circle-o" />
           </Tooltip>
         }
-        total={numeral(8846).format('0,0')}
+        total={numeral(46).format('0,0')}
         contentHeight={46}
+        onClick={haddleClick}
       />
     </Col>
     <Col {...topColResponsiveProps}>
       <ChartCard
         bordered={false}
         loading={loading}
-        title="企业总注册资本金(美元/万元)"
+        title="企业预核名"
         action={
           <Tooltip
             title={<FormattedMessage id="app.analysis.introduce" defaultMessage="Introduce" />}
@@ -60,15 +62,16 @@ const IntroduceRow = memo(({ loading }) => (
             <Icon type="info-circle-o" />
           </Tooltip>
         }
-        total={numeral(1550202012).format('0,0')}
+        total={numeral(12).format('0,0')}
         contentHeight={46}
+        onClick={haddleClick}
       />
     </Col>
     <Col {...topColResponsiveProps}>
       <ChartCard
         loading={loading}
         bordered={false}
-        title="个人用户数"
+        title="企业设立"
         action={
           <Tooltip
             title={<FormattedMessage id="app.analysis.introduce" defaultMessage="Introduce" />}
@@ -76,11 +79,12 @@ const IntroduceRow = memo(({ loading }) => (
             <Icon type="info-circle-o" />
           </Tooltip>
         }
-        total="782"
+        total="72"
         contentHeight={46}
+        onClick={haddleClick}
       />
     </Col>
   </Row>
 ));
 
-export default IntroduceRow;
+export default ProcessTaskClassify;
