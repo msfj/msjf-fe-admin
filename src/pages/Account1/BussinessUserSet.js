@@ -371,9 +371,9 @@ class UpdateForm extends PureComponent {
 }
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({ account1, loading }) => ({
+  account1,
+  loading: loading.models.account1,
 }))
 @Form.create()
 class BUserSet extends PureComponent {
@@ -484,7 +484,7 @@ class BUserSet extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/fetch',
+      type: 'account1/fetch',
     });
   }
 
@@ -509,7 +509,7 @@ class BUserSet extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: 'account1/fetch',
       payload: params,
     });
   };
@@ -532,7 +532,7 @@ class BUserSet extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'rule/fetch',
+      type: 'account1/fetch',
       payload: {},
     });
   };
@@ -552,7 +552,7 @@ class BUserSet extends PureComponent {
     switch (e.key) {
       case 'remove':
         dispatch({
-          type: 'rule/remove',
+          type: 'account1/remove',
           payload: {
             key: selectedRows.map(row => row.key),
           },
@@ -592,7 +592,7 @@ class BUserSet extends PureComponent {
       });
 
       dispatch({
-        type: 'rule/fetch',
+        type: 'account1/fetch',
         payload: values,
       });
     });
@@ -614,7 +614,7 @@ class BUserSet extends PureComponent {
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/add',
+      type: 'account1/add',
       payload: {
         userName: fields.userName,
         certificateType: fields.certificateType,
@@ -635,7 +635,7 @@ class BUserSet extends PureComponent {
   handleUpdate = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/update',
+      type: 'account1/update',
       payload: {
         // name: fields.name,
         userName: fields.userName,
@@ -794,7 +794,7 @@ class BUserSet extends PureComponent {
   render() {
     const {
       // rule: { data },
-      data,
+      account1: { data },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues, show } = this.state;

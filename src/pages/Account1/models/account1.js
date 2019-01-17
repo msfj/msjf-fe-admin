@@ -1,7 +1,7 @@
-import { queryRule, removeRule, addRule, updateRule } from '@/services/api';
+import { removeRule, addRule, updateRule, queryAccount1 } from '@/services/api';
 
 export default {
-  namespace: 'rule',
+  namespace: 'account1',
 
   state: {
     data: {
@@ -12,7 +12,7 @@ export default {
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryRule, payload);
+      const response = yield call(queryAccount1, payload);
       yield put({
         type: 'save',
         payload: response,
