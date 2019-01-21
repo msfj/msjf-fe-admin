@@ -38,7 +38,7 @@ class ProcessDesign extends Component {
     return (
       <PageHeaderWrapper>
         <GridContent>
-          <Row gutter={24}>
+          <Row gutter={12}>
             <Col lg={7} md={24}>
               <Card
                 title="模型列表"

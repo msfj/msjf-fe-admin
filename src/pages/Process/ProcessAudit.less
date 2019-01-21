@@ -47,3 +47,41 @@
     margin-right: 8px;
   }
 }
+
+.stepHeight {
+  :global {
+    .ant-steps-item-content {
+      min-height: 140px;
+      width: 600px;
+    }
+  }
+}
+.radioSet {
+  :global {
+    .ant-radio-button-wrapper {
+      background: #d0d3d5;
+    }
+    .ant-radio-button-wrapper:not(:first-child)::before {
+      width: 0.1px;
+    }
+    .notpass.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background: #bd1f27;
+      border-color: #bd1f27;
+    }
+    .notpass.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+      border-color: #bd1f27;
+      background: #bd1f27;
+    }
+    .pass.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background: #009884;
+      border-color: #009884;
+    }
+    .pass.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover {
+      border-color: #009884;
+      background: #009884;
+    }
+    .ant-radio-button-wrapper:hover {
+      color: #6f7479;
+    }
+  }
+}

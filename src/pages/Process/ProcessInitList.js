@@ -118,6 +118,7 @@ class TableList extends PureComponent {
               data={data}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
+              onChange={this.handleStandardTableChange}
             />
           </div>
         </Card>

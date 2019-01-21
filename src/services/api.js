@@ -9,6 +9,10 @@ export async function queryActivities() {
   return request('/api/activities');
 }
 
+export async function queryRule(params) {
+  return request(`/api/rule?${stringify(params)}`);
+}
+
 export async function removeRule(params) {
   return request('/api/rule', {
     method: 'POST',
@@ -121,13 +125,9 @@ export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
 
-export async function queryRule(params) {
-  return request(`/api/rule?${stringify(params)}`);
-}
-
 // process
-export async function queryModalList(params) {
-  return request(`/api/process/modal?${stringify(params)}`);
+export async function queryModalList() {
+  return request(`/api/process/modal`);
 }
 
 export async function queryProcess(params) {
