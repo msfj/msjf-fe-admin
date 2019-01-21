@@ -51,14 +51,17 @@ class TableList extends PureComponent {
     {
       title: '流程类型',
       dataIndex: 'flowName',
+      sorter: true,
     },
     {
       title: '任务名称',
       dataIndex: 'actName',
+      sorter: true,
     },
     {
       title: '任务描述',
       dataIndex: 'desc',
+      sorter: true,
     },
     {
       title: '发起时间',
@@ -75,10 +78,12 @@ class TableList extends PureComponent {
     {
       title: '审核人',
       dataIndex: 'assigneeName',
+      sorter: true,
     },
     {
       title: '审核结果',
       dataIndex: 'approve',
+      sorter: true,
       filters: [
         {
           text: status[0],
@@ -108,11 +113,11 @@ class TableList extends PureComponent {
         <Fragment>
           <Link
             to={{
-              pathname: 'process-detail',
+              pathname: 'process-init',
               query: val,
             }}
           >
-            详情
+            审核
           </Link>
         </Fragment>
       ),
@@ -331,19 +336,21 @@ class TableList extends PureComponent {
     const { selectedRows } = this.state;
     return (
       <PageHeaderWrapper>
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <StandardTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              columns={this.columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
-          </div>
-        </Card>
+        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+          <Card bordered={false}>
+            <div className={styles.tableList}>
+              <div className={styles.tableListForm}>{this.renderForm()}</div>
+              <StandardTable
+                selectedRows={selectedRows}
+                loading={loading}
+                data={data}
+                columns={this.columns}
+                onSelectRow={this.handleSelectRows}
+                onChange={this.handleStandardTableChange}
+              />
+            </div>
+          </Card>
+        </div>
       </PageHeaderWrapper>
     );
   }

@@ -44,25 +44,13 @@ class TableList extends PureComponent {
     expandForm: false,
     selectedRows: [],
     formValues: {},
-    showList: false,
   };
 
   columns = [
     {
-      title: '流程类型',
-      dataIndex: 'flowName',
-    },
-    {
-      title: '任务名称',
-      dataIndex: 'actName',
-    },
-    {
       title: '任务描述',
       dataIndex: 'desc',
-    },
-    {
-      title: '发起人',
-      dataIndex: 'assigneeName',
+      sorter: true,
     },
     {
       title: '最近审核时间',
@@ -77,7 +65,7 @@ class TableList extends PureComponent {
         <Fragment>
           <Link
             to={{
-              pathname: 'process-audit',
+              pathname: '/process/process-audit',
               query: val,
             }}
           >
@@ -195,9 +183,7 @@ class TableList extends PureComponent {
   };
 
   haddleClick = () => {
-    this.setState({
-      showList: true,
-    });
+    this.setState({});
   };
 
   renderSimpleForm() {
@@ -297,14 +283,13 @@ class TableList extends PureComponent {
       process: { data },
       loading,
     } = this.props;
-    const { selectedRows, showList } = this.state;
+    const { selectedRows } = this.state;
     return (
       <PageHeaderWrapper>
-        {!showList ? (
+        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
           <Suspense fallback={<PageLoading />}>
             <ProcessTaskClassify haddleClick={this.haddleClick} />
           </Suspense>
-        ) : (
           <Card bordered={false}>
             <div className={styles.tableList}>
               <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -318,7 +303,7 @@ class TableList extends PureComponent {
               />
             </div>
           </Card>
-        )}
+        </div>
       </PageHeaderWrapper>
     );
   }

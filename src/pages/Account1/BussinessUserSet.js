@@ -159,7 +159,7 @@ class BUserSet extends PureComponent {
   state = {
     modalVisible: false,
     // updateModalVisible: false,
-    // expandForm: false,
+    expandForm: false,
     selectedRows: [],
     formValues: {},
     // stepFormValues: {},
@@ -170,15 +170,17 @@ class BUserSet extends PureComponent {
     {
       title: '用户名称',
       dataIndex: 'userName',
+      sorter: true,
     },
     {
       title: '证件类型',
       dataIndex: 'certificateType',
+      sorter: true,
     },
     {
       title: '证件号码',
       dataIndex: 'number',
-      // sorter: true,
+      sorter: true,
       // align: 'right',
       // render: val => `${val} 万`,
       // mark to display a total number
@@ -187,24 +189,28 @@ class BUserSet extends PureComponent {
     {
       title: '手机号码',
       dataIndex: 'phone',
+      sorter: true,
     },
     {
       title: '邮箱地址',
       dataIndex: 'email',
-      // sorter: true,
+      sorter: true,
       // render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
       title: '登陆帐号',
       dataIndex: 'account',
+      sorter: true,
     },
     {
       title: '用户类型',
       dataIndex: 'userType',
+      sorter: true,
     },
     {
       title: '用户状态',
       dataIndex: 'status',
+      sorter: true,
       filters: [
         {
           text: status[0],
@@ -418,48 +424,83 @@ class BUserSet extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="用户名称">
-              {getFieldDecorator('userName')(<Input placeholder="请输入" />)}
-            </FormItem>
+            <FormItem label="用户名称">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
           </Col>
           <Col {...cols}>
-            <FormItem label="证件号码">
-              {getFieldDecorator('number')(<Input placeholder="请输入" />)}
-            </FormItem>
+            <FormItem label="证件号码">{getFieldDecorator('id')(<Input />)}</FormItem>
           </Col>
           <Col {...cols}>
-            <FormItem label="用户类型">
-              {getFieldDecorator('userType')(
-                <Select placeholder="请选择">
-                  <Option value="自然人">自然人</Option>
-                  <Option value="企业">企业</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col {...cols}>
-            <FormItem label="用户状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择">
-                  <Option value="0">正常</Option>
-                  <Option value="1">异常</Option>
-                  <Option value="2">冻结</Option>
-                  <Option value="3">11</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <div style={{ overflow: 'hidden' }}>
-          <div style={{ float: 'right' }}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
+              <Button
+                type="primary"
+                style={{ marginLeft: 8 }}
+                onClick={() => this.handleModalVisible(true)}
+              >
+                新增
+              </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
+              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                展开 <Icon type="down" />
+              </a>
             </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
+  renderAdvancedForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row {...rows}>
+          <Col {...cols}>
+            <FormItem label="用户名称">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="证件号码">{getFieldDecorator('id')(<Input />)}</FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="登陆账号">
+              {getFieldDecorator('actId')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="邮箱地址">
+              {getFieldDecorator('email')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="手机号码">
+              {getFieldDecorator('phone')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+        </Row>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ float: 'right', marginBottom: 24 }}>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
+            <Button
+              type="primary"
+              style={{ marginLeft: 8 }}
+              onClick={() => this.handleModalVisible(true)}
+            >
+              新增
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+              重置
+            </Button>
+            <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+              收起 <Icon type="up" />
+            </a>
           </div>
         </div>
       </Form>
@@ -467,9 +508,8 @@ class BUserSet extends PureComponent {
   }
 
   renderForm() {
-    // const { expandForm } = this.state;
-    // return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
-    return this.renderSimpleForm();
+    const { expandForm } = this.state;
+    return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
   render() {
@@ -496,34 +536,33 @@ class BUserSet extends PureComponent {
     };
     return (
       <PageHeaderWrapper title={<FormattedMessage id="app.account1.bussinessuserset.title" />}>
-        <Card bordered={false}>
-          <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新增
-              </Button>
-              {selectedRows.length > 0 && (
-                <span>
-                  <Button>批量操作</Button>
-                  <Dropdown overlay={menu}>
-                    <Button>
-                      更多操作 <Icon type="down" />
-                    </Button>
-                  </Dropdown>
-                </span>
-              )}
+        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+          <Card bordered={false}>
+            <div className={styles.tableList}>
+              <div className={styles.tableListForm}>{this.renderForm()}</div>
+              <div className={styles.tableListOperator}>
+                {selectedRows.length > 0 && (
+                  <span>
+                    <Button>批量操作</Button>
+                    <Dropdown overlay={menu}>
+                      <Button>
+                        更多操作 <Icon type="down" />
+                      </Button>
+                    </Dropdown>
+                  </span>
+                )}
+              </div>
+              <StandardTable
+                selectedRows={selectedRows}
+                loading={loading}
+                data={data}
+                columns={this.columns}
+                onSelectRow={this.handleSelectRows}
+                onChange={this.handleStandardTableChange}
+              />
             </div>
-            <StandardTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              columns={this.columns}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
-          </div>
-        </Card>
+          </Card>
+        </div>
         <CreateForm {...parentMethods} />
       </PageHeaderWrapper>
     );

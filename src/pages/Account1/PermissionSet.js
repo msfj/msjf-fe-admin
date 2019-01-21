@@ -177,23 +177,90 @@ class Permission extends Component {
     return (
       <PageHeaderWrapper title={<FormattedMessage id="app.account1.permssionset.title" />}>
         <GridContent>
-          <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
-            <Tabs defaultActiveKey="1">
-              <TabPane tab="角色菜单权限" key="1">
-                <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-                  <Col lg={6} md={24}>
-                    <Search
-                      style={{ marginBottom: 8 }}
-                      placeholder="输入角色名称"
-                      onSearch={this.handleSearch}
-                    />
-                    <RadioGroup name="roleName">
+          <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+            <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="角色菜单权限" key="1">
+                  <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+                    <Col lg={6} md={24}>
+                      <Search
+                        style={{ marginBottom: 8 }}
+                        placeholder="输入角色名称"
+                        onSearch={this.handleSearch}
+                      />
+                      <RadioGroup name="roleName">
+                        <List
+                          bordered={false}
+                          dataSource={dataRole}
+                          renderItem={item => (
+                            <List.Item>
+                              <Radio value={item} />
+                              <div className={styles.iconlist}>
+                                <Icon type="user" />
+                              </div>
+                              {item}
+                            </List.Item>
+                          )}
+                        />
+                      </RadioGroup>
+                    </Col>
+                    <Col lg={6} md={24}>
+                      <Search
+                        style={{ marginBottom: 8 }}
+                        placeholder="输入菜单名称"
+                        onChange={this.onChange}
+                      />
+                      <div>{this.createTree(true)}</div>
+                    </Col>
+                    <Col lg={6} md={24}>
+                      <Button type="primary">授取菜单权限</Button>
+                    </Col>
+                  </Row>
+                </TabPane>
+                <TabPane tab="用户角色权限" key="2" style={{ paddingBottom: 30 }}>
+                  <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+                    <Col lg={6} md={24} xs={24}>
+                      <Search
+                        style={{ marginBottom: 8 }}
+                        placeholder="输入机构名称"
+                        onChange={this.onChange}
+                      />
+                      <div>{this.createTree()}</div>
+                    </Col>
+                    <Col lg={6} md={24} xs={24}>
+                      <Search
+                        style={{ marginBottom: 8 }}
+                        placeholder="输入员工名称"
+                        onSearch={this.handleSearch}
+                      />
+                      <RadioGroup name="jobName">
+                        <List
+                          bordered={false}
+                          dataSource={dataJob}
+                          renderItem={item => (
+                            <List.Item>
+                              <Radio value={item} />
+                              <div className={styles.iconlist}>
+                                <Icon type="user" />
+                              </div>
+                              {item}
+                            </List.Item>
+                          )}
+                        />
+                      </RadioGroup>
+                    </Col>
+                    <Col lg={6} md={24} xs={24}>
+                      <Search
+                        style={{ marginBottom: 8 }}
+                        placeholder="输入角色名称"
+                        onSearch={this.handleSearch}
+                      />
                       <List
                         bordered={false}
                         dataSource={dataRole}
                         renderItem={item => (
                           <List.Item>
-                            <Radio value={item} />
+                            <Checkbox />
                             <div className={styles.iconlist}>
                               <Icon type="user" />
                             </div>
@@ -201,80 +268,15 @@ class Permission extends Component {
                           </List.Item>
                         )}
                       />
-                    </RadioGroup>
-                  </Col>
-                  <Col lg={6} md={24}>
-                    <Search
-                      style={{ marginBottom: 8 }}
-                      placeholder="输入菜单名称"
-                      onChange={this.onChange}
-                    />
-                    <div>{this.createTree(true)}</div>
-                  </Col>
-                  <Col lg={6} md={24}>
-                    <Button type="primary">授取菜单权限</Button>
-                  </Col>
-                </Row>
-              </TabPane>
-              <TabPane tab="用户角色权限" key="2" style={{ paddingBottom: 30 }}>
-                <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-                  <Col lg={6} md={24} xs={24}>
-                    <Search
-                      style={{ marginBottom: 8 }}
-                      placeholder="输入机构名称"
-                      onChange={this.onChange}
-                    />
-                    <div>{this.createTree()}</div>
-                  </Col>
-                  <Col lg={6} md={24} xs={24}>
-                    <Search
-                      style={{ marginBottom: 8 }}
-                      placeholder="输入员工名称"
-                      onSearch={this.handleSearch}
-                    />
-                    <RadioGroup name="jobName">
-                      <List
-                        bordered={false}
-                        dataSource={dataJob}
-                        renderItem={item => (
-                          <List.Item>
-                            <Radio value={item} />
-                            <div className={styles.iconlist}>
-                              <Icon type="user" />
-                            </div>
-                            {item}
-                          </List.Item>
-                        )}
-                      />
-                    </RadioGroup>
-                  </Col>
-                  <Col lg={6} md={24} xs={24}>
-                    <Search
-                      style={{ marginBottom: 8 }}
-                      placeholder="输入角色名称"
-                      onSearch={this.handleSearch}
-                    />
-                    <List
-                      bordered={false}
-                      dataSource={dataRole}
-                      renderItem={item => (
-                        <List.Item>
-                          <Checkbox />
-                          <div className={styles.iconlist}>
-                            <Icon type="user" />
-                          </div>
-                          {item}
-                        </List.Item>
-                      )}
-                    />
-                  </Col>
-                  <Col lg={6} md={24} xs={24}>
-                    <Button type="primary">授权角色</Button>
-                  </Col>
-                </Row>
-              </TabPane>
-            </Tabs>
-          </Card>
+                    </Col>
+                    <Col lg={6} md={24} xs={24}>
+                      <Button type="primary">授权角色</Button>
+                    </Col>
+                  </Row>
+                </TabPane>
+              </Tabs>
+            </Card>
+          </div>
         </GridContent>
       </PageHeaderWrapper>
     );

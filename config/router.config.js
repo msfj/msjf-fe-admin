@@ -49,14 +49,14 @@ export default [
         name: 'account1',
         routes: [
           {
-            path: '/account1/user-set',
-            name: 'userset',
-            component: './Account1/UserSet',
-          },
-          {
             path: '/account1/bussiness-user-set',
             name: 'bussinessuserset',
             component: './Account1/BussinessUserSet',
+          },
+          {
+            path: '/account1/user-set',
+            name: 'userset',
+            component: './Account1/UserSet',
           },
           {
             path: '/account1/permission-set',
@@ -75,11 +75,13 @@ export default [
             path: '/process/process-design',
             name: 'processdesign',
             component: './Process/ProcessDesign',
+            hideInMenu: true,
           },
           {
             path: '/process/process-init-list',
             name: 'processinitlist',
             component: './Process/ProcessInitList',
+            hideInMenu: true,
           },
           {
             path: '/process/process-init',

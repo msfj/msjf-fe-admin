@@ -263,39 +263,46 @@ class UserSet extends PureComponent {
     Loading: false,
     selectedRows: [],
     formValues: {},
+    expandForm: false,
   };
 
   columns = [
     {
       title: '员工姓名',
       dataIndex: 'workerName',
+      sorter: true,
       // key: 'name',
       // render: text => <a href="javascript:;">{text}</a>,
     },
     {
       title: '登陆账号',
       dataIndex: 'woekerAccount',
+      sorter: true,
       // key: 'age',
     },
     {
       title: '所属部门',
       dataIndex: 'department',
+      sorter: true,
       // key: 'address',
     },
     {
       title: '证件号码',
       // key: 'tags',
       dataIndex: 'idNum',
+      sorter: true,
     },
     {
       title: '手机号码',
       // key: 'tags',
       dataIndex: 'phone',
+      sorter: true,
     },
     {
       title: '邮箱地址',
       // key: 'tags',
       dataIndex: 'email',
+      sorter: true,
     },
   ];
 
@@ -406,36 +413,107 @@ class UserSet extends PureComponent {
     });
   };
 
-  searchform() {
+  toggleForm = () => {
+    const { expandForm } = this.state;
+    this.setState({
+      expandForm: !expandForm,
+    });
+  };
+
+  renderSimpleForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
     return (
-      <Form onSubmit={this.handleSubmit} layout="inline">
+      <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="用户名称">
-              {getFieldDecorator('userName')(<Input placeholder="请输入" />)}
-            </FormItem>
+            <FormItem label="员工姓名">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
           </Col>
           <Col {...cols}>
-            <FormItem label="证件号码">
-              {getFieldDecorator('number')(<Input placeholder="请输入" />)}
-            </FormItem>
+            <FormItem label="登陆账号">{getFieldDecorator('actId')(<Input />)}</FormItem>
           </Col>
           <Col {...cols}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
+              <Button
+                type="primary"
+                style={{ marginLeft: 8 }}
+                onClick={() => this.toggleModal('staff')}
+              >
+                新增
+              </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
+              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                展开 <Icon type="down" />
+              </a>
             </span>
           </Col>
         </Row>
       </Form>
     );
+  }
+
+  renderAdvancedForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row {...rows}>
+          <Col {...cols}>
+            <FormItem label="员工姓名">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="登陆账号">{getFieldDecorator('actId')(<Input />)}</FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="证件号码">
+              {getFieldDecorator('id')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="邮箱地址">
+              {getFieldDecorator('email')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col {...cols}>
+            <FormItem label="手机号码">
+              {getFieldDecorator('phone')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+        </Row>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ float: 'right', marginBottom: 24 }}>
+            <Button type="primary" htmlType="submit">
+              查询
+            </Button>
+            <Button
+              type="primary"
+              style={{ marginLeft: 8 }}
+              onClick={() => this.toggleModal('staff')}
+            >
+              新增
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+              重置
+            </Button>
+            <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+              收起 <Icon type="up" />
+            </a>
+          </div>
+        </div>
+      </Form>
+    );
+  }
+
+  renderForm() {
+    const { expandForm } = this.state;
+    return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
   render() {
@@ -452,58 +530,40 @@ class UserSet extends PureComponent {
     return (
       <PageHeaderWrapper>
         <GridContent className={styles.userCenter}>
-          <Row gutter={12}>
-            <Col xxl={6} xl={8} lg={10} md={24} className={styles.cardhead}>
-              <Card bordered={false} style={{ marginBottom: 24 }} loading={Loading}>
-                <Search
-                  style={{ marginBottom: 8 }}
-                  placeholder="搜索部门"
-                  onChange={this.onChange}
-                />
-                <div className={styles.tree}>
-                  <Tree defaultExpandAll>{this.renderTreeNodes(treeData)}</Tree>
-                </div>
-              </Card>
-            </Col>
-            <Col xxl={18} xl={16} lg={14} md={24}>
-              <Card bordered={false} style={{ marginBottom: 24 }} loading={Loading}>
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab="部门管理" key="1">
-                    <div className={styles.tableListForm}>{this.searchform()}</div>
-                    <div style={{ marginBottom: 12 }}>
-                      <Button icon="plus" type="primary" onClick={() => this.toggleModal('staff')}>
-                        新增员工
-                      </Button>
-                    </div>
-                    <StandardTable
-                      selectedRows={selectedRows}
-                      loading={loading}
-                      data={data}
-                      columns={this.columns}
-                      onSelectRow={this.handleSelectRows}
-                      onChange={this.handleStandardTableChange}
-                    />
-                  </TabPane>
-                  <TabPane tab="角色管理" key="2">
-                    <div className={styles.tableListForm}>{this.searchform()}</div>
-                    <div style={{ marginBottom: 12 }}>
-                      <Button icon="plus" type="primary" onClick={() => this.toggleModal('role')}>
-                        新增角色
-                      </Button>
-                    </div>
-                    <StandardTable
-                      selectedRows={selectedRows}
-                      loading={loading}
-                      data={data}
-                      columns={this.columns}
-                      onSelectRow={this.handleSelectRows}
-                      onChange={this.handleStandardTableChange}
-                    />
-                  </TabPane>
-                </Tabs>
-              </Card>
-            </Col>
-          </Row>
+          <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+            <Row gutter={12}>
+              <Col xxl={4} xl={6} lg={6} md={24} className={styles.cardhead}>
+                <Card bordered={false} style={{ marginBottom: 24 }} loading={Loading}>
+                  <Search
+                    style={{ marginBottom: 8 }}
+                    placeholder="搜索部门"
+                    onChange={this.onChange}
+                  />
+                  <div className={styles.tree}>
+                    <Tree defaultExpandAll>{this.renderTreeNodes(treeData)}</Tree>
+                  </div>
+                </Card>
+              </Col>
+              <Col xxl={20} xl={18} lg={18} md={24}>
+                <Card bordered={false} style={{ marginBottom: 24 }} loading={Loading}>
+                  <Tabs defaultActiveKey="1">
+                    <TabPane tab="部门管理" key="1">
+                      <div className={styles.tableListForm}>{this.renderForm()}</div>
+
+                      <StandardTable
+                        selectedRows={selectedRows}
+                        loading={loading}
+                        data={data}
+                        columns={this.columns}
+                        onSelectRow={this.handleSelectRows}
+                        onChange={this.handleStandardTableChange}
+                      />
+                    </TabPane>
+                  </Tabs>
+                </Card>
+              </Col>
+            </Row>
+          </div>
         </GridContent>
         <BranchModal visible={branch} onCancel={() => this.toggleModal('branch')} />
         <StaffModal visible={staff} onCancel={() => this.toggleModal('staff')} />
