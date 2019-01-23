@@ -2,8 +2,53 @@ import { parse } from 'url';
 import mockjs from 'mockjs';
 
 // mock process data
-let tableListDataSource = [];
-for (let i = 0; i < 46; i += 1) {
+let tableListDataSource = [
+  {
+    key: 0,
+    flowType: '0',
+    flowName: '企业拟设立',
+    actName: '招商人员审核',
+    title: '主题',
+    desc: '企业拟设立申请',
+    startTime: new Date(),
+    endTime: new Date(),
+    assigneeName: '谢永泰',
+    approve: 1,
+    auditinfo: '同意拟设立',
+    phone: '17190308842',
+    files: {
+      url: '/',
+      fileName: '企业设立流程附件',
+    },
+    bexno: Math.floor(Math.random() * 1000),
+    processname: '企业拟设立',
+    checkflagname: '是',
+    funcname: `招商人员审核`,
+  },
+  {
+    key: 1,
+    flowType: '0',
+    flowName: '企业确认设立',
+    actName: '招商人员审核',
+    title: '主题',
+    desc: '企业确认设立申请',
+    startTime: new Date(),
+    endTime: new Date(),
+    assigneeName: '谢',
+    approve: 1,
+    auditinfo: '同意拟设立',
+    phone: '17190308842',
+    files: {
+      url: '/',
+      fileName: '企业设立流程附件',
+    },
+    bexno: Math.floor(Math.random() * 1000),
+    processname: '企业拟设立',
+    checkflagname: '是',
+    funcname: `招商人员审核`,
+  },
+];
+/* for (let i = 0; i < 46; i += 1) {
   tableListDataSource.push({
     key: i + 1,
     processInstanceId: Math.floor(Math.random() * 1000),
@@ -27,7 +72,7 @@ for (let i = 0; i < 46; i += 1) {
     funcname: `金服人员审核 ${i}`,
     checkflagname: '是',
   });
-}
+} */
 
 function getProcess(req, res, u) {
   let url = u;

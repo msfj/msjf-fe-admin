@@ -14,11 +14,10 @@ import {
   Modal,
   message,
   Badge,
-  Divider,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { FormattedMessage } from 'umi/locale';
+// import { FormattedMessage } from 'umi/locale';
 
 import styles from './BussinessUserSet.less';
 
@@ -29,7 +28,7 @@ const getValue = obj =>
     .map(key => obj[key])
     .join(',');
 const statusMap = ['default', 'processing', 'success', 'error'];
-const status = ['正常', '异常', '冻结', '@@'];
+const status = ['正常', '冻结', '锁定', '销户'];
 const rows = {
   gutter: {
     md: 8,
@@ -164,6 +163,9 @@ class BUserSet extends PureComponent {
     formValues: {},
     // stepFormValues: {},
     show: false,
+    updateModalVisible: false,
+    stepFormValues: {},
+    // done: false,
   };
 
   columns = [
@@ -238,8 +240,6 @@ class BUserSet extends PureComponent {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>编辑</a>
-          <Divider type="vertical" />
-          <a href="">订阅警报</a>
         </Fragment>
       ),
     },
@@ -316,7 +316,7 @@ class BUserSet extends PureComponent {
     switch (e.key) {
       case 'remove':
         dispatch({
-          type: 'rule/remove',
+          type: 'account1/remove',
           payload: {
             key: selectedRows.map(row => row.key),
           },
@@ -368,29 +368,44 @@ class BUserSet extends PureComponent {
     });
   };
 
-  handleUpdateModalVisible = () => {
-    this.setState({});
+  handleUpdateModalVisible = (flag, record) => {
+    this.setState({
+      updateModalVisible: flag,
+      stepFormValues: record || {},
+    });
   };
 
   handleAdd = fields => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/add',
+      type: 'account1/add',
       payload: {
         userName: fields.userName,
         certificateType: fields.certificateType,
         number: fields.number,
         phone: fields.phone,
-        email: fields.emali,
+        email: fields.email,
         account: fields.account,
         userType: fields.userType,
-        enterpriseType: fields.enterpriseType,
-        enterpriseClass: fields.enterpriseClass,
+        // enterpriseType: fields.enterpriseType,
+        // enterpriseClass: fields.enterpriseClass,
       },
     });
 
     message.success('添加成功');
     this.handleModalVisible();
+  };
+
+  handleDone = () => {
+    this.setState({
+      updateModalVisible: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      updateModalVisible: false,
+    });
   };
 
   handleUpdate = fields => {
@@ -517,14 +532,72 @@ class BUserSet extends PureComponent {
       // rule: { data },
       account1: { data },
       loading,
+      form,
     } = this.props;
-    const { selectedRows, modalVisible, show } = this.state;
-    console.log(data);
+    const { selectedRows, modalVisible, show, updateModalVisible, stepFormValues } = this.state;
+    const modalFooter = { onOk: this.handleDone, onCancel: this.handleCancel };
+    // console.log(data);
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
         <Menu.Item key="approval">批量审批</Menu.Item>
       </Menu>
+    );
+    const getModalContent = () => (
+      <Form>
+        <Form.Item label="用户类型" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+          {form.getFieldDecorator('userType', {
+            rules: [{ required: true }],
+            initialValue: stepFormValues.userType,
+          })(
+            <Select onChange={this.judge}>
+              <Option value="自然人">自然人</Option>
+              <Option value="企业">企业</Option>
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登陆账号">
+          {form.getFieldDecorator('account', {
+            rules: [{ required: true, message: '请输入账号' }],
+            initialValue: stepFormValues.account,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="用户名称">
+          {form.getFieldDecorator('userName', {
+            rules: [{ required: true, message: '请输入用户名' }],
+            initialValue: stepFormValues.userName,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件类型">
+          {form.getFieldDecorator('certificateType', {
+            initialValue: stepFormValues.certificateType,
+            rules: [{ required: true }],
+          })(
+            <Select>
+              <Option value="身份证">身份证</Option>
+              <Option value="营业执照">营业执照</Option>
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件号码">
+          {form.getFieldDecorator('number', {
+            rules: [{ required: true, message: '请输入证件号码' }],
+            initialValue: stepFormValues.number,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="手机号码">
+          {form.getFieldDecorator('phone', {
+            rules: [{ required: true, message: '请输入手机号' }],
+            initialValue: stepFormValues.phone,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="邮箱">
+          {form.getFieldDecorator('email', {
+            rules: [{ required: true, message: '请输入邮箱' }],
+            initialValue: stepFormValues.email,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+      </Form>
     );
 
     const parentMethods = {
@@ -535,8 +608,11 @@ class BUserSet extends PureComponent {
       show,
     };
     return (
-      <PageHeaderWrapper title={<FormattedMessage id="app.account1.bussinessuserset.title" />}>
-        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+      <PageHeaderWrapper>
+        <div
+          style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
+          className={styles.buttonColor}
+        >
           <Card bordered={false}>
             <div className={styles.tableList}>
               <div className={styles.tableListForm}>{this.renderForm()}</div>
@@ -564,6 +640,9 @@ class BUserSet extends PureComponent {
           </Card>
         </div>
         <CreateForm {...parentMethods} />
+        <Modal width={600} visible={updateModalVisible} title="编辑用户" {...modalFooter}>
+          {getModalContent()}
+        </Modal>
       </PageHeaderWrapper>
     );
   }

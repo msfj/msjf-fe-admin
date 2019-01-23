@@ -28,7 +28,7 @@ export default [
           {
             path: '/dashboard/analysis',
             name: 'analysis',
-            component: './Dashboard/Analysis',
+            component: './Dashboard/Workplace',
           },
           {
             path: '/dashboard/monitor',
@@ -104,6 +104,7 @@ export default [
             path: '/process/process-list',
             name: 'processlist',
             component: './Process/ProcessList',
+            hideInMenu: true,
           },
           {
             path: '/process/process-query',

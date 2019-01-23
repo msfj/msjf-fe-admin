@@ -2,40 +2,74 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import { Row, Col, Card, List, Avatar } from 'antd';
+import { Row, Col, Card, List, Avatar, Radio, Input, Progress } from 'antd';
 
 import { Radar } from '@/components/Charts';
-import EditableLinkGroup from '@/components/EditableLinkGroup';
+// import EditableLinkGroup from '@/components/EditableLinkGroup';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './Workplace.less';
 
-const links = [
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+const { Search } = Input;
+
+const list = [
   {
-    title: '操作一',
-    href: '',
+    logo: '',
+    subDescription: '企业拟设立',
+    title: '宁波花好月圆有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
   },
   {
-    title: '操作二',
-    href: '',
+    logo: '',
+    subDescription: '企业拟设立',
+    title: '宁波花好月圆有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
   },
   {
-    title: '操作三',
-    href: '',
-  },
-  {
-    title: '操作四',
-    href: '',
-  },
-  {
-    title: '操作五',
-    href: '',
-  },
-  {
-    title: '操作六',
-    href: '',
+    logo: '',
+    subDescription: '企业拟设立',
+    title: '宁波花好月圆有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+    per: '王龙',
   },
 ];
+const paginationProps = {
+  showSizeChanger: true,
+  showQuickJumper: true,
+  pageSize: 5,
+  total: 50,
+};
+
+const ListContent = ({ data: { per, start, recent, percent, status } }) => (
+  <div className={styles.listContent}>
+    <div className={styles.listContentItem}>
+      <span>发起人</span>
+      <p>{per}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <span>开始时间</span>
+      <p>{moment(start).format('YYYY-MM-DD HH:mm')}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <span>最近审核时间</span>
+      <p>{moment(recent).format('YYYY-MM-DD HH:mm')}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+    </div>
+  </div>
+);
 
 @connect(({ user, project, activities, chart, loading }) => ({
   currentUser: user.currentUser,
@@ -70,10 +104,10 @@ class Workplace extends PureComponent {
     });
   }
 
-  renderActivities() {
-    const {
+  static renderActivities() {
+    /* const {
       activities: { list },
-    } = this.props;
+    } = this.props; */
     return list.map(item => {
       const events = item.template.split(/@\{([^{}]*)\}/gi).map(key => {
         if (item[key]) {
@@ -113,9 +147,9 @@ class Workplace extends PureComponent {
       currentUserLoading,
       project: { notice },
       projectLoading,
-      activitiesLoading,
       chart: { radarData },
     } = this.props;
+    console.log(notice);
 
     const pageHeaderContent =
       currentUser && Object.keys(currentUser).length ? (
@@ -136,21 +170,41 @@ class Workplace extends PureComponent {
         </div>
       ) : null;
 
+    const extraContent1 = (
+      <div className={styles.extraContent}>
+        <RadioGroup defaultValue="0">
+          <RadioButton value="0">全部</RadioButton>
+          <RadioButton value="1">企业拟设立</RadioButton>
+          <RadioButton value="2">企业确认设立</RadioButton>
+          <RadioButton value="3">企业变更</RadioButton>
+          <RadioButton value="4">企业迁入</RadioButton>
+          <RadioButton value="5">企业注销</RadioButton>
+        </RadioGroup>
+        <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
+      </div>
+    );
+
     const extraContent = (
       <div className={styles.extraContent}>
         <div className={styles.statItem}>
-          <p>项目数</p>
+          <p>企业用户</p>
           <p>56</p>
         </div>
         <div className={styles.statItem}>
-          <p>团队内排名</p>
-          <p>
-            8<span> / 24</span>
-          </p>
+          <p>个人用户</p>
+          <p>24</p>
         </div>
         <div className={styles.statItem}>
-          <p>项目访问</p>
-          <p>2,223</p>
+          <p>注册资本金（人民币）</p>
+          <p>2223万</p>
+        </div>
+        <div className={styles.statItem}>
+          <p>注册资本金（美元）</p>
+          <p>22万</p>
+        </div>
+        <div className={styles.statItem}>
+          <p>企业数量</p>
+          <p>20</p>
         </div>
       </div>
     );
@@ -164,13 +218,12 @@ class Workplace extends PureComponent {
         <Row gutter={24}>
           <Col xl={16} lg={24} md={24} sm={24} xs={24}>
             <Card
+              bodyStyle={{ height: 391, padding: 0 }}
               className={styles.projectList}
               style={{ marginBottom: 24 }}
-              title="进行中的项目"
+              title="待办任务"
               bordered={false}
-              extra={<Link to="/">全部项目</Link>}
               loading={projectLoading}
-              bodyStyle={{ padding: 0 }}
             >
               {notice.map(item => (
                 <Card.Grid className={styles.projectGrid} key={item.id}>
@@ -185,10 +238,22 @@ class Workplace extends PureComponent {
                       description={item.description}
                     />
                     <div className={styles.projectItemContent}>
-                      <Link to={item.memberLink}>{item.member || ''}</Link>
-                      {item.updatedAt && (
-                        <span className={styles.datetime} title={item.updatedAt}>
-                          {moment(item.updatedAt).fromNow()}
+                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                      {item.member[0].updatedAt && (
+                        <span className={styles.datetime} title={item.member[0].updatedAt}>
+                          {moment(item.member[0].updatedAt).fromNow()}
+                        </span>
+                      )}
+                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                      {item.member[0].updatedAt && (
+                        <span className={styles.datetime} title={item.member[0].updatedAt}>
+                          {moment(item.member[0].updatedAt).fromNow()}
+                        </span>
+                      )}
+                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                      {item.member[0].updatedAt && (
+                        <span className={styles.datetime} title={item.member[0].updatedAt}>
+                          {moment(item.member[0].updatedAt).fromNow()}
                         </span>
                       )}
                     </div>
@@ -196,57 +261,55 @@ class Workplace extends PureComponent {
                 </Card.Grid>
               ))}
             </Card>
-            <Card
-              bodyStyle={{ padding: 0 }}
-              bordered={false}
-              className={styles.activeCard}
-              title="动态"
-              loading={activitiesLoading}
-            >
-              <List loading={activitiesLoading} size="large">
-                <div className={styles.activitiesList}>{this.renderActivities()}</div>
-              </List>
-            </Card>
           </Col>
           <Col xl={8} lg={24} md={24} sm={24} xs={24}>
             <Card
               style={{ marginBottom: 24 }}
-              title="快速开始 / 便捷导航"
               bordered={false}
-              bodyStyle={{ padding: 0 }}
-            >
-              <EditableLinkGroup onAdd={() => {}} links={links} linkElement={Link} />
-            </Card>
-            <Card
-              style={{ marginBottom: 24 }}
-              bordered={false}
-              title="XX 指数"
+              title="审核指数 （每月）"
               loading={radarData.length === 0}
             >
               <div className={styles.chart}>
                 <Radar hasLegend height={343} data={radarData} />
               </div>
             </Card>
-            <Card
-              bodyStyle={{ paddingTop: 12, paddingBottom: 12 }}
-              bordered={false}
-              title="团队"
-              loading={projectLoading}
-            >
-              <div className={styles.members}>
-                <Row gutter={48}>
-                  {notice.map(item => (
-                    <Col span={12} key={`members-item-${item.id}`}>
-                      <Link to={item.href}>
-                        <Avatar src={item.logo} size="small" />
-                        <span className={styles.member}>{item.member}</span>
-                      </Link>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-            </Card>
           </Col>
+        </Row>
+        <Row>
+          <Card
+            bordered={false}
+            title="审核历史动态"
+            style={{ marginTop: 24 }}
+            bodyStyle={{ padding: '0 32px 40px 32px' }}
+            extra={extraContent1}
+          >
+            <List
+              size="large"
+              rowKey="id"
+              pagination={paginationProps}
+              dataSource={list}
+              renderItem={item => (
+                <List.Item
+                  actions={[
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                      }}
+                    >
+                      查看
+                    </a>,
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                    title={item.title}
+                    description={item.subDescription}
+                  />
+                  <ListContent data={item} />
+                </List.Item>
+              )}
+            />
+          </Card>
         </Row>
       </PageHeaderWrapper>
     );

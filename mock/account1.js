@@ -1,8 +1,102 @@
 import { parse } from 'url';
 
 // mock process data
-let tableListDataSource = [];
-for (let i = 0; i < 46; i += 1) {
+let tableListDataSource = [
+  {
+    key: 0,
+    userName: '宁波合家欢乐有限公司',
+    certificateType: '营业执照',
+    number: '91330206MA2AG2GB4B',
+    phone: '15814567521',
+    email: 'wjm1997@163.com',
+    account: '91330206MA2AG2GB4B',
+    userType: '企业',
+    status: 0,
+    department: '口岸事务管理局',
+    workerName: '谢永泰',
+    woekerAccount: 'xieyongtai',
+    idNum: '33072118511200016',
+    workerPhone: '19015821456',
+    workerEmail: 'xeyongtai@163.com',
+  },
+  {
+    key: 1,
+    userName: '宁波龙行天下有限公司',
+    certificateType: '营业执照',
+    number: '91330206MA2AG2GB4C',
+    phone: '15814567531',
+    email: 'zhangwuji1997@163.com',
+    account: '91330206MA2AG2GB4C',
+    userType: '企业',
+    status: 1,
+    department: '投资合作局',
+    workerName: '谢金',
+    woekerAccount: 'xiejin',
+    idNum: '33062118511200016',
+    workerPhone: '1901534145',
+    workerEmail: 'xiejin@163.com',
+  },
+  {
+    key: 2,
+    userName: '宁波花好月圆有限公司',
+    certificateType: '营业执照',
+    number: '91330206MA4GG2GB4C',
+    phone: '15814567231',
+    email: 'liuyonle1997@163.com',
+    account: '91330206MA4GG2GB4C',
+    userType: '企业',
+    status: 2,
+    department: '金融产业发展中心',
+    workerName: '王用',
+    woekerAccount: 'wangyong',
+    idNum: '33062235511200016',
+    workerPhone: '190153343456',
+    workerEmail: 'wangyong@163.com',
+  },
+  {
+    key: 3,
+    userName: '宁波每益添有限公司',
+    certificateType: '营业执照',
+    number: '91330205WA4GG2GB4C',
+    phone: '15814567223',
+    email: 'liuHEnle1997@163.com',
+    account: '91330205WA4GG2GB4C',
+    userType: '企业',
+    status: 3,
+    department: '海洋科技文化促进局',
+    workerName: '王伟',
+    woekerAccount: 'wangwei',
+    idNum: '33062235621200016',
+    workerPhone: '190153343216',
+    workerEmail: 'wangwei@163.com',
+  },
+  {
+    key: 4,
+    userName: '王丽',
+    certificateType: '身份证',
+    number: '33062118701040056',
+    phone: '15829567223',
+    email: 'wangli1997@163.com',
+    account: '33062118701040056',
+    userType: '自然人',
+    status: 3,
+    department: '休闲旅游产业发展中心',
+    workerName: '王照',
+    woekerAccount: 'wangwei',
+    idNum: '33062235621200016',
+    workerPhone: '190153343216',
+    workerEmail: 'wangwei@163.com',
+  },
+  {
+    department: '口岸事务管理局',
+    workerName: '谢永泰',
+    woekerAccount: 'xieyongtai',
+    idNum: '33072118511200016',
+    workerPhone: '19015821456',
+    workerEmail: 'xeyongtai@163.com',
+  },
+];
+/* for (let i = 0; i < 46; i += 1) {
   tableListDataSource.push({
     /* key: i + 1,
     processInstanceId: Math.floor(Math.random() * 1000),
@@ -24,10 +118,10 @@ for (let i = 0; i < 46; i += 1) {
     bexno: Math.floor(Math.random() * 1000),
     processname: '企业设立',
     funcname: `金服人员审核 ${i}`,
-    checkflagname: '是', */
+    checkflagname: '是', 
     userName: `金服人员审核 ${i}`,
-    certificateType: '身份证',
-    number: '33xxxxxxxxxxxxxxxx',
+    bCertificateType: '身份证',
+    bNumber: '33xxxxxxxxxxxxxxxx',
     phone: '18xxxxxxxx',
     email: '41xxxxxxxxx',
     account: 'wwdwdqd',
@@ -35,7 +129,7 @@ for (let i = 0; i < 46; i += 1) {
     status: 0,
     department: 'spng',
   });
-}
+} */
 
 function getProcess(req, res, u) {
   let url = u;
@@ -95,7 +189,19 @@ function postProcess(req, res, u, b) {
   }
 
   const body = (b && b.body) || req.body;
-  const { method, name, desc, key } = body;
+  const {
+    desc,
+    method,
+    userName,
+    certificateType,
+    key,
+    number,
+    phone,
+    email,
+    account,
+    userType,
+    name,
+  } = body;
 
   switch (method) {
     /* eslint no-case-declarations:0 */
@@ -106,20 +212,15 @@ function postProcess(req, res, u, b) {
       const i = Math.ceil(Math.random() * 10000);
       tableListDataSource.unshift({
         key: i,
-        href: 'https://ant.design',
-        avatar: [
-          'https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png',
-          'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
-        ][i % 2],
-        name: `TradeCode ${i}`,
-        title: `一个任务名称 ${i}`,
-        owner: '曲丽丽',
-        desc,
-        callNo: Math.floor(Math.random() * 1000),
-        status: Math.floor(Math.random() * 10) % 2,
-        updatedAt: new Date(),
-        createdAt: new Date(),
-        progress: Math.ceil(Math.random() * 100),
+        status: 0,
+        userName,
+        certificateType,
+        number,
+        phone,
+        email,
+        account,
+        userType,
+        // progress: Math.ceil(Math.random() * 100),
       });
       break;
     case 'update':

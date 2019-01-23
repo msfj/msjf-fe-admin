@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
-import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker, Badge } from 'antd';
+import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
@@ -16,8 +16,8 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['error', 'success', 'default'];
-const status = ['不同意', '同意', '已退回'];
+// const statusMap = ['error', 'success', 'default'];
+// const status = ['不同意', '同意', '已退回'];
 
 const rows = {
   gutter: {
@@ -75,7 +75,7 @@ class TableList extends PureComponent {
       sorter: true,
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
-    {
+    /* {
       title: '审核人',
       dataIndex: 'assigneeName',
       sorter: true,
@@ -105,7 +105,7 @@ class TableList extends PureComponent {
     {
       title: '审核意见',
       dataIndex: 'auditinfo',
-    },
+    }, */
     {
       title: '操作',
       dataIndex: 'processInstanceId',
@@ -113,7 +113,7 @@ class TableList extends PureComponent {
         <Fragment>
           <Link
             to={{
-              pathname: 'process-init',
+              pathname: 'process-audit',
               query: val,
             }}
           >
@@ -336,7 +336,10 @@ class TableList extends PureComponent {
     const { selectedRows } = this.state;
     return (
       <PageHeaderWrapper>
-        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+        <div
+          style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
+          className={styles.buttonColor}
+        >
           <Card bordered={false}>
             <div className={styles.tableList}>
               <div className={styles.tableListForm}>{this.renderForm()}</div>

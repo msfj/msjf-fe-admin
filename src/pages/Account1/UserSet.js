@@ -34,32 +34,35 @@ const cols = {
 
 const treeData = [
   {
-    title: '根节点',
-    key: '-1',
+    title: '梅山保税区港委会',
+    key: '0-0',
     children: [
-      {
-        title: '0-0-0',
-        key: '0-0-0',
-        children: [
-          { title: '0-0-0-0', key: '0-0-0-0' },
-          { title: '0-0-0-1', key: '0-0-0-1' },
-          { title: '0-0-0-2', key: '0-0-0-2' },
-        ],
-      },
-      {
-        title: '0-0-1',
-        key: '0-0-1',
-        children: [
-          { title: '0-0-1-0', key: '0-0-1-0' },
-          { title: '0-0-1-1', key: '0-0-1-1' },
-          { title: '0-0-1-2', key: '0-0-1-2' },
-        ],
-      },
-      {
-        title: '0-0-2',
-        key: '0-0-2',
-      },
+      { title: '金融产业发展中心', key: '0-0-0' },
+      { title: '投资合作局', key: '0-0-1' },
+      { title: '口岸事务管理局', key: '0-0-2' },
+      { title: '海洋科技文化促进局', key: '0-0-3' },
+      { title: '休闲旅游产业发展中心', key: '0-0-4' },
     ],
+  },
+  {
+    title: '梅山街道',
+    key: '0-1',
+    children: [],
+  },
+  {
+    title: '对应单位局领导',
+    key: '0-2',
+    children: [],
+  },
+  {
+    title: '金融管理科',
+    key: '0-3',
+    children: [],
+  },
+  {
+    title: '市场监督管理局',
+    key: '0-4',
+    children: [],
   },
 ];
 
@@ -173,12 +176,12 @@ const StaffModal = Form.create()(props => {
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item label="手机号码" {...formItemLayout}>
-          {getFieldDecorator('phone', {
+          {getFieldDecorator('workerPhone', {
             rules: [{ required: true, message: '请输入手机' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item label="邮箱地址" {...formItemLayout}>
-          {getFieldDecorator('email', {
+          {getFieldDecorator('workerEmail', {
             rules: [{ required: true, message: '请输入邮箱' }],
           })(<Input placeholder="请输入" />)}
         </Form.Item>
@@ -295,13 +298,13 @@ class UserSet extends PureComponent {
     {
       title: '手机号码',
       // key: 'tags',
-      dataIndex: 'phone',
+      dataIndex: 'workerPhone',
       sorter: true,
     },
     {
       title: '邮箱地址',
       // key: 'tags',
-      dataIndex: 'email',
+      dataIndex: 'workerEmail',
       sorter: true,
     },
   ];
@@ -530,7 +533,10 @@ class UserSet extends PureComponent {
     return (
       <PageHeaderWrapper>
         <GridContent className={styles.userCenter}>
-          <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+          <div
+            style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
+            className={styles.buttonColor}
+          >
             <Row gutter={12}>
               <Col xxl={4} xl={6} lg={6} md={24} className={styles.cardhead}>
                 <Card bordered={false} style={{ marginBottom: 24 }} loading={Loading}>

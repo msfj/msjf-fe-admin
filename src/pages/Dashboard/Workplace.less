@@ -10,7 +10,32 @@
     font-weight: normal;
   }
 }
-
+.listCard {
+  :global {
+    .ant-radio-group {
+      display: block;
+      margin-bottom: 8px;
+    }
+  }
+}
+.listContent {
+  font-size: 0;
+  .listContentItem {
+    color: @text-color-secondary;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: @font-size-base;
+    margin-left: 40px;
+    > span {
+      line-height: 20px;
+    }
+    > p {
+      margin-top: 4px;
+      margin-bottom: 0;
+      line-height: 22px;
+    }
+  }
+}
 .pageHeaderContent {
   display: flex;
   .avatar {
@@ -38,6 +63,11 @@
       margin-bottom: 12px;
     }
   }
+}
+
+.extraContentSearch {
+  margin-left: 16px;
+  width: 272px;
 }
 
 .extraContent {
@@ -128,6 +158,7 @@
   }
   .projectGrid {
     width: 33.33%;
+    height: 50%;
   }
   .projectItemContent {
     display: flex;

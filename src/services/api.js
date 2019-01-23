@@ -138,3 +138,23 @@ export async function queryProcess(params) {
 export async function queryAccount1(params) {
   return request(`/api/account1?${stringify(params)}`);
 }
+
+export async function addAccount1(params) {
+  return request('/api/account1', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+
+export async function removeAccount1(params) {
+  return request('/api/account1', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'delete',
+    },
+  });
+}

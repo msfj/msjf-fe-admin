@@ -1,16 +1,33 @@
-import React, { PureComponent, Fragment, Suspense } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
 import moment from 'moment';
-import { Row, Col, Card, Form, Input, Select, Icon, Button, DatePicker } from 'antd';
-import StandardTable from '@/components/StandardTable';
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Input,
+  Select,
+  Icon,
+  Button,
+  DatePicker,
+  Avatar,
+  Radio,
+  List,
+  Progress,
+} from 'antd';
+// import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import PageLoading from '@/components/PageLoading';
+// import PageLoading from '@/components/PageLoading';
 import styles from './ProcessTask.less';
 
-const ProcessTaskClassify = React.lazy(() => import('./ProcessTaskClassify'));
+// const ProcessTaskClassify = React.lazy(() => import('./ProcessTaskClassify'));
 
 const { RangePicker } = DatePicker;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+const { Search } = Input;
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -33,6 +50,151 @@ const cols = {
   md: 12,
   sm: 24,
 };
+
+const titles = ['企业拟设立', '企业确认设立', '企业变更', '企业迁入', '企业注销'];
+
+const paginationProps = {
+  showSizeChanger: true,
+  showQuickJumper: true,
+  pageSize: 5,
+  total: 50,
+};
+
+const list = [
+  {
+    logo: '',
+    subDescription: '企业拟设立',
+    title: '宁波花好月圆有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+  },
+  {
+    logo: '',
+    subDescription: '企业拟设立',
+    title: '宁波花好月圆有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+  },
+  {
+    logo: '',
+    subDescription: '企业拟设立',
+    title: '宁波花好月圆有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+    per: '王龙',
+  },
+];
+
+const ListContent = ({ data: { per, start, recent, percent, status } }) => (
+  <div className={styles.listContent}>
+    <div className={styles.listContentItem}>
+      <span>发起人</span>
+      <p>{per}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <span>开始时间</span>
+      <p>{moment(start).format('YYYY-MM-DD HH:mm')}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <span>最近审核时间</span>
+      <p>{moment(recent).format('YYYY-MM-DD HH:mm')}</p>
+    </div>
+    <div className={styles.listContentItem}>
+      <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+    </div>
+  </div>
+);
+
+const extraContent1 = (
+  <div className={styles.extraContent}>
+    <RadioGroup defaultValue="0">
+      <RadioButton value="0">全部</RadioButton>
+      <RadioButton value="1">企业拟设立</RadioButton>
+      <RadioButton value="2">企业确认设立</RadioButton>
+      <RadioButton value="3">企业变更</RadioButton>
+      <RadioButton value="4">企业迁入</RadioButton>
+      <RadioButton value="5">企业注销</RadioButton>
+    </RadioGroup>
+    <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
+  </div>
+);
+
+const notice = [
+  {
+    id: 'xxx1',
+    title: titles[0],
+    // logo: avatars[0],
+    // description: ``,
+    // updatedAt: new Date(),
+    member: [
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+    ],
+    description: '最早三条',
+    href: { pathname: 'process-list', query: titles[0] },
+    memberLink: 'process-init',
+  },
+  {
+    id: 'xxx2',
+    title: titles[1],
+    // logo: avatars[1],
+    description: '希望是一个好东西，也许是最好的，好东西是不会消亡的',
+    member: [
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+    ],
+    href: '',
+    memberLink: '',
+  },
+  {
+    id: 'xxx3',
+    title: titles[2],
+    // logo: avatars[2],
+    description: '城镇中有那么多的酒馆，她却偏偏走进了我的酒馆',
+    member: [
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+    ],
+    href: '',
+    memberLink: '',
+  },
+  {
+    id: 'xxx4',
+    title: titles[3],
+    // logo: avatars[3],
+    description: '那时候我只会想自己想要什么，从不想自己拥有什么',
+    member: [
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+    ],
+    href: '',
+    memberLink: '',
+  },
+  {
+    id: 'xxx5',
+    title: titles[4],
+    // logo: avatars[4],
+    description: '凛冬将至',
+    member: [
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+      { men: '花好月圆', updatedAt: new Date() },
+    ],
+    href: '',
+    memberLink: '',
+  },
+];
+
 /* eslint react/no-multi-comp:0 */
 @connect(({ process, loading }) => ({
   process,
@@ -279,31 +441,96 @@ class TableList extends PureComponent {
   }
 
   render() {
-    const {
-      process: { data },
-      loading,
-    } = this.props;
-    const { selectedRows } = this.state;
+    // const {
+    //   // process: { data },
+    //   // loading,
+    // } = this.props;
+    // const { selectedRows } = this.state;
     return (
       <PageHeaderWrapper>
-        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
-          <Suspense fallback={<PageLoading />}>
-            <ProcessTaskClassify haddleClick={this.haddleClick} />
-          </Suspense>
-          <Card bordered={false}>
-            <div className={styles.tableList}>
-              <div className={styles.tableListForm}>{this.renderForm()}</div>
-              <StandardTable
-                selectedRows={selectedRows}
-                loading={loading}
-                data={data}
-                columns={this.columns}
-                onSelectRow={this.handleSelectRows}
-                onChange={this.handleStandardTableChange}
-              />
-            </div>
+        <Row gutter={24}>
+          <Col xl={24} lg={24} md={24} sm={24} xs={24}>
+            <Card
+              bodyStyle={{ height: 391, padding: 0 }}
+              className={styles.projectList}
+              style={{ marginBottom: 24 }}
+              title="待办任务"
+              bordered={false}
+            >
+              {notice.map(item => (
+                <Card.Grid className={styles.projectGrid} key={item.id}>
+                  <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                    <Card.Meta
+                      title={
+                        <div className={styles.cardTitle}>
+                          <Avatar size="small" src={item.logo} />
+                          <Link to={item.href}>{item.title}</Link>
+                        </div>
+                      }
+                      description={item.description}
+                    />
+                    <div className={styles.projectItemContent}>
+                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                      {item.member[0].updatedAt && (
+                        <span className={styles.datetime} title={item.member[0].updatedAt}>
+                          {moment(item.member[0].updatedAt).fromNow()}
+                        </span>
+                      )}
+                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                      {item.member[0].updatedAt && (
+                        <span className={styles.datetime} title={item.member[0].updatedAt}>
+                          {moment(item.member[0].updatedAt).fromNow()}
+                        </span>
+                      )}
+                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                      {item.member[0].updatedAt && (
+                        <span className={styles.datetime} title={item.member[0].updatedAt}>
+                          {moment(item.member[0].updatedAt).fromNow()}
+                        </span>
+                      )}
+                    </div>
+                  </Card>
+                </Card.Grid>
+              ))}
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Card
+            bordered={false}
+            title="审核历史动态"
+            style={{ marginTop: 24 }}
+            bodyStyle={{ padding: '0 32px 40px 32px' }}
+            extra={extraContent1}
+          >
+            <List
+              size="large"
+              rowKey="id"
+              pagination={paginationProps}
+              dataSource={list}
+              renderItem={item => (
+                <List.Item
+                  actions={[
+                    <a
+                      onClick={e => {
+                        e.preventDefault();
+                      }}
+                    >
+                      查看
+                    </a>,
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                    title={item.title}
+                    description={item.subDescription}
+                  />
+                  <ListContent data={item} />
+                </List.Item>
+              )}
+            />
           </Card>
-        </div>
+        </Row>
       </PageHeaderWrapper>
     );
   }

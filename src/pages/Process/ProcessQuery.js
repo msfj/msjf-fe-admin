@@ -335,7 +335,10 @@ class TableList extends PureComponent {
     const { selectedRows } = this.state;
     return (
       <PageHeaderWrapper>
-        <div style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}>
+        <div
+          style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
+          className={styles.buttonColor}
+        >
           <Card bordered={false}>
             <div className={styles.tableList}>
               <div className={styles.tableListForm}>{this.renderForm()}</div>
