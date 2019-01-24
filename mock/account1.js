@@ -131,7 +131,7 @@ let tableListDataSource = [
   });
 } */
 
-function getProcess(req, res, u) {
+function getStaff(req, res, u) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     url = req.url; // eslint-disable-line
@@ -182,7 +182,7 @@ function getProcess(req, res, u) {
   return res.json(result);
 }
 
-function postProcess(req, res, u, b) {
+function postStaff(req, res, u, b) {
   let url = u;
   if (!url || Object.prototype.toString.call(url) !== '[object String]') {
     url = req.url; // eslint-disable-line
@@ -247,8 +247,8 @@ function postProcess(req, res, u, b) {
 }
 
 export default {
-  'GET /api/account1': getProcess,
-  'POST /api/account1': postProcess,
+  'GET /api/getStaff': getStaff,
+  'POST /api/getStaff': postStaff,
   /* 'GET /api/process/modal': mockjs.mock({
     'modalList|5-20': [{ name: '流程@id', id: '@id', 'type|0-2': 1 }], 
   }), */

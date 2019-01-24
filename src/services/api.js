@@ -1,6 +1,22 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
+function getParams({ apiName, method, version, state, params }) {
+  const param = {
+    method,
+    version: version || '1.0.0',
+    api_name: apiName,
+    state: state || 'oauth',
+    timestamp: +new Date(),
+    params: JSON.stringify(params || {}),
+  };
+
+  return {
+    method: 'POST',
+    body: param,
+  };
+}
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }
@@ -103,11 +119,13 @@ export async function updateFakeList(params) {
   });
 }
 
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
-    method: 'POST',
-    body: params,
+export async function accountLogin(params) {
+  const param = getParams({
+    params,
+    apiName: 'setEmployeeLogin',
+    method: 'employeeLogin',
   });
+  return request('/api/real', param);
 }
 
 export async function fakeRegister(params) {
@@ -135,8 +153,8 @@ export async function queryProcess(params) {
 }
 
 // account1
-export async function queryAccount1(params) {
-  return request(`/api/account1?${stringify(params)}`);
+export async function getStaff(params) {
+  return request(`/api/getStaff?${stringify(params)}`);
 }
 
 export async function addAccount1(params) {

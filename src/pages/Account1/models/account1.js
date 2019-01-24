@@ -1,18 +1,19 @@
-import { updateRule, queryAccount1, addAccount1, removeAccount1 } from '@/services/api';
+import { updateRule, getStaff, addAccount1, removeAccount1 } from '@/services/api';
 
 export default {
   namespace: 'account1',
 
   state: {
-    data: {
+    branchData: [],
+    staffData: {
       list: [],
       pagination: {},
     },
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {
-      const response = yield call(queryAccount1, payload);
+    *getStaff({ payload }, { call, put }) {
+      const response = yield call(getStaff, payload);
       yield put({
         type: 'save',
         payload: response,
@@ -42,13 +43,37 @@ export default {
       });
       if (callback) callback();
     },
+    // *getBranch({ payload, callback }, { call, put }) {
+    //   const response = yield call(addBranch, payload);
+    //   yield put({
+    //     type: 'save',
+    //     payload: response,
+    //   });
+    //   if (callback) callback();
+    // },
+    // *editBranch({ payload, callback }, { call, put }) {
+    //   const response = yield call(addBranch, payload);
+    //   yield put({
+    //     type: 'save',
+    //     payload: response,
+    //   });
+    //   if (callback) callback();
+    // },
+    // *delBranch({ payload, callback }, { call, put }) {
+    //   const response = yield call(addBranch, payload);
+    //   yield put({
+    //     type: 'save',
+    //     payload: response,
+    //   });
+    //   if (callback) callback();
+    // },
   },
 
   reducers: {
     save(state, action) {
       return {
         ...state,
-        data: action.payload,
+        staffData: action.payload,
       };
     },
   },

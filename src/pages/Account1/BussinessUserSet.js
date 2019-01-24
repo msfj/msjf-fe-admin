@@ -247,7 +247,7 @@ class BUserSet extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'account1/fetch',
+      type: 'account1/getStaff',
     });
   }
 
@@ -272,7 +272,7 @@ class BUserSet extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: 'rule/getStaff',
       payload: params,
     });
   };
@@ -295,7 +295,7 @@ class BUserSet extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'account1/fetch',
+      type: 'account1/getStaff',
       payload: {},
     });
   };
@@ -355,7 +355,7 @@ class BUserSet extends PureComponent {
       });
       console.log(values);
       dispatch({
-        type: 'account1/fetch',
+        type: 'account1/getStaff',
         payload: values,
       });
     });
@@ -537,7 +537,7 @@ class BUserSet extends PureComponent {
   render() {
     const {
       // rule: { data },
-      account1: { data },
+      account1: { staffData },
       loading,
       form,
     } = this.props;
@@ -640,7 +640,7 @@ class BUserSet extends PureComponent {
               <StandardTable
                 selectedRows={selectedRows}
                 loading={loading}
-                data={data}
+                data={staffData}
                 columns={this.columns}
                 onSelectRow={this.handleSelectRows}
                 onChange={this.handleStandardTableChange}
