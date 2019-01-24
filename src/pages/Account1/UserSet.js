@@ -1,15 +1,29 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import TreeTitle from '@/components/TreeTitle';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 // import router from 'umi/router';
-import { Card, Row, Col, Input, Button, Form, Modal, Tree, Tabs, Icon, message } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  Input,
+  Button,
+  Form,
+  Modal,
+  Tree,
+  Tabs,
+  Icon,
+  message,
+  Select,
+} from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './UserSet.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import StandardTable from '@/components/StandardTable';
 
 const { Search } = Input;
+const { Option } = Select;
 const FormItem = Form.Item;
 const { TreeNode } = Tree;
 const { TabPane } = Tabs;
@@ -47,11 +61,6 @@ const treeData = [
   {
     title: '梅山街道',
     key: '0-1',
-    children: [],
-  },
-  {
-    title: '对应单位局领导',
-    key: '0-2',
     children: [],
   },
   {
@@ -267,6 +276,8 @@ class UserSet extends PureComponent {
     selectedRows: [],
     formValues: {},
     expandForm: false,
+    stepFormValues: {},
+    updateModalVisible: false,
   };
 
   columns = [
@@ -306,6 +317,14 @@ class UserSet extends PureComponent {
       // key: 'tags',
       dataIndex: 'workerEmail',
       sorter: true,
+    },
+    {
+      title: '操作',
+      render: (text, record) => (
+        <Fragment>
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>编辑</a>
+        </Fragment>
+      ),
     },
   ];
 
@@ -423,6 +442,25 @@ class UserSet extends PureComponent {
     });
   };
 
+  handleUpdateModalVisible = (flag, record) => {
+    this.setState({
+      updateModalVisible: flag,
+      stepFormValues: record || {},
+    });
+  };
+
+  handleDone = () => {
+    this.setState({
+      updateModalVisible: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      updateModalVisible: false,
+    });
+  };
+
   renderSimpleForm() {
     const {
       form: { getFieldDecorator },
@@ -431,10 +469,14 @@ class UserSet extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="员工姓名">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
+            <FormItem label="员工姓名">
+              {getFieldDecorator('userNmae')(<Input placeholder="请输入" />)}
+            </FormItem>
           </Col>
           <Col {...cols}>
-            <FormItem label="登陆账号">{getFieldDecorator('actId')(<Input />)}</FormItem>
+            <FormItem label="登陆账号">
+              {getFieldDecorator('actId')(<Input placeholder="请输入" />)}
+            </FormItem>
           </Col>
           <Col {...cols}>
             <span className={styles.submitButtons}>
@@ -524,12 +566,65 @@ class UserSet extends PureComponent {
       Loading,
       visible: { branch, staff, role },
       selectedRows,
+      updateModalVisible,
+      stepFormValues,
     } = this.state;
     const {
       account1: { data },
       loading,
+      form,
     } = this.props;
-    console.log(data);
+    const getModalContent = () => (
+      <Form>
+        <Form.Item label="员工姓名" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
+          {form.getFieldDecorator('workerName', {
+            rules: [{ required: true }],
+            initialValue: stepFormValues.workerName,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登陆账号">
+          {form.getFieldDecorator('woekerAccount', {
+            rules: [{ required: true, message: '请输入账号' }],
+            initialValue: stepFormValues.woekerAccount,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="所属部门">
+          {form.getFieldDecorator('department', {
+            rules: [{ required: true, message: '请输入用户名' }],
+            initialValue: stepFormValues.department,
+          })(
+            <Select>
+              <Option value="金融产业发展中心">金融产业发展中心</Option>
+              <Option value="投资合作局">投资合作局</Option>
+              <Option value="口岸事务管理局">口岸事务管理局</Option>
+              <Option value="休闲旅游产业发展中心">休闲旅游产业发展中心</Option>
+              <Option value="梅山街道">梅山街道</Option>
+              <Option value="金融管理科">金融管理科</Option>
+              <Option value="市场监督管理局">市场监督管理局</Option>
+            </Select>
+          )}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件号码">
+          {form.getFieldDecorator('idNum', {
+            rules: [{ required: true, message: '请输入证件号码' }],
+            initialValue: stepFormValues.idNum,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="手机号码">
+          {form.getFieldDecorator('workerPhone', {
+            rules: [{ required: true, message: '请输入手机号' }],
+            initialValue: stepFormValues.workerPhone,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="邮箱">
+          {form.getFieldDecorator('workerEmail', {
+            rules: [{ required: true, message: '请输入邮箱' }],
+            initialValue: stepFormValues.workerEmail,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+      </Form>
+    );
+    const modalFooter = { onOk: this.handleDone, onCancel: this.handleCancel };
     return (
       <PageHeaderWrapper>
         <GridContent className={styles.userCenter}>
@@ -574,6 +669,9 @@ class UserSet extends PureComponent {
         <BranchModal visible={branch} onCancel={() => this.toggleModal('branch')} />
         <StaffModal visible={staff} onCancel={() => this.toggleModal('staff')} />
         <RoleModal visible={role} onCancel={() => this.toggleModal('role')} />
+        <Modal width={600} visible={updateModalVisible} title="编辑用户" {...modalFooter}>
+          {getModalContent()}
+        </Modal>
       </PageHeaderWrapper>
     );
   }

@@ -87,14 +87,14 @@ let tableListDataSource = [
     workerPhone: '190153343216',
     workerEmail: 'wangwei@163.com',
   },
-  {
+  /* {
     department: '口岸事务管理局',
     workerName: '谢永泰',
     woekerAccount: 'xieyongtai',
     idNum: '33072118511200016',
     workerPhone: '19015821456',
     workerEmail: 'xeyongtai@163.com',
-  },
+  }, */
 ];
 /* for (let i = 0; i < 46; i += 1) {
   tableListDataSource.push({

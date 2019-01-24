@@ -46,6 +46,6 @@ export default {
   'menu.process.processtask': '待办任务管理',
   'menu.process.processaudit': '流程审核',
   'menu.process.processlist': '当前审核管理',
-  'menu.process.processquery': '历史审核管理',
+  'menu.process.processquery': '企业流程查询',
   'menu.process.processdetail': '流程详情',
 };

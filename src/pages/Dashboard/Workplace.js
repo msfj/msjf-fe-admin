@@ -14,6 +14,8 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Search } = Input;
 
+const dic = ['企业拟设立', '企业确认设立', '企业变更', '企业迁入', '企业注销', ''];
+
 const list = [
   {
     logo: '',
@@ -81,6 +83,10 @@ const ListContent = ({ data: { per, start, recent, percent, status } }) => (
   activitiesLoading: loading.effects['activities/fetchList'],
 }))
 class Workplace extends PureComponent {
+  state = {
+    value: 5,
+  };
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -103,6 +109,12 @@ class Workplace extends PureComponent {
       type: 'chart/clear',
     });
   }
+
+  onChange = e => {
+    this.setState({
+      value: e.target.value,
+    });
+  };
 
   static renderActivities() {
     /* const {
@@ -149,8 +161,8 @@ class Workplace extends PureComponent {
       projectLoading,
       chart: { radarData },
     } = this.props;
-    console.log(notice);
-
+    const { value } = this.state;
+    console.log(radarData);
     const pageHeaderContent =
       currentUser && Object.keys(currentUser).length ? (
         <div className={styles.pageHeaderContent}>
@@ -172,13 +184,13 @@ class Workplace extends PureComponent {
 
     const extraContent1 = (
       <div className={styles.extraContent}>
-        <RadioGroup defaultValue="0">
-          <RadioButton value="0">全部</RadioButton>
-          <RadioButton value="1">企业拟设立</RadioButton>
-          <RadioButton value="2">企业确认设立</RadioButton>
-          <RadioButton value="3">企业变更</RadioButton>
-          <RadioButton value="4">企业迁入</RadioButton>
-          <RadioButton value="5">企业注销</RadioButton>
+        <RadioGroup onChange={this.onChange} value={value}>
+          <RadioButton value={5}>全部</RadioButton>
+          <RadioButton value={0}>企业拟设立</RadioButton>
+          <RadioButton value={1}>企业确认设立</RadioButton>
+          <RadioButton value={2}>企业变更</RadioButton>
+          <RadioButton value={3}>企业迁入</RadioButton>
+          <RadioButton value={4}>企业注销</RadioButton>
         </RadioGroup>
         <Search className={styles.extraContentSearch} placeholder="请输入" onSearch={() => ({})} />
       </div>
@@ -215,102 +227,111 @@ class Workplace extends PureComponent {
         content={pageHeaderContent}
         extraContent={extraContent}
       >
-        <Row gutter={24}>
-          <Col xl={16} lg={24} md={24} sm={24} xs={24}>
+        <div
+          style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
+          className={styles.buttonColor}
+        >
+          <Row gutter={24}>
+            <Col xl={16} lg={24} md={24} sm={24} xs={24}>
+              <Card
+                bodyStyle={{ height: 391, padding: 0 }}
+                className={styles.projectList}
+                style={{ marginBottom: 24 }}
+                title="待办任务"
+                bordered={false}
+                loading={projectLoading}
+              >
+                {notice.map(item => (
+                  <Card.Grid className={styles.projectGrid} key={item.id}>
+                    <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                      <Card.Meta
+                        title={
+                          <div className={styles.cardTitle}>
+                            <Avatar size="small" src={item.logo} />
+                            <Link to={item.href}>{item.title}</Link>
+                          </div>
+                        }
+                        description={item.description}
+                      />
+                      <div className={styles.projectItemContent}>
+                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                        {item.member[0].updatedAt && (
+                          <span className={styles.datetime} title={item.member[0].updatedAt}>
+                            {moment(item.member[0].updatedAt).fromNow()}
+                          </span>
+                        )}
+                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                        {item.member[0].updatedAt && (
+                          <span className={styles.datetime} title={item.member[0].updatedAt}>
+                            {moment(item.member[0].updatedAt).fromNow()}
+                          </span>
+                        )}
+                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                        {item.member[0].updatedAt && (
+                          <span className={styles.datetime} title={item.member[0].updatedAt}>
+                            {moment(item.member[0].updatedAt).fromNow()}
+                          </span>
+                        )}
+                      </div>
+                    </Card>
+                  </Card.Grid>
+                ))}
+              </Card>
+            </Col>
+            <Col xl={8} lg={24} md={24} sm={24} xs={24}>
+              <Card
+                style={{ marginBottom: 24 }}
+                bordered={false}
+                title="审核数量 （每月）"
+                loading={radarData.length === 0}
+              >
+                <div className={styles.chart}>
+                  <Radar hasLegend height={343} data={radarData} />
+                </div>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
             <Card
-              bodyStyle={{ height: 391, padding: 0 }}
-              className={styles.projectList}
-              style={{ marginBottom: 24 }}
-              title="待办任务"
               bordered={false}
-              loading={projectLoading}
+              title="审核历史动态"
+              style={{ marginTop: 24 }}
+              bodyStyle={{ padding: '0 32px 40px 32px' }}
+              extra={extraContent1}
             >
-              {notice.map(item => (
-                <Card.Grid className={styles.projectGrid} key={item.id}>
-                  <Card bodyStyle={{ padding: 0 }} bordered={false}>
-                    <Card.Meta
-                      title={
-                        <div className={styles.cardTitle}>
-                          <Avatar size="small" src={item.logo} />
-                          <Link to={item.href}>{item.title}</Link>
-                        </div>
-                      }
-                      description={item.description}
-                    />
-                    <div className={styles.projectItemContent}>
-                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                      {item.member[0].updatedAt && (
-                        <span className={styles.datetime} title={item.member[0].updatedAt}>
-                          {moment(item.member[0].updatedAt).fromNow()}
-                        </span>
-                      )}
-                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                      {item.member[0].updatedAt && (
-                        <span className={styles.datetime} title={item.member[0].updatedAt}>
-                          {moment(item.member[0].updatedAt).fromNow()}
-                        </span>
-                      )}
-                      <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                      {item.member[0].updatedAt && (
-                        <span className={styles.datetime} title={item.member[0].updatedAt}>
-                          {moment(item.member[0].updatedAt).fromNow()}
-                        </span>
-                      )}
-                    </div>
-                  </Card>
-                </Card.Grid>
-              ))}
-            </Card>
-          </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            <Card
-              style={{ marginBottom: 24 }}
-              bordered={false}
-              title="审核指数 （每月）"
-              loading={radarData.length === 0}
-            >
-              <div className={styles.chart}>
-                <Radar hasLegend height={343} data={radarData} />
-              </div>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Card
-            bordered={false}
-            title="审核历史动态"
-            style={{ marginTop: 24 }}
-            bodyStyle={{ padding: '0 32px 40px 32px' }}
-            extra={extraContent1}
-          >
-            <List
-              size="large"
-              rowKey="id"
-              pagination={paginationProps}
-              dataSource={list}
-              renderItem={item => (
-                <List.Item
-                  actions={[
-                    <a
-                      onClick={e => {
-                        e.preventDefault();
-                      }}
+              <List
+                size="large"
+                rowKey="id"
+                pagination={paginationProps}
+                dataSource={list}
+                renderItem={item =>
+                  dic[value] === item.subDescription || value === 5 ? (
+                    <List.Item
+                      actions={[
+                        <a
+                          onClick={e => {
+                            e.preventDefault();
+                          }}
+                        >
+                          查看
+                        </a>,
+                      ]}
                     >
-                      查看
-                    </a>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={item.title}
-                    description={item.subDescription}
-                  />
-                  <ListContent data={item} />
-                </List.Item>
-              )}
-            />
-          </Card>
-        </Row>
+                      <List.Item.Meta
+                        avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                        title={item.title}
+                        description={item.subDescription}
+                      />
+                      <ListContent data={item} />
+                    </List.Item>
+                  ) : (
+                    <div />
+                  )
+                }
+              />
+            </Card>
+          </Row>
+        </div>
       </PageHeaderWrapper>
     );
   }

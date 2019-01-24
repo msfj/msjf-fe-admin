@@ -161,7 +161,6 @@ class BUserSet extends PureComponent {
     expandForm: false,
     selectedRows: [],
     formValues: {},
-    // stepFormValues: {},
     show: false,
     updateModalVisible: false,
     stepFormValues: {},
@@ -439,10 +438,14 @@ class BUserSet extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="用户名称">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
+            <FormItem label="用户名称">
+              {getFieldDecorator('userNmae')(<Input placeholder="请输入" />)}
+            </FormItem>
           </Col>
           <Col {...cols}>
-            <FormItem label="证件号码">{getFieldDecorator('id')(<Input />)}</FormItem>
+            <FormItem label="证件号码">
+              {getFieldDecorator('id')(<Input placeholder="请输入" />)}
+            </FormItem>
           </Col>
           <Col {...cols}>
             <span className={styles.submitButtons}>
@@ -477,10 +480,14 @@ class BUserSet extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="用户名称">{getFieldDecorator('userNmae')(<Input />)}</FormItem>
+            <FormItem label="用户名称">
+              {getFieldDecorator('userNmae')(<Input placeholder="请输入" />)}
+            </FormItem>
           </Col>
           <Col {...cols}>
-            <FormItem label="证件号码">{getFieldDecorator('id')(<Input />)}</FormItem>
+            <FormItem label="证件号码">
+              {getFieldDecorator('id')(<Input placeholder="请输入" />)}
+            </FormItem>
           </Col>
           <Col {...cols}>
             <FormItem label="登陆账号">
@@ -540,7 +547,9 @@ class BUserSet extends PureComponent {
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
+        <Menu.Item key="approval">冻结</Menu.Item>
+        <Menu.Item key="unlock">解锁</Menu.Item>
+        <Menu.Item key="reset">重置密码 </Menu.Item>
       </Menu>
     );
     const getModalContent = () => (

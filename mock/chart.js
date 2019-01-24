@@ -133,38 +133,56 @@ for (let i = 0; i < 20; i += 1) {
 
 const radarOriginData = [
   {
-    name: '个人',
+    name: '企业设立',
     ref: 10,
     koubei: 8,
     output: 4,
     contribute: 5,
     hot: 7,
+    w: 8,
+    o: 9,
   },
   {
-    name: '团队',
+    name: '企业迁入',
     ref: 3,
     koubei: 9,
     output: 6,
     contribute: 3,
     hot: 1,
+    w: 8,
+    o: 9,
   },
   {
-    name: '部门',
+    name: '企业变更',
     ref: 4,
     koubei: 1,
     output: 6,
     contribute: 5,
     hot: 7,
+    w: 8,
+    o: 9,
+  },
+  {
+    name: '企业注销',
+    ref: 4,
+    koubei: 1,
+    output: 6,
+    contribute: 5,
+    hot: 7,
+    w: 8,
+    o: 9,
   },
 ];
 
 const radarData = [];
 const radarTitleMap = {
-  ref: '引用',
-  koubei: '口碑',
-  output: '产量',
-  contribute: '贡献',
-  hot: '热度',
+  ref: '企业自有资金',
+  koubei: '个人自有资金',
+  output: '基金管理人企业',
+  contribute: '基金项目产品企业',
+  hot: '融资租赁',
+  w: '员工持股平台',
+  o: '其他企业',
 };
 radarOriginData.forEach(item => {
   Object.keys(item).forEach(key => {
