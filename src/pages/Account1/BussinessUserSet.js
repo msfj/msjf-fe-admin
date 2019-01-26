@@ -1,20 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Select,
-  Icon,
-  Button,
-  Dropdown,
-  Menu,
-  Input,
-  Modal,
-  message,
-  Badge,
-} from 'antd';
+import { Row, Col, Card, Form, Select, Icon, Button, Input, Modal, message, Badge } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 // import { FormattedMessage } from 'umi/locale';
@@ -239,6 +225,10 @@ class BUserSet extends PureComponent {
       render: (text, record) => (
         <Fragment>
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>编辑</a>
+          <a> 重置密码 </a>
+          <a> 冻结 </a>
+          <a> 锁定 </a>
+          <a> 删除 </a>
         </Fragment>
       ),
     },
@@ -544,14 +534,7 @@ class BUserSet extends PureComponent {
     const { selectedRows, modalVisible, show, updateModalVisible, stepFormValues } = this.state;
     const modalFooter = { onOk: this.handleDone, onCancel: this.handleCancel };
     // console.log(data);
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">冻结</Menu.Item>
-        <Menu.Item key="unlock">解锁</Menu.Item>
-        <Menu.Item key="reset">重置密码 </Menu.Item>
-      </Menu>
-    );
+
     const getModalContent = () => (
       <Form>
         <Form.Item label="用户类型" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
@@ -625,18 +608,7 @@ class BUserSet extends PureComponent {
           <Card bordered={false}>
             <div className={styles.tableList}>
               <div className={styles.tableListForm}>{this.renderForm()}</div>
-              <div className={styles.tableListOperator}>
-                {selectedRows.length > 0 && (
-                  <span>
-                    <Button>批量操作</Button>
-                    <Dropdown overlay={menu}>
-                      <Button>
-                        更多操作 <Icon type="down" />
-                      </Button>
-                    </Dropdown>
-                  </span>
-                )}
-              </div>
+              <div className={styles.tableListOperator} />
               <StandardTable
                 selectedRows={selectedRows}
                 loading={loading}

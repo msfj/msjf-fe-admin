@@ -137,7 +137,7 @@ const notice = [
     ],
     description: '最早三条',
     href: { pathname: 'process-list', query: titles[0] },
-    memberLink: 'process-init',
+    memberLink: 'process-list',
   },
   {
     id: 'xxx2',
@@ -149,8 +149,8 @@ const notice = [
       { men: '花好月圆', updatedAt: new Date() },
       { men: '花好月圆', updatedAt: new Date() },
     ],
-    href: '',
-    memberLink: '',
+    href: { pathname: 'process-list', query: titles[1] },
+    memberLink: 'process-list',
   },
   {
     id: 'xxx3',
@@ -162,8 +162,8 @@ const notice = [
       { men: '花好月圆', updatedAt: new Date() },
       { men: '花好月圆', updatedAt: new Date() },
     ],
-    href: '',
-    memberLink: '',
+    href: { pathname: 'process-list', query: titles[2] },
+    memberLink: 'process-list',
   },
   {
     id: 'xxx4',
@@ -175,8 +175,8 @@ const notice = [
       { men: '花好月圆', updatedAt: new Date() },
       { men: '花好月圆', updatedAt: new Date() },
     ],
-    href: '',
-    memberLink: '',
+    href: { pathname: 'process-list', query: titles[3] },
+    memberLink: 'process-list',
   },
   {
     id: 'xxx5',
@@ -188,8 +188,8 @@ const notice = [
       { men: '花好月圆', updatedAt: new Date() },
       { men: '花好月圆', updatedAt: new Date() },
     ],
-    href: '',
-    memberLink: '',
+    href: { pathname: 'process-list', query: titles[4] },
+    memberLink: 'process-list',
   },
 ];
 
@@ -480,45 +480,51 @@ class TableList extends PureComponent {
                 title="待办任务"
                 bordered={false}
               >
-                {notice.map(item => (
-                  <Card.Grid className={styles.projectGrid} key={item.id}>
-                    <Card bodyStyle={{ padding: 0 }} bordered={false}>
-                      <Card.Meta
-                        title={
-                          <div className={styles.cardTitle}>
-                            <Avatar size="small" src={item.logo} />
-                            <Link to={item.href}>{item.title}</Link>
-                          </div>
-                        }
-                        description={item.description}
-                      />
-                      <div className={styles.projectItemContent}>
-                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                        {item.member[0].updatedAt && (
-                          <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[0].updatedAt).fromNow()}
-                          </span>
-                        )}
-                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                        {item.member[0].updatedAt && (
-                          <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[0].updatedAt).fromNow()}
-                          </span>
-                        )}
-                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                        {item.member[0].updatedAt && (
-                          <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[0].updatedAt).fromNow()}
-                          </span>
-                        )}
-                      </div>
-                    </Card>
-                  </Card.Grid>
-                ))}
+                <div style={{ marginTop: 12 }}>
+                  {notice.map(item => (
+                    <Card.Grid className={styles.projectGrid} key={item.id}>
+                      <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                        <Card.Meta
+                          title={
+                            <div className={styles.cardTitle}>
+                              <Avatar size="small" src={item.logo} />
+                              <Link to={item.href}>{item.title}</Link>
+                            </div>
+                          }
+                          description={item.description}
+                        />
+                        <div className={styles.projectItemContent}>
+                          <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                          {item.member[0].updatedAt && (
+                            <span className={styles.datetime} title={item.member[0].updatedAt}>
+                              {moment(item.member[0].updatedAt).fromNow()}
+                            </span>
+                          )}
+                        </div>
+                        <div className={styles.projectItemContent}>
+                          <Link to={item.memberLink}>{item.member[1].men || ''}</Link>
+                          {item.member[0].updatedAt && (
+                            <span className={styles.datetime} title={item.member[0].updatedAt}>
+                              {moment(item.member[0].updatedAt).fromNow()}
+                            </span>
+                          )}
+                        </div>
+                        <div className={styles.projectItemContent}>
+                          <Link to={item.memberLink}>{item.member[2].men || ''}</Link>
+                          {item.member[0].updatedAt && (
+                            <span className={styles.datetime} title={item.member[0].updatedAt}>
+                              {moment(item.member[0].updatedAt).fromNow()}
+                            </span>
+                          )}
+                        </div>
+                      </Card>
+                    </Card.Grid>
+                  ))}
+                </div>
               </Card>
             </Col>
           </Row>
-          <Row>
+          <Row style={{ marginTop: -24 }}>
             <Card
               bordered={false}
               title="审核历史动态"

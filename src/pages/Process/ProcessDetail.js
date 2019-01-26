@@ -75,7 +75,7 @@ class TableList extends PureComponent {
       dataIndex: 'files',
       render: val => (
         <Fragment>
-          <a download={val.url}>{val.name}</a>
+          <a>{val}</a>
         </Fragment>
       ),
     },

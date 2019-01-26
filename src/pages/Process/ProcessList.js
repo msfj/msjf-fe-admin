@@ -50,17 +50,12 @@ class TableList extends PureComponent {
   columns = [
     {
       title: '流程类型',
-      dataIndex: 'flowName',
+      dataIndex: 'proDefName',
       sorter: true,
     },
     {
       title: '任务名称',
       dataIndex: 'actName',
-      sorter: true,
-    },
-    {
-      title: '任务描述',
-      dataIndex: 'desc',
       sorter: true,
     },
     {
@@ -70,7 +65,7 @@ class TableList extends PureComponent {
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
-      title: '结束时间',
+      title: '最近提交时间',
       dataIndex: 'endTime',
       sorter: true,
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
@@ -127,7 +122,11 @@ class TableList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'process/fetch',
+      type: 'process/fetchList',
+      payload: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     });
   }
 
@@ -152,7 +151,7 @@ class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'process/fetch',
+      type: 'process/fetchList',
       payload: params,
     });
   };
@@ -164,8 +163,12 @@ class TableList extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'process/fetch',
-      payload: {},
+      type: 'process/fetchList',
+      payload: {
+        pageNum: 1,
+        pageSize: 10,
+        // auditorId:111,
+      },
     });
   };
 
@@ -216,7 +219,10 @@ class TableList extends PureComponent {
 
       const values = {
         ...fieldsValue,
-        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
+        pageNum: 1,
+        pageSize: 10,
+        // auditorId:111,
+        // updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
       };
 
       this.setState({
@@ -224,7 +230,7 @@ class TableList extends PureComponent {
       });
 
       dispatch({
-        type: 'process/fetch',
+        type: 'process/fetchList',
         payload: values,
       });
     });
@@ -238,11 +244,13 @@ class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="任务类型">
-              {getFieldDecorator('flowType')(
+            <FormItem label="流程类型">
+              {getFieldDecorator('proDefName')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">企业设立</Option>
-                  <Option value="1">企业变更申请</Option>
+                  <Option value="企业设立">企业设立</Option>
+                  <Option value="企业变更">企业变更</Option>
+                  <Option value="企业迁入">企业迁入</Option>
+                  <Option value="企业注销">企业注销</Option>
                 </Select>
               )}
             </FormItem>
@@ -278,11 +286,13 @@ class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
-            <FormItem label="任务类型">
-              {getFieldDecorator('flowType')(
+            <FormItem label="流程类型">
+              {getFieldDecorator('proDefName')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">企业设立</Option>
-                  <Option value="1">企业变更申请</Option>
+                  <Option value="企业设立">企业设立</Option>
+                  <Option value="企业变更">企业变更</Option>
+                  <Option value="企业迁入">企业迁入</Option>
+                  <Option value="企业注销">企业注销</Option>
                 </Select>
               )}
             </FormItem>
