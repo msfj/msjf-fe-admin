@@ -247,6 +247,8 @@ function postStaff(req, res, u, b) {
 }
 
 export default {
+  'GET /api/getClient': getStaff,
+  'POST /api/getClient': postStaff,
   'GET /api/getStaff': getStaff,
   'POST /api/getStaff': postStaff,
   /* 'GET /api/process/modal': mockjs.mock({

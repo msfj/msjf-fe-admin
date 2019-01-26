@@ -3,8 +3,6 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Select, Icon, Button, Input, Modal, message, Badge } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-// import { FormattedMessage } from 'umi/locale';
-
 import styles from './BussinessUserSet.less';
 
 const FormItem = Form.Item;
@@ -31,7 +29,15 @@ const cols = {
 };
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible, show, judge } = props;
+  const {
+    modalVisible,
+    form,
+    handleAdd,
+    formValues,
+    handleModalVisible,
+    isShowOrg,
+    toggleClientType,
+  } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -43,7 +49,7 @@ const CreateForm = Form.create()(props => {
   return (
     <Modal
       destroyOnClose
-      title="编辑用户"
+      title="客户管理"
       okText="保存"
       visible={modalVisible}
       onOk={okHandle}
@@ -54,11 +60,11 @@ const CreateForm = Form.create()(props => {
         <Form.Item label="用户类型" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
           {form.getFieldDecorator('userType', {
             rules: [{ required: true }],
-            initialValue: '自然人',
+            initialValue: formValues.userType || '0',
           })(
-            <Select onChange={judge}>
-              <Option value="自然人">自然人</Option>
-              <Option value="企业">企业</Option>
+            <Select onChange={toggleClientType}>
+              <Option value="0">自然人</Option>
+              <Option value="1">企业</Option>
             </Select>
           )}
         </Form.Item>
@@ -66,15 +72,15 @@ const CreateForm = Form.create()(props => {
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 13 }}
           label="企业类型"
-          style={{ display: show ? 'block' : 'none' }}
+          style={{ display: isShowOrg ? 'block' : 'none' }}
         >
           {form.getFieldDecorator('enterpriseType', {
             rules: [{ required: true }],
-            initialValue: '-请选择-',
+            initialValue: formValues.organtype || '0',
           })(
             <Select>
-              <Option value="自然人">自然人</Option>
-              <Option value="企业">企业</Option>
+              <Option value="0">自然人</Option>
+              <Option value="1">企业</Option>
             </Select>
           )}
         </Form.Item>
@@ -82,51 +88,57 @@ const CreateForm = Form.create()(props => {
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 13 }}
           label="企业分类"
-          style={{ display: show ? 'block' : 'none' }}
+          style={{ display: isShowOrg ? 'block' : 'none' }}
         >
           {form.getFieldDecorator('enterpriseClass', {
             rules: [{ required: true }],
-            initialValue: '-请选择-',
+            initialValue: formValues.organclass || '0',
           })(
             <Select>
-              <Option value="自然人">自然人</Option>
-              <Option value="企业">企业</Option>
+              <Option value="0">自然人</Option>
+              <Option value="1">企业</Option>
             </Select>
           )}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登陆账号">
           {form.getFieldDecorator('account', {
             rules: [{ required: true, message: '请输入账号' }],
+            initialValue: formValues.account,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="用户名称">
           {form.getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名' }],
+            initialValue: formValues.userName,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件类型">
           {form.getFieldDecorator('certificateType', {
-            initialValue: '身份证',
+            initialValue: formValues.certificateType || '0',
             rules: [{ required: true }],
           })(
             <Select>
-              <Option value="身份证">身份证</Option>
+              <Option value="0">身份证</Option>
+              <Option value="1">营业执照</Option>
             </Select>
           )}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件号码">
           {form.getFieldDecorator('number', {
             rules: [{ required: true, message: '请输入证件号码' }],
+            initialValue: formValues.number,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="手机号码">
           {form.getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入手机号' }],
+            initialValue: formValues.phone,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="邮箱">
           {form.getFieldDecorator('email', {
             rules: [{ required: true, message: '请输入邮箱' }],
+            initialValue: formValues.email,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
       </Form>
@@ -143,14 +155,10 @@ const CreateForm = Form.create()(props => {
 class BUserSet extends PureComponent {
   state = {
     modalVisible: false,
-    // updateModalVisible: false,
     expandForm: false,
     selectedRows: [],
     formValues: {},
-    show: false,
-    updateModalVisible: false,
-    stepFormValues: {},
-    // done: false,
+    isShowOrg: false,
   };
 
   columns = [
@@ -168,10 +176,6 @@ class BUserSet extends PureComponent {
       title: '证件号码',
       dataIndex: 'number',
       sorter: true,
-      // align: 'right',
-      // render: val => `${val} 万`,
-      // mark to display a total number
-      // needTotal: true,
     },
     {
       title: '手机号码',
@@ -182,7 +186,6 @@ class BUserSet extends PureComponent {
       title: '邮箱地址',
       dataIndex: 'email',
       sorter: true,
-      // render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
     {
       title: '登陆帐号',
@@ -222,9 +225,16 @@ class BUserSet extends PureComponent {
     },
     {
       title: '操作',
-      render: (text, record) => (
+      render: record => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>编辑</a>
+          <a
+            onClick={() => {
+              this.handleModalVisible();
+              this.haddleFormParams(record);
+            }}
+          >
+            编辑
+          </a>
           <a> 重置密码 </a>
           <a> 冻结 </a>
           <a> 锁定 </a>
@@ -237,7 +247,7 @@ class BUserSet extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'account1/getStaff',
+      type: 'account1/getClient',
     });
   }
 
@@ -262,20 +272,16 @@ class BUserSet extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/getStaff',
+      type: 'account1/getClient',
       payload: params,
     });
   };
 
-  judge = value => {
-    if (value === '自然人')
-      this.setState({
-        show: false,
-      });
-    else
-      this.setState({
-        show: true,
-      });
+  toggleClientType = value => {
+    const isShowOrg = value === '1';
+    this.setState({
+      isShowOrg,
+    });
   };
 
   handleFormReset = () => {
@@ -285,7 +291,7 @@ class BUserSet extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'account1/getStaff',
+      type: 'account1/getClient',
       payload: {},
     });
   };
@@ -337,7 +343,6 @@ class BUserSet extends PureComponent {
 
       const values = {
         ...fieldsValue,
-        // updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
       };
 
       this.setState({
@@ -351,16 +356,18 @@ class BUserSet extends PureComponent {
     });
   };
 
-  handleModalVisible = flag => {
+  handleModalVisible = () => {
+    const { modalVisible } = this.state;
     this.setState({
-      modalVisible: !!flag,
+      modalVisible: !modalVisible,
     });
   };
 
-  handleUpdateModalVisible = (flag, record) => {
+  haddleFormParams = record => {
+    const isShowOrg = record.userType && record.userType === '1';
     this.setState({
-      updateModalVisible: flag,
-      stepFormValues: record || {},
+      formValues: record || {},
+      isShowOrg,
     });
   };
 
@@ -376,25 +383,11 @@ class BUserSet extends PureComponent {
         email: fields.email,
         account: fields.account,
         userType: fields.userType,
-        // enterpriseType: fields.enterpriseType,
-        // enterpriseClass: fields.enterpriseClass,
       },
     });
 
     message.success('添加成功');
     this.handleModalVisible();
-  };
-
-  handleDone = () => {
-    this.setState({
-      updateModalVisible: false,
-    });
-  };
-
-  handleCancel = () => {
-    this.setState({
-      updateModalVisible: false,
-    });
   };
 
   handleUpdate = fields => {
@@ -417,7 +410,7 @@ class BUserSet extends PureComponent {
     });
 
     message.success('配置成功');
-    this.handleUpdateModalVisible();
+    this.handleModalVisible();
   };
 
   renderSimpleForm() {
@@ -445,7 +438,10 @@ class BUserSet extends PureComponent {
               <Button
                 type="primary"
                 style={{ marginLeft: 8 }}
-                onClick={() => this.handleModalVisible(true)}
+                onClick={() => {
+                  this.handleModalVisible();
+                  this.haddleFormParams();
+                }}
               >
                 新增
               </Button>
@@ -503,7 +499,7 @@ class BUserSet extends PureComponent {
             <Button
               type="primary"
               style={{ marginLeft: 8 }}
-              onClick={() => this.handleModalVisible(true)}
+              onClick={() => this.handleModalVisible()}
             >
               新增
             </Button>
@@ -529,75 +525,24 @@ class BUserSet extends PureComponent {
       // rule: { data },
       account1: { staffData },
       loading,
-      form,
     } = this.props;
-    const { selectedRows, modalVisible, show, updateModalVisible, stepFormValues } = this.state;
-    const modalFooter = { onOk: this.handleDone, onCancel: this.handleCancel };
-    // console.log(data);
-
-    const getModalContent = () => (
-      <Form>
-        <Form.Item label="用户类型" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
-          {form.getFieldDecorator('userType', {
-            rules: [{ required: true }],
-            initialValue: stepFormValues.userType,
-          })(
-            <Select onChange={this.judge}>
-              <Option value="自然人">自然人</Option>
-              <Option value="企业">企业</Option>
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登陆账号">
-          {form.getFieldDecorator('account', {
-            rules: [{ required: true, message: '请输入账号' }],
-            initialValue: stepFormValues.account,
-          })(<Input placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="用户名称">
-          {form.getFieldDecorator('userName', {
-            rules: [{ required: true, message: '请输入用户名' }],
-            initialValue: stepFormValues.userName,
-          })(<Input placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件类型">
-          {form.getFieldDecorator('certificateType', {
-            initialValue: stepFormValues.certificateType,
-            rules: [{ required: true }],
-          })(
-            <Select>
-              <Option value="身份证">身份证</Option>
-              <Option value="营业执照">营业执照</Option>
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件号码">
-          {form.getFieldDecorator('number', {
-            rules: [{ required: true, message: '请输入证件号码' }],
-            initialValue: stepFormValues.number,
-          })(<Input placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="手机号码">
-          {form.getFieldDecorator('phone', {
-            rules: [{ required: true, message: '请输入手机号' }],
-            initialValue: stepFormValues.phone,
-          })(<Input placeholder="请输入" />)}
-        </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="邮箱">
-          {form.getFieldDecorator('email', {
-            rules: [{ required: true, message: '请输入邮箱' }],
-            initialValue: stepFormValues.email,
-          })(<Input placeholder="请输入" />)}
-        </Form.Item>
-      </Form>
-    );
+    const { selectedRows, modalVisible, isShowOrg, formValues } = this.state;
+    // const menu = (
+    //   <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
+    //     <Menu.Item key="remove">删除</Menu.Item>
+    //     <Menu.Item key="approval">冻结</Menu.Item>
+    //     <Menu.Item key="unlock">解锁</Menu.Item>
+    //     <Menu.Item key="reset">重置密码 </Menu.Item>
+    //   </Menu>
+    // );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
-      judge: this.judge,
+      toggleClientType: this.toggleClientType,
       modalVisible,
-      show,
+      formValues,
+      isShowOrg,
     };
     return (
       <PageHeaderWrapper>
@@ -621,9 +566,6 @@ class BUserSet extends PureComponent {
           </Card>
         </div>
         <CreateForm {...parentMethods} />
-        <Modal width={600} visible={updateModalVisible} title="编辑用户" {...modalFooter}>
-          {getModalContent()}
-        </Modal>
       </PageHeaderWrapper>
     );
   }

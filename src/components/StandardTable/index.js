@@ -15,12 +15,12 @@ function initTotalList(columns) {
 class StandardTable extends PureComponent {
   constructor(props) {
     super(props);
-    const { columns } = props;
-    const needTotalList = initTotalList(columns);
+    // const { columns } = props;
+    // const needTotalList = initTotalList(columns);
 
     this.state = {
       // selectedRowKeys: [],
-      needTotalList,
+      // needTotalList,
     };
   }
 
@@ -36,19 +36,19 @@ class StandardTable extends PureComponent {
     return null;
   }
 
-  handleRowSelectChange = (selectedRowKeys, selectedRows) => {
-    let { needTotalList } = this.state;
-    needTotalList = needTotalList.map(item => ({
-      ...item,
-      total: selectedRows.reduce((sum, val) => sum + parseFloat(val[item.dataIndex], 10), 0),
-    }));
-    const { onSelectRow } = this.props;
-    if (onSelectRow) {
-      onSelectRow(selectedRows);
-    }
+  // handleRowSelectChange = (selectedRowKeys, selectedRows) => {
+  //   let { needTotalList } = this.state;
+  //   needTotalList = needTotalList.map(item => ({
+  //     ...item,
+  //     total: selectedRows.reduce((sum, val) => sum + parseFloat(val[item.dataIndex], 10), 0),
+  //   }));
+  //   const { onSelectRow } = this.props;
+  //   if (onSelectRow) {
+  //     onSelectRow(selectedRows);
+  //   }
 
-    this.setState({ needTotalList });
-  };
+  //   // this.setState({ selectedRowKeys, needTotalList });
+  // };
 
   handleTableChange = (pagination, filters, sorter) => {
     const { onChange } = this.props;
@@ -57,9 +57,9 @@ class StandardTable extends PureComponent {
     }
   };
 
-  cleanSelectedKeys = () => {
-    this.handleRowSelectChange([], []);
-  };
+  // cleanSelectedKeys = () => {
+  //   this.handleRowSelectChange([], []);
+  // };
 
   render() {
     // const { selectedRowKeys } = this.state;
@@ -72,22 +72,45 @@ class StandardTable extends PureComponent {
       ...pagination,
     };
 
-    /* const rowSelection = {
-      selectedRowKeys,
-      onChange: this.handleRowSelectChange,
-      getCheckboxProps: record => ({
-        disabled: record.disabled,
-      }),
-    }; */
+    // const rowSelection = {
+    //   selectedRowKeys,
+    //   onChange: this.handleRowSelectChange,
+    //   getCheckboxProps: record => ({
+    //     disabled: record.disabled,
+    //   }),
+    // };
 
     return (
       <div className={styles.standardTable}>
+        <div className={styles.tableAlert}>
+          {/* <Alert
+            message={
+              <Fragment>
+                已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
+                {needTotalList.map(item => (
+                  <span style={{ marginLeft: 8 }} key={item.dataIndex}>
+                    {item.title}
+                    总计&nbsp;
+                    <span style={{ fontWeight: 600 }}>
+                      {item.render ? item.render(item.total) : item.total}
+                    </span>
+                  </span>
+                ))}
+                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
+                  清空
+                </a>
+              </Fragment>
+            }
+            type="info"
+            showIcon
+          /> */}
+        </div>
         <Table
           rowKey={rowKey || 'key'}
           // rowSelection={rowSelection}
           dataSource={list}
           pagination={paginationProps}
-          onChange={this.handleTableChange}
+          // onChange={this.handleTableChange}
           {...rest}
         />
       </div>

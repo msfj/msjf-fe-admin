@@ -168,8 +168,43 @@ export async function queryProcessQuery(params) {
 }
 
 // account1
+// 客户 增改删
+export async function getClient(params) {
+  return request(`/api/getClient?${stringify(params)}`);
+}
+
+export async function editClient(params) {
+  return request(`/api/editClient?${stringify(params)}`);
+}
+
+export async function delClient(params) {
+  return request(`/api/delClient?${stringify(params)}`);
+}
+
+// 部门 增改删
+export async function getBranch(params) {
+  return request(`/api/getBranch?${stringify(params)}`);
+}
+
+export async function editBranch(params) {
+  return request(`/api/editBranch?${stringify(params)}`);
+}
+
+export async function delBranch(params) {
+  return request(`/api/delBranch?${stringify(params)}`);
+}
+
+// 员工 增改删
 export async function getStaff(params) {
   return request(`/api/getStaff?${stringify(params)}`);
+}
+
+export async function editStaff(params) {
+  return request(`/api/editStaff?${stringify(params)}`);
+}
+
+export async function delStaff(params) {
+  return request(`/api/delStaff?${stringify(params)}`);
 }
 
 export async function addAccount1(params) {
