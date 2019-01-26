@@ -20,30 +20,152 @@ const list = [
   {
     logo: '',
     subDescription: '企业拟设立',
-    title: '宁波花好月圆有限公司',
+    title: '宁波梅山保税港区荣浪云商电子商务有限公司',
     start: new Date(),
     end: new Date(),
     status: 'success',
     percent: 100,
+    per: '曹韬',
   },
   {
     logo: '',
     subDescription: '企业拟设立',
-    title: '宁波花好月圆有限公司',
+    title: '宁波梅山保税港区无尾熊电子商务有限公司',
     start: new Date(),
     end: new Date(),
-    status: 'success',
-    percent: 100,
+    status: 'normal',
+    percent: 70,
+    per: '张蕾',
   },
   {
     logo: '',
     subDescription: '企业拟设立',
-    title: '宁波花好月圆有限公司',
+    title: '宁波梅山保税港区龙强投资管理有限公司',
     start: new Date(),
     end: new Date(),
-    status: 'success',
-    percent: 100,
+    status: 'normal',
+    percent: 80,
+    per: '陈竹',
+  },
+  {
+    logo: '',
+    subDescription: '企业确认设立',
+    title: '宁波梅山保税港区梅森贸易有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'normal',
+    percent: 70,
+    per: '吴章穆',
+  },
+  {
+    logo: '',
+    subDescription: '企业确认设立',
+    title: '宁波梅山保税港区堃俍投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'exception',
+    percent: 70,
+    per: '徐云芳',
+  },
+  {
+    logo: '',
+    subDescription: '企业确认设立',
+    title: '宁波梅山保税港区嘉信金诚投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'active',
+    percent: 90,
+    per: '孙路',
+  },
+  {
+    logo: '',
+    subDescription: '企业变更',
+    title: '宁波梅山保税港区杰跃投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'exception',
+    percent: 40,
+    per: '郑珊',
+  },
+  {
+    logo: '',
+    subDescription: '企业变更',
+    title: '宁波梅山保税港区星颐投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'normal',
+    percent: 50,
+    per: '杜娟',
+  },
+  {
+    logo: '',
+    subDescription: '企业变更',
+    title: '宁波梅山保税港区湘矽投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'exception',
+    percent: 90,
+    per: '李侠',
+  },
+  {
+    logo: '',
+    subDescription: '企业迁入',
+    title: '宁波梅山保税港区臻昳投资有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'active',
+    percent: 50,
     per: '王龙',
+  },
+  {
+    logo: '',
+    subDescription: '企业迁入',
+    title: '宁波梅山保税港区梁悦投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'active',
+    percent: 50,
+    per: '郭孟鸿',
+  },
+  {
+    logo: '',
+    subDescription: '企业迁入',
+    title: '宁波梅山保税港区诚启创业投资有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'active',
+    percent: 50,
+    per: '姚玮',
+  },
+  {
+    logo: '',
+    subDescription: '企业注销',
+    title: '宁波梅山保税港区顺势明道投资管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+    per: '杨钧迪',
+  },
+  {
+    logo: '',
+    subDescription: '企业注销',
+    title: '宁波梅山保税港区金镗企业管理咨询有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+    per: '朱耀军',
+  },
+  {
+    logo: '',
+    subDescription: '企业注销',
+    title: '宁波梅山保税港区坤七资产管理有限公司',
+    start: new Date(),
+    end: new Date(),
+    status: 'success',
+    percent: 100,
+    per: '洪涛',
   },
 ];
 const paginationProps = {
@@ -234,7 +356,7 @@ class Workplace extends PureComponent {
           <Row gutter={24}>
             <Col xl={16} lg={24} md={24} sm={24} xs={24}>
               <Card
-                bodyStyle={{ height: 391, padding: 0 }}
+                bodyStyle={{ padding: 0, background: '#f1f1f1' }}
                 className={styles.projectList}
                 style={{ marginBottom: 24 }}
                 title="待办任务"
@@ -243,41 +365,43 @@ class Workplace extends PureComponent {
               >
                 {notice.map(item => (
                   <Card.Grid className={styles.projectGrid} key={item.id}>
-                    <Card bodyStyle={{ padding: 0 }} bordered={false}>
-                      <Card.Meta
-                        title={
-                          <div className={styles.cardTitle}>
-                            <Avatar size="small" src={item.logo} />
-                            <Link to={item.href}>{item.title}</Link>
-                          </div>
-                        }
-                        description={item.description}
-                      />
-                      <div className={styles.projectItemContent}>
-                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                        {item.member[0].updatedAt && (
-                          <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[0].updatedAt).fromNow()}
-                          </span>
-                        )}
-                      </div>
-                      <div className={styles.projectItemContent}>
-                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                        {item.member[0].updatedAt && (
-                          <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[1].updatedAt).fromNow()}
-                          </span>
-                        )}
-                      </div>
-                      <div className={styles.projectItemContent}>
-                        <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                        {item.member[0].updatedAt && (
-                          <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[2].updatedAt).fromNow()}
-                          </span>
-                        )}
-                      </div>
-                    </Card>
+                    <Link to={item.href}>
+                      <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                        <Card.Meta
+                          title={
+                            <div className={styles.cardTitle}>
+                              <Avatar size="small" src={item.logo} />
+                              <Link to={item.href}>{item.title}</Link>
+                            </div>
+                          }
+                          description={item.description}
+                        />
+                        <div className={styles.projectItemContent}>
+                          <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                          {item.member[0].updatedAt && (
+                            <span className={styles.datetime} title={item.member[0].updatedAt}>
+                              {moment(item.member[0].updatedAt).fromNow()}
+                            </span>
+                          )}
+                        </div>
+                        <div className={styles.projectItemContent}>
+                          <Link to={item.memberLink}>{item.member[1].men || ''}</Link>
+                          {item.member[1].updatedAt && (
+                            <span className={styles.datetime} title={item.member[1].updatedAt}>
+                              {moment(item.member[1].updatedAt).fromNow()}
+                            </span>
+                          )}
+                        </div>
+                        <div className={styles.projectItemContent}>
+                          <Link to={item.memberLink}>{item.member[2].men || ''}</Link>
+                          {item.member[2].updatedAt && (
+                            <span className={styles.datetime} title={item.member[0].updatedAt}>
+                              {moment(item.member[2].updatedAt).fromNow()}
+                            </span>
+                          )}
+                        </div>
+                      </Card>
+                    </Link>
                   </Card.Grid>
                 ))}
               </Card>

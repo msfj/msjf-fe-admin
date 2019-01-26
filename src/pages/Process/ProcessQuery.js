@@ -32,6 +32,132 @@ const cols = {
   sm: 24,
 };
 
+const dataRe1 = [
+  {
+    Id: '07110dce0be54d58ac2d05844e35b39a',
+    proInstance: '3712501',
+    proDefKey: 'kingdom_1525662692438:2:2525',
+    proDefName: '用户注册',
+    auditorName: '谢忠全',
+    custName: '1213',
+    custNo: '132',
+    actName: '金服人员审核',
+    startTime: '2019-01-19 08:53:48',
+    endTime: '2019-01-23 15:27:56',
+    messageText: '已退回',
+    auditResult: '发起流程',
+  },
+  {
+    Id: '8b42828616614c5bbc284acc30956315',
+    proInstance: '3712765',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '000',
+    auditorName: '张天',
+    custName: '宁波市瑞芯网络科技合伙企业',
+    custNo: '12134',
+    actName: '金服人员审核',
+    startTime: '2019-01-16 09:53:48',
+    endTime: '2019-01-23 15:27:56',
+    messageText: '同意',
+    auditResult: '发起流程',
+  },
+  {
+    Id: '044bdf1c3c124dfa8a44b81f75f2423e',
+    proInstance: '3712699',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '000',
+    auditorName: '谢金',
+    custName: '宁波市瑞芯网络科技合伙企业',
+    custNo: '12134',
+    actName: '金服人员审核',
+    startTime: '2019-01-19 09:53:48',
+    endTime: '2019-01-23 15:23:49',
+    messageText: '同意',
+    auditResult: '发起流程',
+  },
+  {
+    Id: '4939e02ecf8640149b5e0a774a1172dc',
+    proInstance: '3712633',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '000',
+    custName: '宁波市瑞芯网络科技合伙企业',
+    custNo: '12134',
+    auditorName: '李元霸',
+    actName: '金服人员审核',
+    startTime: '2019-01-19 11:55:48',
+    endTime: '2019-01-23 15:13:38',
+    messageText: '不同意',
+    auditResult: '发起流程',
+  },
+  {
+    Id: 'd7d3546884a742178e6f34a9854f5a3a',
+    proInstance: '3712567',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '000',
+    auditorName: '李浩',
+    custName: '宁波市瑞芯网络科技合伙企业',
+    custNo: '12134',
+    actName: '金服人员审核',
+    startTime: '2019-01-19 11:53:48',
+    endTime: '2019-01-23 15:13:35',
+    messageText: '已退回',
+    auditResult: '发起流程',
+  },
+  {
+    Id: 'e1c75a875d724782be9587b0bc4fe947',
+    proInstance: '3712501',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '000',
+    auditorName: '张浩',
+    custName: '宁波市瑞芯网络科技合伙企业',
+    custNo: '12134',
+    actName: '金服人员审核',
+    startTime: '2019-01-19 13:53:48',
+    endTime: '2019-01-23 15:12:54',
+    messageText: '同意',
+    auditResult: '发起流程',
+  },
+  {
+    Id: '95f29019fdd74657af98256c03a0ebe7',
+    proInstance: '3697521',
+    proDefKey: 'kingdom_1525662692438:2:2525',
+    proDefName: '用户注册',
+    auditorId: '111',
+    auditorName: '张三',
+    custName: '1213',
+    custNo: '132',
+    actId: '2121',
+    actName: '金服人员审核',
+    startTime: '2019-01-19 16:53:48',
+    endTime: '2019-01-19 16:54:12',
+    messageText: '同意',
+    auditResult: '审核通过',
+  },
+  {
+    Id: 'e66fae8e70ff4a2da4225992f7222321',
+    proInstance: '3720001',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '111',
+    auditorName: '谢永泰',
+    custName: '1213',
+    custNo: '132',
+    actName: '金服人员审核',
+    startTime: '2019-01-14 15:53:48',
+    endTime: '2019-01-19 14:16:24',
+    messageText: '不同意',
+    auditResult: '发起流程',
+  },
+];
+const dataRe = {
+  list: dataRe1,
+};
+
 /* eslint react/no-multi-comp:0 */
 @connect(({ process, loading }) => ({
   process,
@@ -331,7 +457,7 @@ class TableList extends PureComponent {
 
   render() {
     const {
-      process: { data },
+      // process: { data },
       loading,
     } = this.props;
     const { selectedRows } = this.state;
@@ -347,7 +473,7 @@ class TableList extends PureComponent {
               <StandardTable
                 selectedRows={selectedRows}
                 loading={loading}
-                data={data}
+                data={dataRe}
                 columns={this.columns}
                 onSelectRow={this.handleSelectRows}
                 onChange={this.handleStandardTableChange}
