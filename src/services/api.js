@@ -1,12 +1,12 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
-function getParams({ apiName, method, version, state, params }) {
+function getParams({ apiName, method, version, status, params }) {
   const param = {
     method,
     version: version || '1.0.0',
     api_name: apiName,
-    state: state || 'oauth',
+    status: status || 'oauth',
     timestamp: +new Date(),
     params: JSON.stringify(params || {}),
   };
@@ -124,6 +124,7 @@ export async function accountLogin(params) {
     params,
     apiName: 'setEmployeeLogin',
     method: 'employeeLogin',
+    status: 'open',
   });
   return request('/api/real', param);
 }
@@ -148,8 +149,22 @@ export async function queryModalList() {
   return request(`/api/process/modal`);
 }
 
-export async function queryProcess(params) {
-  return request(`/api/process/list?${stringify(params)}`);
+export async function queryProcesslist(params) {
+  const param = getParams({
+    params,
+    apiName: 'getPasTodo',
+    method: 'queryTodoList',
+  });
+  return request('/api/real', param);
+}
+
+export async function queryProcessQuery(params) {
+  const param = getParams({
+    params,
+    apiName: 'getPasHisList',
+    method: 'queryPasHisList',
+  });
+  return request('/api/real', param);
 }
 
 // account1

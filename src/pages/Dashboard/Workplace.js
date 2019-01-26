@@ -260,16 +260,20 @@ class Workplace extends PureComponent {
                             {moment(item.member[0].updatedAt).fromNow()}
                           </span>
                         )}
+                      </div>
+                      <div className={styles.projectItemContent}>
                         <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
                         {item.member[0].updatedAt && (
                           <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[0].updatedAt).fromNow()}
+                            {moment(item.member[1].updatedAt).fromNow()}
                           </span>
                         )}
+                      </div>
+                      <div className={styles.projectItemContent}>
                         <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
                         {item.member[0].updatedAt && (
                           <span className={styles.datetime} title={item.member[0].updatedAt}>
-                            {moment(item.member[0].updatedAt).fromNow()}
+                            {moment(item.member[2].updatedAt).fromNow()}
                           </span>
                         )}
                       </div>
@@ -291,7 +295,7 @@ class Workplace extends PureComponent {
               </Card>
             </Col>
           </Row>
-          <Row>
+          <Row style={{ marginTop: -24 }}>
             <Card
               bordered={false}
               title="审核历史动态"

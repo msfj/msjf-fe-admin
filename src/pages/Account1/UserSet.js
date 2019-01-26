@@ -646,7 +646,6 @@ class UserSet extends PureComponent {
               <Col xxl={20} xl={18} lg={18} md={24}>
                 <Card bordered={false} style={{ marginBottom: 24 }} loading={Loading}>
                   <div className={styles.tableListForm}>{this.renderForm()}</div>
-
                   <StandardTable
                     selectedRows={selectedRows}
                     loading={loading}
