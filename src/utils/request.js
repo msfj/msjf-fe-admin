@@ -95,6 +95,7 @@ export default function request(url, option) {
         ...newOptions.headers,
       };
       newOptions.body = queryString.stringify(newOptions.body);
+      //   console.log(queryString.stringify(newOptions.body))
       // JSON.stringify(newOptions.body);
     } else {
       // newOptions.body is FormData
