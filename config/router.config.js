@@ -171,7 +171,7 @@ export default [
         path: '/list',
         icon: 'table',
         name: 'list',
-        // hideInMenu: true,
+        hideInMenu: true,
         routes: [
           {
             path: '/list/table-list',

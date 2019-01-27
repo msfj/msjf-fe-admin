@@ -1,15 +1,48 @@
 import React, { Component } from 'react';
-import { Card, Row, Button, Radio, List, Col, Input, Icon, Checkbox, Tree, Tabs } from 'antd';
+import { connect } from 'dva';
+import {
+  Card,
+  Row,
+  Button,
+  Radio,
+  List,
+  Col,
+  Input,
+  Icon,
+  Checkbox,
+  Tree,
+  Tabs,
+  Form,
+  Modal,
+  Dropdown,
+  Menu,
+} from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-// import { FormattedMessage } from 'umi/locale';
+import StandardTable from '@/components/StandardTable';
 import styles from './PermissionSet.less';
 
-// const { Meta } = Card;
 const { Search } = Input;
 const { TreeNode } = Tree;
 const RadioGroup = Radio.Group;
 const { TabPane } = Tabs;
+const FormItem = Form.Item;
+
+const rows = {
+  gutter: {
+    md: 8,
+    lg: 24,
+    xl: 48,
+    xxl: 48,
+  },
+};
+
+const cols = {
+  xxl: 6,
+  xl: 8,
+  md: 12,
+  sm: 24,
+};
 
 const treeData1 = [
   {
@@ -96,30 +129,123 @@ const getParentKey = (key, tree) => {
 
 const dataRole = ['系统管理员', '招商部门对接员', '金融监督员', '招商部门分管领导', '登记办理员'];
 const dataJob = ['谢永泰', '赵薇', '王洪', '赵刚', '田雨'];
+
+const CreateForm = Form.create()(props => {
+  const { modalVisible, form, handleAdd, formValues, handleModalVisible } = props;
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      handleAdd(fieldsValue);
+    });
+  };
+
+  return (
+    <Modal
+      destroyOnClose
+      title="角色管理"
+      okText="保存"
+      visible={modalVisible}
+      onOk={okHandle}
+      onCancel={() => handleModalVisible()}
+      width={600}
+    >
+      <Form>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="角色名称">
+          {form.getFieldDecorator('account', {
+            rules: [{ required: true, message: '请输入角色名称' }],
+            initialValue: formValues.account,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="备注">
+          {form.getFieldDecorator('userName', {
+            initialValue: formValues.userName,
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+});
+
+@connect(({ account1, loading }) => ({
+  account1,
+  loading: loading.models.account1,
+}))
+@Form.create()
 class Permission extends Component {
   state = {
-    loading: false,
-    // activeKey: 0,
+    selectedRows: [],
     expandedKeys: [],
     searchValue: '',
     autoExpandParent: true,
+    modalVisible: false,
+    formValues: {},
   };
 
+  columns = [
+    {
+      title: '序号',
+      dataIndex: 'key',
+      sorter: true,
+      render: key => key + 1,
+    },
+    {
+      title: '角色名称',
+      dataIndex: 'roleName',
+      sorter: true,
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'time',
+      sorter: true,
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      sorter: true,
+    },
+    {
+      title: '操作',
+      render: record => (
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item>
+                <a
+                  onClick={() => {
+                    this.updateStaffModal(record);
+                    this.handleModalVisible();
+                  }}
+                >
+                  编辑
+                </a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>删除</a>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a className="ant-dropdown-link">
+            更多 <Icon type="down" />
+          </a>
+        </Dropdown>
+      ),
+    },
+  ];
+
   componentDidMount() {
-    /* setTimeout(() => {
-      this.setState({ loading: false });
-    }, 1000); */
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'account1/getStaff',
+    });
   }
 
-  /* haddleProcessChange = key => {
+  updateStaffModal = record => {
     this.setState({
-      activeKey: key,
+      formValues: record || {},
     });
-  }; */
-
-  /* static onChange(value) {
-    console.log(value);
-  } */
+  };
 
   onExpand = expandedKeys => {
     this.setState({
@@ -129,7 +255,6 @@ class Permission extends Component {
   };
 
   onChange = e => {
-    // console.log(e);
     const {
       target: { value },
     } = e;
@@ -149,7 +274,6 @@ class Permission extends Component {
   };
 
   onChange1 = e => {
-    // console.log(e);
     const {
       target: { value },
     } = e;
@@ -167,48 +291,92 @@ class Permission extends Component {
       autoExpandParent: true,
     });
   };
-  /* createTree(checkable) {
-    const { searchValue, expandedKeys, autoExpandParent } = this.state;
-    const loop = data =>
-      data.map(item => {
-        const index = item.title.indexOf(searchValue);
-        const beforeStr = item.title.substr(0, index);
-        const afterStr = item.title.substr(index + searchValue.length);
-        const title =
-          index > -1 ? (
-            <span>
-              {beforeStr}
-              <span style={{ color: '#f50' }}>{searchValue}</span>
-              {afterStr}
-            </span>
-          ) : (
-            <span>{item.title}</span>
-          );
-        if (item.children) {
-          return (
-            <TreeNode key={item.key} title={title}>
-              {loop(item.children)}
-            </TreeNode>
-          );
-        }
-        return <TreeNode key={item.key} title={title} />;
+
+  handleModalVisible = () => {
+    const { modalVisible } = this.state;
+    this.setState({
+      modalVisible: !modalVisible,
+    });
+  };
+
+  handleSearch = e => {
+    e.preventDefault();
+
+    const { dispatch, form } = this.props;
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+
+      const values = {
+        ...fieldsValue,
+      };
+
+      this.setState({
+        formValues: values,
       });
+      console.log(values);
+      dispatch({
+        type: 'account1/getStaff',
+        payload: values,
+      });
+    });
+  };
+
+  handleFormReset = () => {
+    const { form } = this.props;
+    form.resetFields();
+  };
+
+  renderSimpleForm() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
     return (
-      <div>
-        <Tree
-          onExpand={this.onExpand}
-          expandedKeys={expandedKeys}
-          autoExpandParent={autoExpandParent}
-          checkable={checkable}
-        >
-          {loop(gData)}
-        </Tree>
-      </div>
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row {...rows}>
+          <Col {...cols}>
+            <FormItem label="角色名称">
+              {getFieldDecorator('roleNmae')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col {...cols}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button
+                type="primary"
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  this.handleModalVisible();
+                  this.handleFormReset();
+                }}
+              >
+                新增
+              </Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+                重置
+              </Button>
+            </span>
+          </Col>
+        </Row>
+      </Form>
     );
-  } */
+  }
 
   render() {
-    const { loading, expandedKeys, autoExpandParent, searchValue } = this.state;
+    const {
+      expandedKeys,
+      autoExpandParent,
+      searchValue,
+      selectedRows,
+      modalVisible,
+      formValues,
+    } = this.state;
+    const {
+      account1: { staffData },
+      loading,
+    } = this.props;
     const loop = data =>
       data.map(item => {
         const index = item.title.indexOf(searchValue);
@@ -233,6 +401,12 @@ class Permission extends Component {
         }
         return <TreeNode key={item.key} title={title} />;
       });
+    const parentMethods = {
+      handleAdd: this.handleAdd,
+      handleModalVisible: this.handleModalVisible,
+      modalVisible,
+      formValues,
+    };
     return (
       <PageHeaderWrapper>
         <GridContent>
@@ -242,7 +416,16 @@ class Permission extends Component {
           >
             <Card bordered={false} style={{ marginBottom: 24 }} loading={loading}>
               <Tabs defaultActiveKey="1">
-                <TabPane tab="角色菜单权限" key="1">
+                <TabPane tab="角色管理" key="1">
+                  <div className={styles.tableListForm}>{this.renderSimpleForm()}</div>
+                  <StandardTable
+                    selectedRows={selectedRows}
+                    loading={loading}
+                    data={staffData}
+                    columns={this.columns}
+                  />
+                </TabPane>
+                <TabPane tab="角色菜单权限" key="2">
                   <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
                     <Col lg={6} md={24}>
                       <Search
@@ -288,7 +471,7 @@ class Permission extends Component {
                     </Col>
                   </Row>
                 </TabPane>
-                <TabPane tab="用户角色权限" key="2" style={{ paddingBottom: 30 }}>
+                <TabPane tab="用户角色权限" key="3" style={{ paddingBottom: 30 }}>
                   <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
                     <Col lg={6} md={24} xs={24}>
                       <div>
@@ -357,6 +540,7 @@ class Permission extends Component {
             </Card>
           </div>
         </GridContent>
+        <CreateForm {...parentMethods} />
       </PageHeaderWrapper>
     );
   }

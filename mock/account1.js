@@ -1,6 +1,6 @@
 import { parse } from 'url';
 
-// mock process data
+// mock account1 data
 let tableListDataSource = [
   {
     key: 0,
@@ -18,6 +18,9 @@ let tableListDataSource = [
     idNum: '33072118511200016',
     workerPhone: '19015821456',
     workerEmail: 'xeyongtai@163.com',
+    roleName: 'admin',
+    time: '2018-12-21 22:22:11',
+    remark: 'admin角色',
   },
   {
     key: 1,
@@ -35,6 +38,9 @@ let tableListDataSource = [
     idNum: '33062118511200016',
     workerPhone: '19015341451',
     workerEmail: 'xiejin@163.com',
+    roleName: '吴天',
+    time: '2018-12-21 22:22:11',
+    remark: '角色',
   },
   {
     key: 2,
@@ -52,6 +58,9 @@ let tableListDataSource = [
     idNum: '33062235511200016',
     workerPhone: '190153343456',
     workerEmail: 'wangyong@163.com',
+    roleName: '李四',
+    time: '2018-12-21 22:22:11',
+    remark: '角色',
   },
   {
     key: 3,
@@ -69,6 +78,9 @@ let tableListDataSource = [
     idNum: '33062235621200016',
     workerPhone: '190153343216',
     workerEmail: 'wangwei@163.com',
+    roleName: '张三',
+    time: '2018-12-21 22:22:11',
+    remark: '角色',
   },
   {
     key: 4,
@@ -86,50 +98,45 @@ let tableListDataSource = [
     idNum: '33062235621200016',
     workerPhone: '190153343216',
     workerEmail: 'wangwei@163.com',
+    roleName: 'user',
+    time: '2018-12-21 22:22:11',
+    remark: 'user角色',
   },
-  /* {
-    department: '口岸事务管理局',
-    workerName: '谢永泰',
-    woekerAccount: 'xieyongtai',
-    idNum: '33072118511200016',
-    workerPhone: '19015821456',
-    workerEmail: 'xeyongtai@163.com',
-  }, */
 ];
-/* for (let i = 0; i < 46; i += 1) {
-  tableListDataSource.push({
-    /* key: i + 1,
-    processInstanceId: Math.floor(Math.random() * 1000),
-    flowType: '0',
-    flowName: '企业设立',
-    actName: `金服人员审核 ${i}`,
-    title: '主题',
-    desc: `请对企业设立${i}审核`,
-    startTime: '20181223190000',
-    endTime: '20181226190000',
-    assigneeName: 'admin',
-    approve: Math.floor(Math.random() * 10) % 3,
-    auditinfo: '意见',
-    phone: '17190308842',
-    files: {
-      url: '/',
-      fileName: '企业设立流程附件',
-    },
-    bexno: Math.floor(Math.random() * 1000),
-    processname: '企业设立',
-    funcname: `金服人员审核 ${i}`,
-    checkflagname: '是', 
-    userName: `金服人员审核 ${i}`,
-    bCertificateType: '身份证',
-    bNumber: '33xxxxxxxxxxxxxxxx',
-    phone: '18xxxxxxxx',
-    email: '41xxxxxxxxx',
-    account: 'wwdwdqd',
-    userType: '企业',
-    status: 0,
-    department: 'spng',
-  });
-} */
+// /* for (let i = 0; i < 46; i += 1) {
+//   tableListDataSource.push({
+//     /* key: i + 1,
+//     processInstanceId: Math.floor(Math.random() * 1000),
+//     flowType: '0',
+//     flowName: '企业设立',
+//     actName: `金服人员审核 ${i}`,
+//     title: '主题',
+//     desc: `请对企业设立${i}审核`,
+//     startTime: '20181223190000',
+//     endTime: '20181226190000',
+//     assigneeName: 'admin',
+//     approve: Math.floor(Math.random() * 10) % 3,
+//     auditinfo: '意见',
+//     phone: '17190308842',
+//     files: {
+//       url: '/',
+//       fileName: '企业设立流程附件',
+//     },
+//     bexno: Math.floor(Math.random() * 1000),
+//     processname: '企业设立',
+//     funcname: `金服人员审核 ${i}`,
+//     checkflagname: '是',
+//     userName: `金服人员审核 ${i}`,
+//     bCertificateType: '身份证',
+//     bNumber: '33xxxxxxxxxxxxxxxx',
+//     phone: '18xxxxxxxx',
+//     email: '41xxxxxxxxx',
+//     account: 'wwdwdqd',
+//     userType: '企业',
+//     status: 0,
+//     department: 'spng',
+//   });
+// } */
 
 function getStaff(req, res, u) {
   let url = u;

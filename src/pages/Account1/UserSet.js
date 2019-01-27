@@ -1,9 +1,23 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import TreeTitle from '@/components/TreeTitle';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 // import router from 'umi/router';
-import { Card, Row, Col, Input, Button, Form, Modal, Tree, Icon, message, Select } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  Input,
+  Button,
+  Form,
+  Modal,
+  Tree,
+  Icon,
+  message,
+  Select,
+  Dropdown,
+  Menu,
+} from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './UserSet.less';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -267,6 +281,7 @@ class UserSet extends PureComponent {
       title: '员工姓名',
       dataIndex: 'workerName',
       sorter: true,
+      fixed: 'left',
       // key: 'name',
       // render: text => <a href="javascript:;">{text}</a>,
     },
@@ -274,6 +289,7 @@ class UserSet extends PureComponent {
       title: '登陆账号',
       dataIndex: 'woekerAccount',
       sorter: true,
+      // fixed: 'left',
       // key: 'age',
     },
     {
@@ -302,23 +318,38 @@ class UserSet extends PureComponent {
     },
     {
       title: '操作',
-      render: (text, record) => (
-        <Fragment>
-          <a
-            onClick={() => {
-              this.updateStaffModal(record);
-              this.toggleModal('staff');
-            }}
-          >
-            {' '}
-            编辑{' '}
+      render: record => (
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item>
+                <a
+                  onClick={() => {
+                    this.updateStaffModal(record);
+                    this.toggleModal('staff');
+                  }}
+                >
+                  编辑
+                </a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>重置密码</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>冻结</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>删除</a>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a className="ant-dropdown-link">
+            更多 <Icon type="down" />
           </a>
-          <a> 重置密码 </a>
-          <a> 冻结 </a>
-          <a> 锁定 </a>
-          <a> 删除 </a>
-        </Fragment>
+        </Dropdown>
       ),
+      fixed: 'right',
     },
   ];
 
@@ -653,6 +684,7 @@ class UserSet extends PureComponent {
                     columns={this.columns}
                     onSelectRow={this.handleSelectRows}
                     onChange={this.handleStandardTableChange}
+                    scroll={{ x: true }}
                   />
                 </Card>
               </Col>
