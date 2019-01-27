@@ -19,6 +19,111 @@ const getValue = obj =>
 // const statusMap = ['error', 'success', 'default'];
 // const status = ['不同意', '同意', '已退回'];
 
+const dataRe1 = [
+  {
+    proInstance: '3712501',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '111',
+    auditorName: '张三',
+    taskId: '3712555',
+  },
+  {
+    proInstance: '3712501',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '222',
+    auditorName: '李四',
+    taskId: '3712565',
+  },
+  {
+    proInstance: '3712567',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '111',
+    auditorName: '张三',
+    taskId: '3712621',
+  },
+  {
+    proInstance: '3712567',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '222',
+    auditorName: '李四',
+    taskId: '3712631',
+  },
+  {
+    proInstance: '3712633',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '111',
+    auditorName: '张三',
+    taskId: '3712687',
+  },
+  {
+    proInstance: '3712633',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '222',
+    auditorName: '李四',
+    taskId: '3712697',
+  },
+  {
+    proInstance: '3712699',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '111',
+    auditorName: '张三',
+    taskId: '3712753',
+  },
+  {
+    proInstance: '3712699',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '222',
+    auditorName: '李四',
+    taskId: '3712763',
+  },
+  {
+    proInstance: '3712765',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '111',
+    auditorName: '张三',
+    taskId: '3712819',
+  },
+  {
+    proInstance: '3712765',
+    actId: 'sid_1526976933410',
+    actName: '金服人员确认',
+    proDefKey: 'kingdom_1526978404700:5:3479967',
+    proDefName: '企业变更',
+    auditorId: '222',
+    auditorName: '李四',
+    taskId: '3712829',
+  },
+];
+const dataRe = {
+  list: dataRe1,
+};
 const rows = {
   gutter: {
     md: 8,
@@ -340,7 +445,7 @@ class TableList extends PureComponent {
 
   render() {
     const {
-      process: { data },
+      // process: { data },
       loading,
     } = this.props;
     const { selectedRows } = this.state;
@@ -356,7 +461,7 @@ class TableList extends PureComponent {
               <StandardTable
                 selectedRows={selectedRows}
                 loading={loading}
-                data={data}
+                data={dataRe}
                 columns={this.columns}
                 onSelectRow={this.handleSelectRows}
                 onChange={this.handleStandardTableChange}
