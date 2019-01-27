@@ -33,7 +33,7 @@ let tableListDataSource = [
     workerName: '谢金',
     woekerAccount: 'xiejin',
     idNum: '33062118511200016',
-    workerPhone: '1901534145',
+    workerPhone: '19015341451',
     workerEmail: 'xiejin@163.com',
   },
   {

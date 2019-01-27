@@ -85,3 +85,199 @@
     }
   }
 }
+
+.newEtpInfo {
+  padding: 30px 50px 0 50px;
+  display: flex;
+  flex-direction: column;
+
+  .tips {
+    display: flex;
+
+    span {
+      color: #0072d2;
+    }
+
+    img {
+      padding-right: 5px;
+    }
+  }
+
+  .titleBlock {
+    display: flex;
+    padding: 0 40px 0 40px;
+    height: 110px;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    background-color: #fff;
+
+    img {
+      height: 70px;
+      width: 70px;
+    }
+
+    .breakLine {
+      height: 50px;
+      width: 1px;
+      background: #d0d3d5;
+      margin: 0 40px 0 40px;
+    }
+
+    span {
+      flex: auto;
+    }
+
+    i {
+      background: url(../../assets/checking.svg);
+      width: 20px;
+      height: 20px;
+      margin: 0 5px 0 30px;
+    }
+
+    p {
+      margin: 0;
+      color: #faad14;
+      font-size: 16px;
+    }
+
+    .typeBlock {
+      width: 90px;
+      height: 26px;
+      background: rgba(111, 116, 121, 0.1);
+      border: 1px solid #6f7479;
+      border-radius: 2px;
+      text-align: center;
+      line-height: 26px;
+      font-size: 14px;
+      color: #6f7479;
+    }
+  }
+
+  .detailContent {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    margin: 10px 0 20px 0;
+
+    .infoTitle {
+      display: flex;
+      margin-bottom: 20px;
+
+      i {
+        margin-right: 10px;
+        height: 24px;
+        width: 3px;
+        background: #0072d2;
+      }
+
+      span {
+        color: #212121;
+        line-height: 24px;
+      }
+    }
+
+    .row {
+      font-size: 14px;
+      color: #91989e;
+
+      .col {
+        display: flex;
+        padding-bottom: 20px;
+
+        .right {
+          flex: 1;
+          color: #212121;
+          margin-left: 5px;
+        }
+
+        .agreementImg {
+          height: 100px;
+          width: 158px;
+        }
+
+        .attachment {
+          img {
+            height: 130px;
+            width: 130px;
+          }
+
+          .attachmentName {
+            font-size: 14px;
+            color: #0072d2;
+            text-decoration: underline;
+          }
+
+          i {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+
+            &.word {
+              background: url(../../assets/word.svg);
+            }
+
+            &.pdf {
+              background: url(../../assets/pdf.svg);
+            }
+
+            &.xls {
+              background: url(../../assets/excel.svg);
+            }
+          }
+        }
+      }
+    }
+
+    .staffBlock {
+      margin-bottom: 20px;
+
+      .staffItem {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        p {
+          margin-bottom: 10px;
+        }
+
+        .staffItemDetail {
+          display: flex;
+          flex-direction: column;
+          padding: 20px 20px 0 20px;
+          background: #f5f5f5;
+
+          .items {
+            display: flex;
+            padding-bottom: 20px;
+
+            img {
+              width: 20px;
+              height: 20px;
+            }
+
+            .breakLine {
+              background: #d0d3d5;
+              height: 14px;
+              width: 1px;
+              margin: 0 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .grayBlock {
+      padding: 20px 20px 0 20px;
+      background: #f5f5f5;
+      margin: 10px 0 20px 0;
+    }
+
+    .rowBorder {
+      border-top: 1px #d0d3d5 solid;
+    }
+  }
+}

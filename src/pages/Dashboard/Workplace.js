@@ -26,6 +26,8 @@ const list = [
     status: 'success',
     percent: 100,
     per: '曹韬',
+    dep: '',
+    mess: '已完成',
   },
   {
     logo: '',
@@ -36,6 +38,8 @@ const list = [
     status: 'normal',
     percent: 70,
     per: '张蕾',
+    dep: '市场监督管理部',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -46,6 +50,8 @@ const list = [
     status: 'normal',
     percent: 80,
     per: '陈竹',
+    dep: '市场监督管理部',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -56,6 +62,8 @@ const list = [
     status: 'normal',
     percent: 70,
     per: '吴章穆',
+    dep: '市场监督管理部',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -66,6 +74,8 @@ const list = [
     status: 'exception',
     percent: 70,
     per: '徐云芳',
+    dep: '市场监督管理部',
+    mess: '已退回',
   },
   {
     logo: '',
@@ -76,6 +86,8 @@ const list = [
     status: 'active',
     percent: 90,
     per: '孙路',
+    dep: '市场监督管理部',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -86,6 +98,8 @@ const list = [
     status: 'exception',
     percent: 40,
     per: '郑珊',
+    dep: '招商部门',
+    mess: '已退回',
   },
   {
     logo: '',
@@ -96,6 +110,8 @@ const list = [
     status: 'normal',
     percent: 50,
     per: '杜娟',
+    dep: '招商部门',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -106,6 +122,8 @@ const list = [
     status: 'exception',
     percent: 90,
     per: '李侠',
+    dep: '市场监督管理部',
+    mess: '已退回',
   },
   {
     logo: '',
@@ -116,6 +134,8 @@ const list = [
     status: 'active',
     percent: 50,
     per: '王龙',
+    dep: '招商部门',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -126,6 +146,8 @@ const list = [
     status: 'active',
     percent: 50,
     per: '郭孟鸿',
+    dep: '招商部门',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -136,6 +158,8 @@ const list = [
     status: 'active',
     percent: 50,
     per: '姚玮',
+    dep: '招商部门',
+    mess: '审核中',
   },
   {
     logo: '',
@@ -146,6 +170,8 @@ const list = [
     status: 'success',
     percent: 100,
     per: '杨钧迪',
+    dep: '',
+    mess: '已通过',
   },
   {
     logo: '',
@@ -156,6 +182,8 @@ const list = [
     status: 'success',
     percent: 100,
     per: '朱耀军',
+    dep: '',
+    mess: '已通过',
   },
   {
     logo: '',
@@ -166,16 +194,18 @@ const list = [
     status: 'success',
     percent: 100,
     per: '洪涛',
+    dep: '',
+    mess: '已通过',
   },
 ];
 const paginationProps = {
-  showSizeChanger: true,
+  // showSizeChanger: true,
   showQuickJumper: true,
-  pageSize: 5,
-  total: 50,
+  pageSize: 10,
+  total: 15,
 };
 
-const ListContent = ({ data: { per, start, recent, percent, status } }) => (
+const ListContent = ({ data: { per, start, recent, percent, status, mess, dep } }) => (
   <div className={styles.listContent}>
     <div className={styles.listContentItem}>
       <span>发起人</span>
@@ -191,6 +221,10 @@ const ListContent = ({ data: { per, start, recent, percent, status } }) => (
     </div>
     <div className={styles.listContentItem}>
       <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+    </div>
+    <div className={styles.listContentItem}>
+      <span>{dep}</span>
+      <p>{mess}</p>
     </div>
   </div>
 );
@@ -297,9 +331,6 @@ class Workplace extends PureComponent {
               {currentUser.name}
               ，祝你开心每一天！
             </div>
-            <div>
-              {currentUser.title} |{currentUser.group}
-            </div>
           </div>
         </div>
       ) : null;
@@ -322,23 +353,23 @@ class Workplace extends PureComponent {
       <div className={styles.extraContent}>
         <div className={styles.statItem}>
           <p>企业用户</p>
-          <p>56</p>
+          <p>7902</p>
         </div>
         <div className={styles.statItem}>
           <p>个人用户</p>
-          <p>24</p>
+          <p>26402</p>
         </div>
         <div className={styles.statItem}>
-          <p>注册资本金（人民币）</p>
-          <p>2223万</p>
+          <p>注册资本金（人民币亿）</p>
+          <p>1597.73</p>
         </div>
         <div className={styles.statItem}>
-          <p>注册资本金（美元）</p>
-          <p>22万</p>
+          <p>注册资本金（美元亿）</p>
+          <p>1.48</p>
         </div>
         <div className={styles.statItem}>
           <p>企业数量</p>
-          <p>20</p>
+          <p>3421</p>
         </div>
       </div>
     );
@@ -376,7 +407,7 @@ class Workplace extends PureComponent {
                           }
                           description={item.description}
                         />
-                        <div className={styles.projectItemContent}>
+                        <div title={item.member[0].men} className={styles.projectItemContent}>
                           <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
                           {item.member[0].updatedAt && (
                             <span className={styles.datetime} title={item.member[0].updatedAt}>
@@ -384,7 +415,7 @@ class Workplace extends PureComponent {
                             </span>
                           )}
                         </div>
-                        <div className={styles.projectItemContent}>
+                        <div title={item.member[1].men} className={styles.projectItemContent}>
                           <Link to={item.memberLink}>{item.member[1].men || ''}</Link>
                           {item.member[1].updatedAt && (
                             <span className={styles.datetime} title={item.member[1].updatedAt}>
@@ -392,10 +423,10 @@ class Workplace extends PureComponent {
                             </span>
                           )}
                         </div>
-                        <div className={styles.projectItemContent}>
+                        <div title={item.member[2].men} className={styles.projectItemContent}>
                           <Link to={item.memberLink}>{item.member[2].men || ''}</Link>
                           {item.member[2].updatedAt && (
-                            <span className={styles.datetime} title={item.member[0].updatedAt}>
+                            <span className={styles.datetime} title={item.member[2].updatedAt}>
                               {moment(item.member[2].updatedAt).fromNow()}
                             </span>
                           )}
@@ -436,13 +467,16 @@ class Workplace extends PureComponent {
                   dic[value] === item.subDescription || value === 5 ? (
                     <List.Item
                       actions={[
-                        <a
-                          onClick={e => {
-                            e.preventDefault();
+                        <Link
+                          to={{
+                            pathname: '/process/process-audit',
+                            query: {
+                              isShowAudit: false,
+                            },
                           }}
                         >
                           查看
-                        </a>,
+                        </Link>,
                       ]}
                     >
                       <List.Item.Meta

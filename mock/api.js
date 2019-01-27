@@ -166,8 +166,8 @@ const getNotice = [
       { men: '宁波梅山保税港区龙强投资管理有限公司', updatedAt: new Date() },
     ],
     description: '最早三条',
-    href: { pathname: 'process-list', query: titles[0] },
-    memberLink: 'process-list',
+    href: { pathname: '/process/process-list', query: titles[0] },
+    memberLink: '/process/process-list',
   },
   {
     id: 'xxx2',
@@ -179,8 +179,8 @@ const getNotice = [
       { men: '宁波梅山保税港区堃俍投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区嘉信金诚投资管理有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[1] },
-    memberLink: 'process-list',
+    href: { pathname: '/process/process-list', query: titles[1] },
+    memberLink: '/process/process-list',
   },
   {
     id: 'xxx3',
@@ -192,8 +192,8 @@ const getNotice = [
       { men: '宁波梅山保税港区星颐投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区湘矽投资管理有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[2] },
-    memberLink: 'process-list',
+    href: { pathname: '/process/process-list', query: titles[2] },
+    memberLink: '/process/process-list',
   },
   {
     id: 'xxx4',
@@ -205,8 +205,8 @@ const getNotice = [
       { men: '宁波梅山保税港区梁悦投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区诚启创业投资有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[3] },
-    memberLink: 'process-list',
+    href: { pathname: '/process/process-list', query: titles[3] },
+    memberLink: '/process/process-list',
   },
   {
     id: 'xxx5',
@@ -218,8 +218,8 @@ const getNotice = [
       { men: '宁波梅山保税港区金镗企业管理咨询有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区坤七资产管理有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[4] },
-    memberLink: 'process-list',
+    href: { pathname: '/process/process-list', query: titles[4] },
+    memberLink: '/process/process-list',
   },
 ];
 

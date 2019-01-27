@@ -209,12 +209,14 @@ class TableList extends PureComponent {
     {
       title: '操作',
       dataIndex: 'processInstanceId',
-      render: val => (
+      render: () => (
         <Fragment>
           <Link
             to={{
               pathname: 'process-audit',
-              query: val,
+              query: {
+                isShowAudit: true,
+              },
             }}
           >
             审核
