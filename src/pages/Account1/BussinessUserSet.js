@@ -1,6 +1,20 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Select, Icon, Button, Input, Modal, message, Badge } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Form,
+  Select,
+  Icon,
+  Button,
+  Input,
+  Modal,
+  message,
+  Badge,
+  Dropdown,
+  Menu,
+} from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './BussinessUserSet.less';
@@ -162,10 +176,17 @@ class BUserSet extends PureComponent {
   };
 
   columns = [
+    // {
+    //   title: '序号',
+    //   dataIndex: 'key',
+    //   sorter: true,
+    //   render: key => key + 1,
+    // },
     {
       title: '用户名称',
       dataIndex: 'userName',
       sorter: true,
+      fixed: 'left',
     },
     {
       title: '证件类型',
@@ -188,7 +209,7 @@ class BUserSet extends PureComponent {
       sorter: true,
     },
     {
-      title: '登陆帐号',
+      title: '登录帐号',
       dataIndex: 'account',
       sorter: true,
     },
@@ -226,21 +247,37 @@ class BUserSet extends PureComponent {
     {
       title: '操作',
       render: record => (
-        <Fragment>
-          <a
-            onClick={() => {
-              this.handleModalVisible();
-              this.haddleFormParams(record);
-            }}
-          >
-            编辑
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item>
+                <a
+                  onClick={() => {
+                    this.haddleFormParams(record);
+                    this.handleModalVisible();
+                  }}
+                >
+                  编辑
+                </a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>重置密码</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>冻结</a>
+              </Menu.Item>
+              <Menu.Item>
+                <a>删除</a>
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <a className="ant-dropdown-link">
+            更多 <Icon type="down" />
           </a>
-          <a> 重置密码 </a>
-          <a> 冻结 </a>
-          <a> 锁定 </a>
-          <a> 删除 </a>
-        </Fragment>
+        </Dropdown>
       ),
+      fixed: 'right',
     },
   ];
 
@@ -350,7 +387,7 @@ class BUserSet extends PureComponent {
       });
       console.log(values);
       dispatch({
-        type: 'account1/getStaff',
+        type: 'account1/getClient',
         payload: values,
       });
     });
@@ -364,7 +401,7 @@ class BUserSet extends PureComponent {
   };
 
   haddleFormParams = record => {
-    const isShowOrg = record.userType && record.userType === '1';
+    const isShowOrg = record && record.userType && record.userType === '1';
     this.setState({
       formValues: record || {},
       isShowOrg,
@@ -386,7 +423,7 @@ class BUserSet extends PureComponent {
       },
     });
 
-    message.success('添加成功');
+    message.success('操作成功');
     this.handleModalVisible();
   };
 
@@ -409,7 +446,7 @@ class BUserSet extends PureComponent {
       },
     });
 
-    message.success('配置成功');
+    message.success('修改成功');
     this.handleModalVisible();
   };
 
@@ -522,19 +559,10 @@ class BUserSet extends PureComponent {
 
   render() {
     const {
-      // rule: { data },
-      account1: { staffData },
+      account1: { clientData },
       loading,
     } = this.props;
     const { selectedRows, modalVisible, isShowOrg, formValues } = this.state;
-    // const menu = (
-    //   <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-    //     <Menu.Item key="remove">删除</Menu.Item>
-    //     <Menu.Item key="approval">冻结</Menu.Item>
-    //     <Menu.Item key="unlock">解锁</Menu.Item>
-    //     <Menu.Item key="reset">重置密码 </Menu.Item>
-    //   </Menu>
-    // );
 
     const parentMethods = {
       handleAdd: this.handleAdd,
@@ -557,10 +585,11 @@ class BUserSet extends PureComponent {
               <StandardTable
                 selectedRows={selectedRows}
                 loading={loading}
-                data={staffData}
+                data={clientData}
                 columns={this.columns}
                 onSelectRow={this.handleSelectRows}
                 onChange={this.handleStandardTableChange}
+                scroll={{ x: true }}
               />
             </div>
           </Card>

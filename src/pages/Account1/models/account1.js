@@ -1,5 +1,6 @@
 import {
   getClient,
+  addClient,
   editClient,
   delClient,
   getBranch,
@@ -17,6 +18,10 @@ export default {
   namespace: 'account1',
 
   state: {
+    clientData: {
+      list: [],
+      pagination: {},
+    },
     branchData: [],
     staffData: {
       list: [],
@@ -29,21 +34,28 @@ export default {
     *getClient({ payload }, { call, put }) {
       const response = yield call(getClient, payload);
       yield put({
-        type: 'save',
+        type: 'saveClient',
+        payload: response,
+      });
+    },
+    *addClient({ payload }, { call, put }) {
+      const response = yield call(addClient, payload);
+      yield put({
+        type: 'saveClient',
         payload: response,
       });
     },
     *editClient({ payload }, { call, put }) {
       const response = yield call(editClient, payload);
       yield put({
-        type: 'save',
+        type: 'saveClient',
         payload: response,
       });
     },
     *delClient({ payload }, { call, put }) {
       const response = yield call(delClient, payload);
       yield put({
-        type: 'save',
+        type: 'saveClient',
         payload: response,
       });
     },
@@ -124,6 +136,12 @@ export default {
   },
 
   reducers: {
+    saveClient(state, action) {
+      return {
+        ...state,
+        clientData: action.payload,
+      };
+    },
     save(state, action) {
       return {
         ...state,

@@ -173,6 +173,10 @@ export async function getClient(params) {
   return request(`/api/getClient?${stringify(params)}`);
 }
 
+export async function addClient(params) {
+  return request(`/api/addClient?${stringify(params)}`);
+}
+
 export async function editClient(params) {
   return request(`/api/editClient?${stringify(params)}`);
 }
