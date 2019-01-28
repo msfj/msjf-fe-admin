@@ -126,7 +126,7 @@ export async function accountLogin(params) {
     method: 'employeeLogin',
     status: 'open',
   });
-  return request('/api/real', param);
+  return request('/api/real/accountLogin', param);
 }
 
 export async function fakeRegister(params) {
@@ -170,19 +170,41 @@ export async function queryProcessQuery(params) {
 // account1
 // 客户 增改删
 export async function getClient(params) {
-  return request(`/api/getClient?${stringify(params)}`);
+  // const param = getParams({
+  //   params,
+  //   apiName: 'getCustList',
+  //   method: 'queryCust',
+  // });
+  // return request('/api/real/getClient', param);
+  return request(`/api/getStaff?${stringify(params)}`);
 }
 
 export async function addClient(params) {
-  return request(`/api/addClient?${stringify(params)}`);
+  // const param = getParams({
+  //   params,
+  //   apiName: 'setCustins',
+  //   method: 'insCust',
+  // });
+  // return request('/api/real/addClient', param);
+  return request(`/api/addStaff?${stringify(params)}`);
 }
 
 export async function editClient(params) {
-  return request(`/api/editClient?${stringify(params)}`);
+  const param = getParams({
+    params,
+    apiName: 'setCustupd',
+    method: 'updCust',
+  });
+  return request('/api/real/editClient', param);
 }
 
 export async function delClient(params) {
-  return request(`/api/delClient?${stringify(params)}`);
+  const param = getParams({
+    params,
+    apiName: 'setCustdel',
+    method: 'delCust',
+  });
+  return request('/api/real/delClient', param);
 }
 
 // 部门 增改删

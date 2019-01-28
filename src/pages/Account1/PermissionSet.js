@@ -16,6 +16,7 @@ import {
   Modal,
   Dropdown,
   Menu,
+  message,
 } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -26,6 +27,7 @@ const { Search } = Input;
 const { TreeNode } = Tree;
 const RadioGroup = Radio.Group;
 const { TabPane } = Tabs;
+const { confirm } = Modal;
 const FormItem = Form.Item;
 
 const rows = {
@@ -131,12 +133,12 @@ const dataRole = ['系统管理员', '招商部门对接员', '金融监督员',
 const dataJob = ['谢永泰', '赵薇', '王洪', '赵刚', '田雨'];
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, formValues, handleModalVisible } = props;
+  const { modalVisible, form, handleFormSummit, formValues, handleModalVisible } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleAdd(fieldsValue);
+      handleFormSummit(fieldsValue);
     });
   };
 
@@ -166,6 +168,22 @@ const CreateForm = Form.create()(props => {
     </Modal>
   );
 });
+
+function showDeleteConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定删除该角色?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
 
 @connect(({ account1, loading }) => ({
   account1,
@@ -221,7 +239,7 @@ class Permission extends Component {
                 </a>
               </Menu.Item>
               <Menu.Item>
-                <a>删除</a>
+                <a onClick={showDeleteConfirm}>删除</a>
               </Menu.Item>
             </Menu>
           }
@@ -322,6 +340,24 @@ class Permission extends Component {
     });
   };
 
+  handleFormSummit = fields => {
+    const { dispatch } = this.props;
+    if (this.operateType === 'add') {
+      dispatch({
+        type: 'account1/addRole',
+        payload: fields,
+      });
+    } else {
+      dispatch({
+        type: 'account1/editRole',
+        payload: fields,
+      });
+    }
+
+    message.success('操作成功');
+    this.handleModalVisible();
+  };
+
   handleFormReset = () => {
     const { form } = this.props;
     form.resetFields();
@@ -402,7 +438,7 @@ class Permission extends Component {
         return <TreeNode key={item.key} title={title} />;
       });
     const parentMethods = {
-      handleAdd: this.handleAdd,
+      handleFormSummit: this.handleFormSummit,
       handleModalVisible: this.handleModalVisible,
       modalVisible,
       formValues,
@@ -467,7 +503,9 @@ class Permission extends Component {
                       </div>
                     </Col>
                     <Col lg={6} md={24}>
-                      <Button type="primary">授取菜单权限</Button>
+                      <Button type="primary" onClick={() => message.success('操作成功')}>
+                        授取菜单权限
+                      </Button>
                     </Col>
                   </Row>
                 </TabPane>
@@ -532,7 +570,9 @@ class Permission extends Component {
                       />
                     </Col>
                     <Col lg={6} md={24} xs={24}>
-                      <Button type="primary">授权角色</Button>
+                      <Button type="primary" onClick={() => message.success('操作成功')}>
+                        授权角色
+                      </Button>
                     </Col>
                   </Row>
                 </TabPane>

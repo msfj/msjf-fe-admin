@@ -662,7 +662,7 @@ class ProcessAudit extends PureComponent {
                   title={
                     <div style={{ width: 600, display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: 14 }}>
-                        <b>审核完成</b>
+                        <b>登记办理</b>
                       </span>
                       <span
                         style={{

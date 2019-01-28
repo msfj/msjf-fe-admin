@@ -38,26 +38,29 @@ export default {
         payload: response,
       });
     },
-    *addClient({ payload }, { call, put }) {
+    *addClient({ payload }, { call }) {
       const response = yield call(addClient, payload);
-      yield put({
-        type: 'saveClient',
-        payload: response,
-      });
+      console.log(response);
+      // yield put({
+      //   type: 'saveCli',
+      //   payload: response,
+      // });
     },
-    *editClient({ payload }, { call, put }) {
+    *editClient({ payload }, { call }) {
       const response = yield call(editClient, payload);
-      yield put({
-        type: 'saveClient',
-        payload: response,
-      });
+      console.log(response);
+      // yield put({
+      //   type: 'saveClient',
+      //   payload: response,
+      // });
     },
-    *delClient({ payload }, { call, put }) {
+    *delClient({ payload }, { call }) {
       const response = yield call(delClient, payload);
-      yield put({
-        type: 'saveClient',
-        payload: response,
-      });
+      console.log(response);
+      // yield put({
+      //   type: 'saveClient',
+      //   payload: response,
+      // });
     },
 
     // 部门
