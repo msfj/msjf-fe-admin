@@ -42,13 +42,13 @@ const rows = {
   gutter: {
     md: 8,
     lg: 24,
-    xl: 48,
+    xl: 24,
+    xxl: 24,
   },
 };
 
 const cols = {
-  xxl: 6,
-  xl: 8,
+  xxl: 8,
   md: 12,
   sm: 24,
 };
@@ -633,16 +633,16 @@ class TableList extends PureComponent {
           style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
           className={styles.buttonColor}
         >
-          <Row gutter={24}>
-            <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-              <Card
-                bodyStyle={{ padding: 0, background: '#f1f1f1' }}
-                className={styles.projectList}
-                style={{ marginBottom: 24 }}
-                title="待办任务"
-                bordered={false}
-              >
-                {notice.map(item => (
+          <Card
+            bodyStyle={{ padding: 0, background: '#f1f1f1' }}
+            className={styles.projectList}
+            style={{ marginBottom: 24 }}
+            title="待办任务"
+            bordered={false}
+          >
+            <Row {...rows}>
+              {notice.map(item => (
+                <Col {...cols}>
                   <Card.Grid className={styles.projectGrid} key={item.id}>
                     <Link to={item.href}>
                       <Card bodyStyle={{ padding: 0 }} bordered={false}>
@@ -682,10 +682,10 @@ class TableList extends PureComponent {
                       </Card>
                     </Link>
                   </Card.Grid>
-                ))}
-              </Card>
-            </Col>
-          </Row>
+                </Col>
+              ))}
+            </Row>
+          </Card>
           <Row style={{ marginTop: -24 }}>
             <Card
               bordered={false}

@@ -14,6 +14,21 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const { Search } = Input;
 
+const rows = {
+  gutter: {
+    md: 8,
+    lg: 24,
+    xl: 24,
+    xxl: 24,
+  },
+};
+
+const cols = {
+  xxl: 8,
+  md: 12,
+  sm: 24,
+};
+
 const dic = ['企业拟设立', '企业确认设立', '企业变更', '企业迁入', '企业注销', ''];
 
 const list = [
@@ -384,7 +399,7 @@ class Workplace extends PureComponent {
           style={{ marginLeft: -12, marginRight: -12, marginTop: -12 }}
           className={styles.buttonColor}
         >
-          <Row gutter={24}>
+          <Row {...rows}>
             <Col xl={16} lg={24} md={24} sm={24} xs={24}>
               <Card
                 bodyStyle={{ padding: 0, background: '#f1f1f1' }}
@@ -394,47 +409,51 @@ class Workplace extends PureComponent {
                 bordered={false}
                 loading={projectLoading}
               >
-                {notice.map(item => (
-                  <Card.Grid className={styles.projectGrid} key={item.id}>
-                    <Link to={item.href}>
-                      <Card bodyStyle={{ padding: 0 }} bordered={false}>
-                        <Card.Meta
-                          title={
-                            <div className={styles.cardTitle}>
-                              <Avatar size="small" src={item.logo} />
-                              <Link to={item.href}>{item.title}</Link>
+                <Row {...rows}>
+                  {notice.map(item => (
+                    <Col {...cols}>
+                      <Card.Grid className={styles.projectGrid} key={item.id}>
+                        <Link to={item.href}>
+                          <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                            <Card.Meta
+                              title={
+                                <div className={styles.cardTitle}>
+                                  <Avatar size="small" src={item.logo} />
+                                  <Link to={item.href}>{item.title}</Link>
+                                </div>
+                              }
+                              description={item.description}
+                            />
+                            <div title={item.member[0].men} className={styles.projectItemContent}>
+                              <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
+                              {item.member[0].updatedAt && (
+                                <span className={styles.datetime} title={item.member[0].updatedAt}>
+                                  {moment(item.member[0].updatedAt).fromNow()}
+                                </span>
+                              )}
                             </div>
-                          }
-                          description={item.description}
-                        />
-                        <div title={item.member[0].men} className={styles.projectItemContent}>
-                          <Link to={item.memberLink}>{item.member[0].men || ''}</Link>
-                          {item.member[0].updatedAt && (
-                            <span className={styles.datetime} title={item.member[0].updatedAt}>
-                              {moment(item.member[0].updatedAt).fromNow()}
-                            </span>
-                          )}
-                        </div>
-                        <div title={item.member[1].men} className={styles.projectItemContent}>
-                          <Link to={item.memberLink}>{item.member[1].men || ''}</Link>
-                          {item.member[1].updatedAt && (
-                            <span className={styles.datetime} title={item.member[1].updatedAt}>
-                              {moment(item.member[1].updatedAt).fromNow()}
-                            </span>
-                          )}
-                        </div>
-                        <div title={item.member[2].men} className={styles.projectItemContent}>
-                          <Link to={item.memberLink}>{item.member[2].men || ''}</Link>
-                          {item.member[2].updatedAt && (
-                            <span className={styles.datetime} title={item.member[2].updatedAt}>
-                              {moment(item.member[2].updatedAt).fromNow()}
-                            </span>
-                          )}
-                        </div>
-                      </Card>
-                    </Link>
-                  </Card.Grid>
-                ))}
+                            <div title={item.member[1].men} className={styles.projectItemContent}>
+                              <Link to={item.memberLink}>{item.member[1].men || ''}</Link>
+                              {item.member[1].updatedAt && (
+                                <span className={styles.datetime} title={item.member[1].updatedAt}>
+                                  {moment(item.member[1].updatedAt).fromNow()}
+                                </span>
+                              )}
+                            </div>
+                            <div title={item.member[2].men} className={styles.projectItemContent}>
+                              <Link to={item.memberLink}>{item.member[2].men || ''}</Link>
+                              {item.member[2].updatedAt && (
+                                <span className={styles.datetime} title={item.member[2].updatedAt}>
+                                  {moment(item.member[2].updatedAt).fromNow()}
+                                </span>
+                              )}
+                            </div>
+                          </Card>
+                        </Link>
+                      </Card.Grid>
+                    </Col>
+                  ))}
+                </Row>
               </Card>
             </Col>
             <Col xl={8} lg={24} md={24} sm={24} xs={24}>
