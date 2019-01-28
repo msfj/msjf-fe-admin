@@ -454,7 +454,7 @@ class ProcessAudit extends PureComponent {
                                   paddingTop: 10,
                                   paddingBottom: 10,
                                   paddingLeft: 61,
-                                  marginRight: 61,
+                                  paddingRight: 61,
                                 }}
                               >
                                 <img src={success} alt="pass" style={{ paddingRight: 10 }} />
@@ -474,7 +474,7 @@ class ProcessAudit extends PureComponent {
                                   paddingTop: 10,
                                   paddingBottom: 10,
                                   paddingLeft: 61,
-                                  marginRight: 61,
+                                  paddingRight: 61,
                                 }}
                               >
                                 <img src={fail} alt="notpass" style={{ paddingRight: 10 }} />
