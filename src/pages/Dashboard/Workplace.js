@@ -375,11 +375,11 @@ class Workplace extends PureComponent {
           <p>26402</p>
         </div>
         <div className={styles.statItem}>
-          <p>注册资本金（人民币亿）</p>
+          <p>注册资本金(人民币亿)</p>
           <p>1597.73</p>
         </div>
         <div className={styles.statItem}>
-          <p>注册资本金（美元亿）</p>
+          <p>注册资本金(美元亿)</p>
           <p>1.48</p>
         </div>
         <div className={styles.statItem}>
