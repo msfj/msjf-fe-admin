@@ -21,6 +21,7 @@ import styles from './BussinessUserSet.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+const { confirm } = Modal;
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
@@ -42,11 +43,59 @@ const cols = {
   sm: 24,
 };
 
+function showResetPwdConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定重置密码?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
+function showFreezeConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定冻结该客户?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
+function showDeleteConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定删除该客户?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
 const CreateForm = Form.create()(props => {
   const {
     modalVisible,
     form,
-    handleAdd,
+    handleFormSummit,
     formValues,
     handleModalVisible,
     isShowOrg,
@@ -56,7 +105,7 @@ const CreateForm = Form.create()(props => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleAdd(fieldsValue);
+      handleFormSummit(fieldsValue);
     });
   };
 
@@ -71,6 +120,17 @@ const CreateForm = Form.create()(props => {
       width={600}
     >
       <Form>
+        <Form.Item
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 13 }}
+          label="机构"
+          style={{ display: 'none' }}
+        >
+          {form.getFieldDecorator('branchid', {
+            rules: [{ required: true, message: '请输入邮箱' }],
+            initialValue: formValues.branchid || '06b857654291467f8316d08518792b12',
+          })(<Input placeholder="请输入" />)}
+        </Form.Item>
         <Form.Item label="用户类型" labelCol={{ span: 7 }} wrapperCol={{ span: 13 }}>
           {form.getFieldDecorator('userType', {
             rules: [{ required: true }],
@@ -114,37 +174,38 @@ const CreateForm = Form.create()(props => {
             </Select>
           )}
         </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登陆账号">
-          {form.getFieldDecorator('account', {
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="登录账号">
+          {form.getFieldDecorator('loginname', {
             rules: [{ required: true, message: '请输入账号' }],
             initialValue: formValues.account,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
-        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="用户名称">
-          {form.getFieldDecorator('userName', {
+        <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="客户名称">
+          {form.getFieldDecorator('custname', {
             rules: [{ required: true, message: '请输入用户名' }],
             initialValue: formValues.userName,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件类型">
-          {form.getFieldDecorator('certificateType', {
+          {form.getFieldDecorator('certificatetype', {
             initialValue: formValues.certificateType || '0',
             rules: [{ required: true }],
           })(
             <Select>
               <Option value="0">身份证</Option>
-              <Option value="1">营业执照</Option>
+              <Option value="1">护照</Option>
+              <Option value="A">营业执照</Option>
             </Select>
           )}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="证件号码">
-          {form.getFieldDecorator('number', {
+          {form.getFieldDecorator('certificateno', {
             rules: [{ required: true, message: '请输入证件号码' }],
             initialValue: formValues.number,
           })(<Input placeholder="请输入" />)}
         </Form.Item>
         <Form.Item labelCol={{ span: 7 }} wrapperCol={{ span: 13 }} label="手机号码">
-          {form.getFieldDecorator('phone', {
+          {form.getFieldDecorator('mobile', {
             rules: [{ required: true, message: '请输入手机号' }],
             initialValue: formValues.phone,
           })(<Input placeholder="请输入" />)}
@@ -248,12 +309,13 @@ class BUserSet extends PureComponent {
       title: '操作',
       render: record => (
         <Dropdown
+          trigger={['click']}
           overlay={
             <Menu>
               <Menu.Item>
                 <a
                   onClick={() => {
-                    this.haddleFormParams(record);
+                    this.haddleSetFormParams(record);
                     this.handleModalVisible();
                   }}
                 >
@@ -261,13 +323,13 @@ class BUserSet extends PureComponent {
                 </a>
               </Menu.Item>
               <Menu.Item>
-                <a>重置密码</a>
+                <a onClick={showResetPwdConfirm}>重置密码</a>
               </Menu.Item>
               <Menu.Item>
-                <a>冻结</a>
+                <a onClick={showFreezeConfirm}>冻结</a>
               </Menu.Item>
               <Menu.Item>
-                <a>删除</a>
+                <a onClick={showDeleteConfirm}>删除</a>
               </Menu.Item>
             </Menu>
           }
@@ -285,6 +347,10 @@ class BUserSet extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'account1/getClient',
+      payload: {
+        pageNum: 1,
+        pageSize: 10,
+      },
     });
   }
 
@@ -364,6 +430,14 @@ class BUserSet extends PureComponent {
     }
   };
 
+  haddleResetPwd = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'account1/resetpwdClient',
+      payload: {},
+    });
+  };
+
   handleSelectRows = rows_ => {
     this.setState({
       selectedRows: rows_,
@@ -377,18 +451,10 @@ class BUserSet extends PureComponent {
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-
-      const values = {
-        ...fieldsValue,
-      };
-
-      this.setState({
-        formValues: values,
-      });
-      console.log(values);
+      console.log(fieldsValue);
       dispatch({
         type: 'account1/getClient',
-        payload: values,
+        payload: fieldsValue,
       });
     });
   };
@@ -400,7 +466,11 @@ class BUserSet extends PureComponent {
     });
   };
 
-  haddleFormParams = record => {
+  haddleSetOperateType = operateType => {
+    this.operateType = operateType;
+  };
+
+  haddleSetFormParams = record => {
     const isShowOrg = record && record.userType && record.userType === '1';
     this.setState({
       formValues: record || {},
@@ -408,127 +478,61 @@ class BUserSet extends PureComponent {
     });
   };
 
-  handleAdd = fields => {
+  handleFormSummit = fields => {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'account1/add',
-      payload: {
-        userName: fields.userName,
-        certificateType: fields.certificateType,
-        number: fields.number,
-        phone: fields.phone,
-        email: fields.email,
-        account: fields.account,
-        userType: fields.userType,
-      },
-    });
+    if (this.operateType === 'add') {
+      dispatch({
+        type: 'account1/addClient',
+        payload: fields,
+      });
+    } else {
+      dispatch({
+        type: 'account1/editClient',
+        payload: fields,
+      });
+    }
 
     message.success('操作成功');
     this.handleModalVisible();
   };
 
-  handleUpdate = fields => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'rule/update',
-      payload: {
-        // name: fields.name,
-        userName: fields.userName,
-        certificateType: fields.certificateType,
-        number: fields.number,
-        phone: fields.phone,
-        email: fields.emali,
-        account: fields.account,
-        userType: fields.userType,
-        enterpriseType: fields.enterpriseType,
-        enterpriseClass: fields.enterpriseClass,
-        key: fields.key,
-      },
-    });
-
-    message.success('修改成功');
-    this.handleModalVisible();
-  };
-
-  renderSimpleForm() {
+  renderTableListForm() {
     const {
       form: { getFieldDecorator },
     } = this.props;
+    const { expandForm } = this.state;
+    const isFormItemBlock = expandForm ? 'block' : 'none';
+    const isExpandText = expandForm ? '收起' : '展开';
+    const isExpandIcon = expandForm ? <Icon type="up" /> : <Icon type="down" />;
+
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row {...rows}>
           <Col {...cols}>
             <FormItem label="用户名称">
-              {getFieldDecorator('userNmae')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('membername')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col {...cols}>
             <FormItem label="证件号码">
-              {getFieldDecorator('id')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('certificateno')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col {...cols}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button
-                type="primary"
-                style={{ marginLeft: 8 }}
-                onClick={() => {
-                  this.handleModalVisible();
-                  this.haddleFormParams();
-                }}
-              >
-                新增
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
-              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down" />
-              </a>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }
-
-  renderAdvancedForm() {
-    const {
-      form: { getFieldDecorator },
-    } = this.props;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row {...rows}>
-          <Col {...cols}>
-            <FormItem label="用户名称">
-              {getFieldDecorator('userNmae')(<Input placeholder="请输入" />)}
+          <Col {...cols} style={{ display: isFormItemBlock }}>
+            <FormItem label="登录账号">
+              {getFieldDecorator('loginname')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col {...cols}>
-            <FormItem label="证件号码">
-              {getFieldDecorator('id')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col {...cols}>
-            <FormItem label="登陆账号">
-              {getFieldDecorator('actId')(<Input placeholder="请输入" />)}
-            </FormItem>
-          </Col>
-          <Col {...cols}>
+          <Col {...cols} style={{ display: isFormItemBlock }}>
             <FormItem label="邮箱地址">
               {getFieldDecorator('email')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-          <Col {...cols}>
+          <Col {...cols} style={{ display: isFormItemBlock }}>
             <FormItem label="手机号码">
-              {getFieldDecorator('phone')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('mobile')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
-        </Row>
-        <div style={{ overflow: 'hidden' }}>
           <div style={{ float: 'right', marginBottom: 24 }}>
             <Button type="primary" htmlType="submit">
               查询
@@ -536,7 +540,11 @@ class BUserSet extends PureComponent {
             <Button
               type="primary"
               style={{ marginLeft: 8 }}
-              onClick={() => this.handleModalVisible()}
+              onClick={() => {
+                this.handleFormReset();
+                this.handleModalVisible();
+                this.haddleSetOperateType('add');
+              }}
             >
               新增
             </Button>
@@ -544,17 +552,13 @@ class BUserSet extends PureComponent {
               重置
             </Button>
             <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-              收起 <Icon type="up" />
+              {isExpandText}
+              {isExpandIcon}
             </a>
           </div>
-        </div>
+        </Row>
       </Form>
     );
-  }
-
-  renderForm() {
-    const { expandForm } = this.state;
-    return expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
   render() {
@@ -565,7 +569,7 @@ class BUserSet extends PureComponent {
     const { selectedRows, modalVisible, isShowOrg, formValues } = this.state;
 
     const parentMethods = {
-      handleAdd: this.handleAdd,
+      handleFormSummit: this.handleFormSummit,
       handleModalVisible: this.handleModalVisible,
       toggleClientType: this.toggleClientType,
       modalVisible,
@@ -580,7 +584,7 @@ class BUserSet extends PureComponent {
         >
           <Card bordered={false}>
             <div className={styles.tableList}>
-              <div className={styles.tableListForm}>{this.renderForm()}</div>
+              <div className={styles.tableListForm}>{this.renderTableListForm()}</div>
               <div className={styles.tableListOperator} />
               <StandardTable
                 selectedRows={selectedRows}

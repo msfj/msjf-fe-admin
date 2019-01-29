@@ -27,6 +27,7 @@ const { Search } = Input;
 const { Option } = Select;
 const FormItem = Form.Item;
 const { TreeNode } = Tree;
+const { confirm } = Modal;
 const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
@@ -82,6 +83,54 @@ const formItemLayout = {
   wrapperCol: { span: 13 },
 };
 
+function showResetPwdConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定重置密码?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
+function showFreezeConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定冻结该员工?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
+function showDeleteConfirm() {
+  confirm({
+    title: '操作提示',
+    content: '确定删除该员工?',
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      message.success('操作成功');
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
 const BranchModal = Form.create()(props => {
   const {
     visible,
@@ -103,7 +152,7 @@ const BranchModal = Form.create()(props => {
         type: 'account1/editBranch',
         payload: JSON.stringify(params),
       });
-      message.info(`操作成功；入参为${JSON.stringify(params)}`);
+      message.success(`操作成功`);
       onCancel();
     });
   };
@@ -128,7 +177,8 @@ const StaffModal = Form.create()(props => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      message.info(`操作成功；入参为${JSON.stringify(fieldsValue)}`);
+      console.log(fieldsValue);
+      message.success(`操作成功`);
       onCancel();
     });
   };
@@ -320,6 +370,7 @@ class UserSet extends PureComponent {
       title: '操作',
       render: record => (
         <Dropdown
+          trigger={['click']}
           overlay={
             <Menu>
               <Menu.Item>
@@ -333,13 +384,13 @@ class UserSet extends PureComponent {
                 </a>
               </Menu.Item>
               <Menu.Item>
-                <a>重置密码</a>
+                <a onClick={showResetPwdConfirm}>重置密码</a>
               </Menu.Item>
               <Menu.Item>
-                <a>冻结</a>
+                <a onClick={showFreezeConfirm}>冻结</a>
               </Menu.Item>
               <Menu.Item>
-                <a>删除</a>
+                <a onClick={showDeleteConfirm}>删除</a>
               </Menu.Item>
             </Menu>
           }
@@ -417,6 +468,14 @@ class UserSet extends PureComponent {
         ...visible,
         [key]: !visible[key],
       },
+    });
+  };
+
+  haddleResetPwd = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'account1/resetpwdClient',
+      payload: {},
     });
   };
 
