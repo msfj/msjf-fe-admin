@@ -276,7 +276,7 @@ const notice = [
   {
     id: 'xxx1',
     title: titles[0],
-    // logo: avatars[0],
+    logo: 'flag',
     // description: ``,
     // updatedAt: new Date(),
     member: [
@@ -285,59 +285,59 @@ const notice = [
       { men: '宁波梅山保税港区龙强投资管理有限公司', updatedAt: new Date() },
     ],
     description: '最早三条',
-    href: { pathname: 'process-list', query: titles[0] },
+    href: { pathname: 'process-list', query: { isShowTable: titles[0] } },
     memberLink: 'process-list',
   },
   {
     id: 'xxx2',
     title: titles[1],
-    // logo: avatars[1],
+    logo: 'tags',
     description: '最早三条',
     member: [
       { men: '宁波梅山保税港区梅森贸易有限公司', updatedAt: new Date('2018-12-24') },
       { men: '宁波梅山保税港区堃俍投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区嘉信金诚投资管理有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[1] },
+    href: { pathname: 'process-list', query: { isShowTable: titles[1] } },
     memberLink: 'process-list',
   },
   {
     id: 'xxx3',
     title: titles[2],
-    // logo: avatars[2],
+    logo: 'edit',
     description: '最早三条',
     member: [
       { men: '宁波梅山保税港区杰跃投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区星颐投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区湘矽投资管理有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[2] },
+    href: { pathname: 'process-list', query: { isShowTable: titles[2] } },
     memberLink: 'process-list',
   },
   {
     id: 'xxx4',
     title: titles[3],
-    // logo: avatars[3],
+    logo: 'box-plot',
     description: '最早三条',
     member: [
       { men: '宁波梅山保税港区臻昳投资有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区梁悦投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区诚启创业投资有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[3] },
+    href: { pathname: 'process-list', query: { isShowTable: titles[3] } },
     memberLink: 'process-list',
   },
   {
     id: 'xxx5',
     title: titles[4],
-    // logo: avatars[4],
+    logo: 'delete',
     description: '最早三条',
     member: [
       { men: '宁波梅山保税港区顺势明道投资管理有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区金镗企业管理咨询有限公司', updatedAt: new Date() },
       { men: '宁波梅山保税港区坤七资产管理有限公司', updatedAt: new Date() },
     ],
-    href: { pathname: 'process-list', query: titles[4] },
+    href: { pathname: 'process-list', query: { isShowTable: titles[4] } },
     memberLink: 'process-list',
   },
 ];
@@ -649,7 +649,9 @@ class TableList extends PureComponent {
                         <Card.Meta
                           title={
                             <div className={styles.cardTitle}>
-                              <Avatar size="small" src={item.logo} />
+                              <Avatar size="small">
+                                <Icon size="large" type={item.logo} theme="twoTone" />
+                              </Avatar>
                               <Link to={item.href}>{item.title}</Link>
                             </div>
                           }
@@ -716,7 +718,7 @@ class TableList extends PureComponent {
                       ]}
                     >
                       <List.Item.Meta
-                        avatar={<Avatar src={item.logo} shape="square" size="large" />}
+                        // avatar={<Avatar src={item.logo} shape="square" size="large" />}
                         title={item.title}
                         description={item.subDescription}
                       />

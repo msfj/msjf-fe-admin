@@ -19,13 +19,13 @@ const getValue = obj =>
 // const statusMap = ['error', 'success', 'default'];
 // const status = ['不同意', '同意', '已退回'];
 
-const dataRe1 = [
+/* const dataRe1 = [
   {
     proInstance: '3712501',
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业确认设立',
     auditorId: '111',
     auditorName: '张三',
     taskId: '3712555',
@@ -35,7 +35,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业拟设立',
     auditorId: '222',
     auditorName: '李四',
     taskId: '3712565',
@@ -45,7 +45,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业注销',
     auditorId: '111',
     auditorName: '张三',
     taskId: '3712621',
@@ -55,7 +55,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业注销',
     auditorId: '222',
     auditorName: '李四',
     taskId: '3712631',
@@ -65,7 +65,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业迁入',
     auditorId: '111',
     auditorName: '张三',
     taskId: '3712687',
@@ -75,7 +75,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业确认设立',
     auditorId: '222',
     auditorName: '李四',
     taskId: '3712697',
@@ -85,7 +85,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业拟设立',
     auditorId: '111',
     auditorName: '张三',
     taskId: '3712753',
@@ -105,7 +105,7 @@ const dataRe1 = [
     actId: 'sid_1526976933410',
     actName: '金服人员确认',
     proDefKey: 'kingdom_1526978404700:5:3479967',
-    proDefName: '企业变更',
+    proDefName: '企业迁入',
     auditorId: '111',
     auditorName: '张三',
     taskId: '3712819',
@@ -121,9 +121,10 @@ const dataRe1 = [
     taskId: '3712829',
   },
 ];
+// dataRe1.filter(item=>item.proDefName===this.);
 const dataRe = {
   list: dataRe1,
-};
+}; */
 const rows = {
   gutter: {
     md: 8,
@@ -157,6 +158,7 @@ class TableList extends PureComponent {
       title: '流程类型',
       dataIndex: 'proDefName',
       sorter: true,
+      // render:val=>val===this.props.location.query.isShowTable&&<span>{val}</span>
     },
     {
       title: '任务名称',
@@ -449,8 +451,119 @@ class TableList extends PureComponent {
     const {
       // process: { data },
       loading,
+      location: {
+        query: { isShowTable },
+      },
     } = this.props;
+    console.log(isShowTable);
     const { selectedRows } = this.state;
+    const dataRe1 = [
+      {
+        proInstance: '3712501',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业确认设立',
+        auditorId: '111',
+        auditorName: '张三',
+        taskId: '3712555',
+      },
+      {
+        proInstance: '3712501',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业拟设立',
+        auditorId: '222',
+        auditorName: '李四',
+        taskId: '3712565',
+      },
+      {
+        proInstance: '3712567',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业注销',
+        auditorId: '111',
+        auditorName: '张三',
+        taskId: '3712621',
+      },
+      {
+        proInstance: '3712567',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业注销',
+        auditorId: '222',
+        auditorName: '李四',
+        taskId: '3712631',
+      },
+      {
+        proInstance: '3712633',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业迁入',
+        auditorId: '111',
+        auditorName: '张三',
+        taskId: '3712687',
+      },
+      {
+        proInstance: '3712633',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业确认设立',
+        auditorId: '222',
+        auditorName: '李四',
+        taskId: '3712697',
+      },
+      {
+        proInstance: '3712699',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业拟设立',
+        auditorId: '111',
+        auditorName: '张三',
+        taskId: '3712753',
+      },
+      {
+        proInstance: '3712699',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业变更',
+        auditorId: '222',
+        auditorName: '李四',
+        taskId: '3712763',
+      },
+      {
+        proInstance: '3712765',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业迁入',
+        auditorId: '111',
+        auditorName: '张三',
+        taskId: '3712819',
+      },
+      {
+        proInstance: '3712765',
+        actId: 'sid_1526976933410',
+        actName: '金服人员确认',
+        proDefKey: 'kingdom_1526978404700:5:3479967',
+        proDefName: '企业变更',
+        auditorId: '222',
+        auditorName: '李四',
+        taskId: '3712829',
+      },
+    ];
+    const newdata = dataRe1.filter(item => item.proDefName === isShowTable);
+    console.log(newdata);
+    const dataRe = {
+      list: newdata,
+    };
     return (
       <PageHeaderWrapper>
         <div

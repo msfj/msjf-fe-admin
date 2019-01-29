@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import { Row, Col, Card, List, Avatar, Radio, Input, Progress } from 'antd';
+import { Row, Col, Card, List, Avatar, Radio, Input, Progress, Icon } from 'antd';
 
 import { Radar } from '@/components/Charts';
 // import EditableLinkGroup from '@/components/EditableLinkGroup';
@@ -418,7 +418,9 @@ class Workplace extends PureComponent {
                             <Card.Meta
                               title={
                                 <div className={styles.cardTitle}>
-                                  <Avatar size="small" src={item.logo} />
+                                  <Avatar size="small">
+                                    <Icon size="large" type={item.logo} theme="twoTone" />
+                                  </Avatar>
                                   <Link to={item.href}>{item.title}</Link>
                                 </div>
                               }
@@ -498,11 +500,7 @@ class Workplace extends PureComponent {
                         </Link>,
                       ]}
                     >
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                        title={item.title}
-                        description={item.subDescription}
-                      />
+                      <List.Item.Meta title={item.title} description={item.subDescription} />
                       <ListContent data={item} />
                     </List.Item>
                   ) : (
