@@ -309,7 +309,6 @@ class BUserSet extends PureComponent {
       title: '操作',
       render: record => (
         <Dropdown
-          trigger={['click']}
           overlay={
             <Menu>
               <Menu.Item>

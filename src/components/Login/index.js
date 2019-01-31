@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Tabs } from 'antd';
 import classNames from 'classnames';
@@ -98,27 +98,32 @@ class Login extends Component {
       }
     });
     return (
-      <LoginContext.Provider value={this.getContext()}>
-        <div className={classNames(className, styles.login)}>
-          <Form onSubmit={this.handleSubmit}>
-            {tabs.length ? (
-              <React.Fragment>
-                <Tabs
-                  animated={false}
-                  className={styles.tabs}
-                  activeKey={type}
-                  onChange={this.onSwitch}
-                >
-                  {TabChildren}
-                </Tabs>
-                {otherChildren}
-              </React.Fragment>
-            ) : (
-              children
-            )}
-          </Form>
-        </div>
-      </LoginContext.Provider>
+      <Fragment>
+        <LoginContext.Provider
+          value={this.getContext()}
+          style={{ position: 'relative', zIndex: '10' }}
+        >
+          <div className={classNames(className, styles.login)}>
+            <Form onSubmit={this.handleSubmit}>
+              {tabs.length ? (
+                <React.Fragment>
+                  <Tabs
+                    animated={false}
+                    className={styles.tabs}
+                    activeKey={type}
+                    onChange={this.onSwitch}
+                  >
+                    {TabChildren}
+                  </Tabs>
+                  {otherChildren}
+                </React.Fragment>
+              ) : (
+                children
+              )}
+            </Form>
+          </div>
+        </LoginContext.Provider>
+      </Fragment>
     );
   }
 }

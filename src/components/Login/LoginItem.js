@@ -117,6 +117,13 @@ class WrapFormItem extends Component {
         </FormItem>
       );
     }
+    if (type === 'Password') {
+      return (
+        <FormItem>
+          {getFieldDecorator(name, options)(<Input.Password {...customprops} {...otherProps} />)}
+        </FormItem>
+      );
+    }
     return (
       <FormItem>
         {getFieldDecorator(name, options)(<Input {...customprops} {...otherProps} />)}
