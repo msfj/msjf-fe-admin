@@ -115,7 +115,7 @@ class LoginPage extends Component {
             position: 'fixed',
             top: '0',
             left: '0',
-            backgroundColor: 'rgba(24, 144, 255, 0.35)',
+            backgroundColor: 'rgba(165, 217, 230, 0.37)',
           }}
           params={{
             particles: {
@@ -127,13 +127,13 @@ class LoginPage extends Component {
                 },
               },
               color: {
-                value: '#ffffff',
+                value: '#bcbcbc',
               },
               shape: {
                 type: 'circle',
                 stroke: {
                   width: 0,
-                  color: '#000000',
+                  color: '#bcbcbc',
                 },
                 polygon: {
                   nb_sides: 5,
@@ -167,7 +167,7 @@ class LoginPage extends Component {
               line_linked: {
                 enable: true,
                 distance: 150,
-                color: '#ffffff',
+                color: '#bcbcbc',
                 opacity: 0.4,
                 width: 1,
               },
